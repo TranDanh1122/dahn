@@ -17,15 +17,5 @@ export default function AuthLayout(): React.JSX.Element {
 
 
         </main>
-
-        <footer className="absolute -bottom-100 left-0">
-            <h1 className="text-neutral-950 text-[.1px] font-bold">This might be the last line of code I write before becoming a taxi driver (man’s gotta eat) — but I still hope it makes this industry better</h1>
-            <p className="text-neutral-950 text-[.1px] font-medium">No Vibecoders</p>
-            <p className="text-neutral-950 text-[.1px] font-medium">No Interview Champions</p>
-            <p className="text-neutral-950 text-[.1px] font-medium">No CV Developers</p>
-            <p className="text-neutral-950 text-[.1px] font-medium">No Talk-no-Jutsu Leaders</p>
-            <h2 className="text-neutral-950 text-[.1px] font-bold">We chill and we code, like how old-school coders MUST be — by hand, by mind, by soul</h2>
-        </footer>
-
     </div>
 }

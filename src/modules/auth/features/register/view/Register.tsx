@@ -26,6 +26,7 @@ export default function Register(): React.JSX.Element {
         })
     }
     return <>
+    <Button></Button>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 border-t border-neutral-200 pt-8">
             <Input {...form.register("email")} type="email" id="email" error={form.formState.errors.email?.message} label="Email" />
             <Input {...form.register("password")} type="password" id="password" error={form.formState.errors.password?.message} label="Password" />
