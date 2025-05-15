@@ -1,13 +1,28 @@
 {
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
+  "version": 2,
+  "builds": [
+    {
+      "src": "FE/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build" }
+    },
+    {
+      "src": "BE/**/*.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js"
+      "src": "/BE/(.*)",
+      "dest": "/BE/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/FE/$1"
     }
-  ]
+  ],
+  "dev": {
+    "command": "npx vite",
+    "port": 3000
+  }
 }
