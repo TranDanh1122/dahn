@@ -9,7 +9,7 @@ export default function Input({ error, label, className, ...props }: InputProps)
             <label className="font-semibold text-neutral-600 cursor-pointer" htmlFor={props.id}>
                 {label}
             </label>
-            <input className={` ${className} cursor-pointer border border-neutral-200 font-medium p-3 focus-visible:outline-0 focus-visible:border-fuchsia-300 rounded-xl`} {...props} />
+            <input className={` ${className} cursor-pointer border border-neutral-200 font-medium px-3 py-2 focus-visible:outline-0 focus-visible:border-fuchsia-300 rounded-xl`} {...props} />
             {error && <p className="text-red-600 text-sm font-semibold w-full text-left" aria-label="validate error">{error}</p>}
         </fieldset>
     );

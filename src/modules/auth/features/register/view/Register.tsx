@@ -1,4 +1,4 @@
-import { RegisterSchema } from "@/modules/auth/models";
+import { RegisterSchema } from "@auth/models";
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -6,7 +6,7 @@ import { z } from "zod"
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import { useRegister } from "@auth/services/auth.service";
-
+import SocialAuth from "@auth/components/SocialAuth";
 
 export default function Register(): React.JSX.Element {
     const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -25,9 +25,10 @@ export default function Register(): React.JSX.Element {
             }
         })
     }
-    return <>
-    <Button></Button>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 border-t border-neutral-200 pt-8">
+
+    return <div className="space-y-10">
+        <SocialAuth />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 border-t border-neutral-200 pt-10 w-full">
             <Input {...form.register("email")} type="email" id="email" error={form.formState.errors.email?.message} label="Email" />
             <Input {...form.register("password")} type="password" id="password" error={form.formState.errors.password?.message} label="Password" />
             <Input {...form.register("confirmPassword")} type="password" id="confirmPassword" error={form.formState.errors.confirmPassword?.message} label="Confirm Password" />
@@ -36,5 +37,5 @@ export default function Register(): React.JSX.Element {
                 Register
             </Button>
         </form>
-    </>
+    </div>
 }

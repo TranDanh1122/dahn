@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { type RegisterData } from "@auth/models"
-import { postRegisterAPI } from '@auth/apis/auth.api'
+import { getAuthWSocial, postRegisterAPI } from '@auth/apis/auth.api'
+import type { SocialConnectionType } from '@auth/config'
 export const useRegister = () => {
     return useMutation({
         mutationFn: async (data: RegisterData) => {
@@ -8,4 +9,10 @@ export const useRegister = () => {
             return res.data
         }
     })
+}
+export const useAuthWSocial = () => {
+
+    return {
+        action: (type: SocialConnectionType) => window.location.href = getAuthWSocial(type)
+    }
 }
