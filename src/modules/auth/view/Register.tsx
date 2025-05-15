@@ -1,31 +1,13 @@
-import { RegisterSchema } from "@auth/models";
 import React from "react";
-import { useForm, type SubmitHandler } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import { useRegister } from "@auth/services/auth.service";
 import SocialAuth from "@auth/components/SocialAuth";
+import { useRegister } from "@auth/hooks/useRegister";
 
 export default function Register(): React.JSX.Element {
-    const form = useForm<z.infer<typeof RegisterSchema>>({
-        resolver: zodResolver(RegisterSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-            confirmPassword: ""
-        }
-    })
-    const register = useRegister()
-    const onSubmit: SubmitHandler<z.infer<typeof RegisterSchema>> = (val) => {
-        register.mutate(val, {
-            onSuccess: (data) => {
-                console.log("A", data)
-            }
-        })
-    }
 
+    const { form, onSubmit } = useRegister()
+    
     return <div className="space-y-10">
         <SocialAuth />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 border-t border-neutral-200 pt-10 w-full">
