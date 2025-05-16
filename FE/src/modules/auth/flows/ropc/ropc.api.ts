@@ -1,13 +1,13 @@
 import { API_ENDPOINT } from "@/common/ApiEndpoint.const";
 import { AxiosClient } from "@/common/AxiosClient.const";
-import type { RegisterData } from "@auth/models";
+import type { AuthRequestData } from "@auth/models";
 import { LEGACY_REGISTER_PARAM, LEGACY_LOGIN_PARAM } from "@auth/flows/ropc/ropc.config"
-export const postRegisterAPI = async (data: RegisterData) => await AxiosClient.post(API_ENDPOINT.signup, {
+export const postRegisterAPI = async (data: AuthRequestData) => await AxiosClient.post(API_ENDPOINT.signup, {
     ...LEGACY_REGISTER_PARAM,
     ...data
 })
-export const postLoginAPI = async (data: Omit<RegisterData, "confirmPassword">) => await AxiosClient.post(API_ENDPOINT.login, {
+export const postLoginAPI = async (data: Omit<AuthRequestData, "confirmPassword">) => await AxiosClient.post(API_ENDPOINT.login, {
     username: data.email,
     password: data.password,
     ...LEGACY_LOGIN_PARAM
-})
+}, { withCredentials: true })

@@ -11,7 +11,7 @@ const router = express.Router();
  */
 router.post('/login', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
-  const tokenRes = await fetch(`https://${process.env.VITE_AUTH0_DOMAIN}/oauth/token`, {
+  const tokenRes = await fetch(`https://dev-hofbpgthf4zpl0rz.us.auth0.com/oauth/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req.body),
@@ -23,11 +23,14 @@ router.post('/login', async (req, res) => {
     return res.status(401).json({ error: tokens.error_description || 'Login failed' })
   }
 
-  // Set cookies (HttpOnly + Secure)
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
+  const secureOption = isProduction ? '; Secure' : '';
+
   res.setHeader('Set-Cookie', [
-    `access_token=${tokens.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=900`,
-    `refresh_token=${tokens.refresh_token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800`,
-  ])
+    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
+    `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
+  ]);
 
   return res.status(200).json({ success: true })
 });

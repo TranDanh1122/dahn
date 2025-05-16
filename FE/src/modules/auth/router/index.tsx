@@ -1,6 +1,7 @@
 import LoadingFallback from "@/components/LoadingFallback"
 import React from "react"
-const RegisterView = React.lazy(() => import("@/modules/auth/view/Register"))
+const RegisterView = React.lazy(() => import("@auth/view/Register"))
+const LoginView = React.lazy(() => import("@auth/view/Login"))
 const AuthLayout = React.lazy(() => import("@auth/layouts/AuthLayout"))
 const AuthCallback = React.lazy(() => import("@auth/view/AuthCallback"))
 export const AuthRouter = [
@@ -11,6 +12,10 @@ export const AuthRouter = [
             {
                 path: "register",
                 element: <RegisterView />
+            },
+            {
+                path: "login",
+                element: <LoginView />
             },
             {
                 path: "callback",

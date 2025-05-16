@@ -1,4 +1,4 @@
-#This is legacy auth flow, user input email/password for auth
+# This is legacy auth flow, user input email/password for auth
 
 1. Send Email-Username/Pass to server
 2. Server response accesstoken - refresh token

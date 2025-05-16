@@ -1,1 +1,1 @@
-export { RegisterSchema, type RegisterData } from "./request.schemas"
+export { RegisterSchema, type AuthRequestData } from "./request.schemas"

@@ -2,17 +2,19 @@
   "name": "dahn-be",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon -r dotenv/config index.js",
     "build": "echo 'No build step for BE' || exit 0",
     "lint": "eslint .",
     "test": "echo 'No tests' || exit 0"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
     "nodemon": "^3.0.1",
-    "eslint": "^8.57.0"
+    "dotenv": "^16.4.5"
   }
 }
