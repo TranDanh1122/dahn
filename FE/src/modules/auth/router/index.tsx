@@ -4,6 +4,7 @@ const RegisterView = React.lazy(() => import("@auth/view/Register"))
 const LoginView = React.lazy(() => import("@auth/view/Login"))
 const AuthLayout = React.lazy(() => import("@auth/layouts/AuthLayout"))
 const AuthCallback = React.lazy(() => import("@auth/view/AuthCallback"))
+const ForgotPassword = React.lazy(() => import("@auth/view/ForgotPassword"))
 export const AuthRouter = [
     {
         path: "auth",
@@ -16,6 +17,10 @@ export const AuthRouter = [
             {
                 path: "login",
                 element: <LoginView />
+            },
+            {
+                path: "forgot-password",
+                element: <ForgotPassword />
             },
             {
                 path: "callback",

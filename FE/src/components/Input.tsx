@@ -21,7 +21,7 @@ export default function Input({ error, label, className, ...props }: InputProps)
                 }
 
             </div>
-            {error && <p className="text-red-600 text-sm font-semibold w-full text-left" aria-label="validate error">{error}</p>}
+            {error && <p className="text-red-600 text-sm font-semibold w-full text-left" aria-label={error} aria-live="assertive">{error}</p>}
         </fieldset >
     );
 }

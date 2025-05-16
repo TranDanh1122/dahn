@@ -11,3 +11,8 @@ export const postLoginAPI = async (data: Omit<AuthRequestData, "confirmPassword"
     password: data.password,
     ...LEGACY_LOGIN_PARAM
 }, { withCredentials: true })
+
+export const postForgotPassword = async (data: { email: string }) => await AxiosClient.post(API_ENDPOINT.resetPass, {
+    ...LEGACY_REGISTER_PARAM,
+    ...data
+})
