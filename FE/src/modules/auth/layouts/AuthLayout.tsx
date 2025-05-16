@@ -1,5 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import SocialAuth from "@auth/components/SocialAuth";
+
 export default function AuthLayout(): React.JSX.Element {
     return <div className="w-screen h-screen bg-white relative overflow-hidden">
         <header className="w-full relative">
@@ -16,7 +18,10 @@ export default function AuthLayout(): React.JSX.Element {
                         The first, wait the minutes! Who are you?
                     </h2>
                 </div>
-                <Outlet />
+                <div className="space-y-10">
+                    <SocialAuth />
+                    <Outlet />
+                </div>
             </div>
         </main>
     </div>
