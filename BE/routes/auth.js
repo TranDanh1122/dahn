@@ -1,14 +1,15 @@
-
+const express = require('express');
+const router = express.Router();
 
 /**
  * A serverless function send data from FE to AUTH0
- * Main task: Set HTTPOnly Cookies
+ * Main task: Set HTTPOnly Cookies that what i know
+ * ChatGPT write this fn
  * @param req 
  * @param res 
  * @returns 
  */
-
-export default async function handler(req, res ) {
+router.post('/login', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
   const tokenRes = await fetch(`https://${process.env.VITE_AUTH0_DOMAIN}/oauth/token`, {
     method: 'POST',
@@ -29,4 +30,6 @@ export default async function handler(req, res ) {
   ])
 
   return res.status(200).json({ success: true })
-}
+});
+
+module.exports = router;

@@ -3,26 +3,27 @@
   "builds": [
     {
       "src": "FE/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "use": "@vercel/static",
+      "config": { "distDir": "FE/build" }
     },
     {
-      "src": "BE/**/*.js",
+      "src": "BE/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/BE/(.*)",
-      "dest": "/BE/$1"
+      "src": "/api/(.*)",
+      "dest": "BE/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/FE/$1"
+      "dest": "/FE/build/$1"
     }
   ],
-  "dev": {
-    "command": "npx vite",
-    "port": 3000
-  }
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "buildCommand": "cd FE && npm run build && cd ../BE && npm run build",
+  "outputDirectory": "FE/build"
 }
