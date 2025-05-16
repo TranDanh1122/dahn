@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { type AuthRequestData } from "@auth/models"
-import { postLoginAPI, postRegisterAPI, postForgotPassword } from '@auth/flows/ropc/ropc.api'
+import { type AuthRequestData, type ResetPassData } from "@auth/models"
+import { postLoginAPI, postRegisterAPI, postForgotPassword, postResetPassword } from '@auth/flows/ropc/ropc.api'
 export const useRegisterSvc = () => {
     return useMutation({
         mutationFn: async (data: AuthRequestData) => {
@@ -22,6 +22,15 @@ export const useForgotPasswordSvc = () => {
     return useMutation({
         mutationFn: async (data: { email: string }) => {
             const res = await postForgotPassword(data)
+            return res.data
+        }
+    })
+}
+
+export const useResetPasswordSvc = () => {
+    return useMutation({
+        mutationFn: async (data: ResetPassData) => {
+            const res = await postResetPassword(data)
             return res.data
         }
     })

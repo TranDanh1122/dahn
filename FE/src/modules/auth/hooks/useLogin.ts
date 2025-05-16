@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod"
-import { LoginSchema, type AuthRequestData } from "@auth/models/request.schemas";
+import { LoginSchema, type AuthRequestData } from "@auth/models";
 import { useLoginSvc } from "@auth/flows/ropc/ropc.service";
 export const useLogin = () => {
     const form = useForm<z.infer<typeof LoginSchema>>({

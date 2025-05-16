@@ -35,4 +35,40 @@ router.post('/login', async (req, res) => {
   return res.status(200).json({ success: true })
 });
 
+
+/**
+ * A serverless function send data from FE to AUTH0
+ * Main task: Reset account password with new pass
+ * ChatGPT write this fn
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+router.post('/reset-password', async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).end()
+  const { ticket, newPassword } = req.body
+  try {
+    const response = await fetch('https://dev-hofbpgthf4zpl0rz.us.auth0.com/lo/reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ticket,
+        newPassword,
+      }),
+    })
+
+    if (!response.ok) {
+      const err = await response.text()
+      return res.status(500).json({ error: err })
+    }
+    console.log(JSON.stringify(response.body))
+    return res.status(200).json({ message: 'Password reset successful' , response : JSON.stringify(response.body) })
+  } catch (err) {
+    return res.status(500).json({ error: err.message })
+  }
+})
+
+
 module.exports = router;

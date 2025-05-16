@@ -30,8 +30,23 @@ export const LoginSchema = z.object({
 
 
 /**
- * Reset password zod schema
+ * Forgot password zod schema
  */
 export const ForgotPassSchema = z.object({
     email: z.coerce.string().email({ message: "Your email is not correct!" })
 })
+
+/**
+ * Reset password zod schema
+ */
+export const ResetPassSchema = z.object({
+    ticket: z.coerce.string(),
+    password: z.coerce.string().refine((val: string) => {
+        return (PASSWORD_REGEX).test(val)
+    }, { message: "Password must be at least 8 characters long, including uppercase and lowercase letters, a number, and a special character. No spaces allowed" }),
+    confirmPassword: z.coerce.string().refine((val: string) => {
+        return (PASSWORD_REGEX).test(val)
+    }, { message: "Password must be at least 8 characters long, including uppercase and lowercase letters, a number, and a special character. No spaces allowed" }),
+}).refine(val => val.password === val.confirmPassword, { message: "Password and confirm password not match" })
+
+export type ResetPassData = z.infer<typeof ResetPassSchema>

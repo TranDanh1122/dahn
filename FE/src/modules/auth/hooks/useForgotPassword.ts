@@ -1,4 +1,4 @@
-import { ForgotPassSchema } from "@auth/models/request.schemas";
+import { ForgotPassSchema } from "@auth/models";
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
