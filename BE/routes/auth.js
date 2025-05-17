@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const cookie = require('cookie');
 
 /**
- * A serverless function send data from FE to AUTH0
+ * A serverless function send login data from FE to AUTH0
  * Main task: Set HTTPOnly Cookies that what i know
  * ChatGPT write this fn
  * @param req 
@@ -28,13 +29,55 @@ router.post('/login', async (req, res) => {
   const secureOption = isProduction ? '; Secure' : '';
 
   res.setHeader('Set-Cookie', [
-     `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
+    `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
     `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
-  return res.status(200).json({ success: true , access_token : tokens.access_token, tokens })
+  return res.status(200).json({ success: true, access_token: tokens.access_token, tokens })
 });
+/**
+ * A serverless function send refresh token request to auth0
+ * Main task: Set HTTPOnly Cookies
+ * ChatGPT write this fn
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+router.post('/refresh-token', async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).end()
+  const cookies = cookie.parse(req.headers.cookie || '');
+  const refreshToken = cookies['refresh_token'];
+  if (!refreshToken) {
+    return res.status(401).json({ message: 'No refresh token found' });
+  }
+  const tokenRes = await fetch(`https://dev-hofbpgthf4zpl0rz.us.auth0.com/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: process.env.AUTH0_CLIENT_ID,
+      client_secret: process.env.AUTH0_CLIENT_SECRET,
+      ...req.body,
+      refresh_token: refreshToken,
+    }),
+  })
 
+  const tokens = await tokenRes.json()
+
+  if (!tokenRes.ok) {
+    return res.status(401).json({ error: tokens.error_description || 'Refresh token failed' })
+  }
+
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
+  const secureOption = isProduction ? '; Secure' : '';
+  console.log(tokenRes)
+  res.setHeader('Set-Cookie', [
+    `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
+    // `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
+  ]);
+
+  return res.status(200).json({ success: true, access_token: tokens.access_token, tokens })
+});
 
 /**
  * A serverless function send data from FE to AUTH0
@@ -62,7 +105,7 @@ router.post('/login', async (req, res) => {
 //       const err = await response.text()
 //       return res.status(500).json({ error: err })
 //     }
-  
+
 //     return res.status(200).json({ message: 'Password reset successful' , response : JSON.stringify(response.body) })
 //   } catch (err) {
 //     return res.status(500).json({ error: err.message })
