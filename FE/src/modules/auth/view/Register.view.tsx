@@ -1,7 +1,7 @@
 import React from "react";
-import Input from "@/components/Input";
-import Button from "@/components/Button";
-import { useRegister } from "@auth/hooks/useRegister";
+import Input from "@/components/Input.component";
+import Button from "@/components/Button.component";
+import { useRegister } from "@/modules/auth/hooks/useRegister.hook";
 import { Link } from "react-router-dom";
 import AuthForm from "@auth/components/AuthForm";
 export default function Register(): React.JSX.Element {

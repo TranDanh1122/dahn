@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuthWSocial } from '@auth/flows/pkce/pkce.service'
-import Button from '@/components/Button'
+import Button from '@/components/Button.component'
 export default function SocialAuth(): React.JSX.Element {
     const socialAuth = useAuthWSocial()
     const handleGoogleAuth = () => socialAuth.action("google")

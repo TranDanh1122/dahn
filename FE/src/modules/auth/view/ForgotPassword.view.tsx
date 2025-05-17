@@ -1,9 +1,9 @@
 import React from "react";
-import Input from "@/components/Input";
-import Button from "@/components/Button";
+import Input from "@/components/Input.component";
+import Button from "@/components/Button.component";
 import { Link } from "react-router-dom";
 import AuthForm from "@auth/components/AuthForm";
-import { useForgotPassword } from "@auth/hooks/useForgotPassword";
+import { useForgotPassword } from "@/modules/auth/hooks/useForgotPassword.hook";
 export default function ForgotPassword(): React.JSX.Element {
     const { form, onSubmit } = useForgotPassword()
 

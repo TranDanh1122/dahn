@@ -1,9 +1,9 @@
 import React from "react";
 import AuthForm from "@auth/components/AuthForm";
-import Input from "@/components/Input";
+import Input from "@/components/Input.component";
 import { useLoaderData } from "react-router-dom";
-import { useResetPassword } from "../hooks/useResetPassword";
-import Button from "@/components/Button";
+import { useResetPassword } from "../hooks/useResetPassword.hook";
+import Button from "@/components/Button.component";
 export default function ResetPassword(): React.JSX.Element {
     const ticket = useLoaderData<string>()
     const { form, onSubmit } = useResetPassword(ticket)

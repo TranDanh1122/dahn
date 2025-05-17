@@ -1,11 +1,11 @@
-import LoadingFallback from "@/components/LoadingFallback"
+import LoadingFallback from "@/components/LoadingFallback.component"
 import React from "react"
 import  {  Navigate } from "react-router-dom"
-const RegisterView = React.lazy(() => import("@auth/view/Register"))
-const LoginView = React.lazy(() => import("@auth/view/Login"))
-const AuthLayout = React.lazy(() => import("@auth/layouts/AuthLayout"))
-const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthCallback"))
-const ForgotPassword = React.lazy(() => import("@auth/view/ForgotPassword"))
+const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"))
+const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"))
+const AuthLayout = React.lazy(() => import("@/modules/auth/layouts/AuthLayout.view"))
+const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthCallback.view"))
+const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPassword.view"))
 // const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword"))
 export const AuthRouter = [
     {

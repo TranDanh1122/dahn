@@ -1,7 +1,7 @@
 import React from "react";
-import Input from "@/components/Input";
-import Button from "@/components/Button";
-import { useLogin } from "@auth/hooks/useLogin";
+import Input from "@/components/Input.component";
+import Button from "@/components/Button.component";
+import { useLogin } from "@/modules/auth/hooks/useLogin.hook";
 import { Link } from "react-router-dom"
 import AuthForm from "@auth/components/AuthForm";
 export default function Login(): React.JSX.Element {
