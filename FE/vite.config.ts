@@ -10,6 +10,6 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@auth': path.resolve(__dirname, './src/modules/auth')
-    }
+    },
   }
 })

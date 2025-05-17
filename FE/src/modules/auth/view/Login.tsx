@@ -14,7 +14,7 @@ export default function Login(): React.JSX.Element {
             <span className="w-max">
                 Dude, forgot your password again?
             </span>
-            <Link to="/auth/reset-password" className="text-blue-600 underline text-base font-semibold w-max"> Reset it! </Link></p>
+            <Link to="/auth/forgot-password" className="text-blue-600 underline text-base font-semibold w-max"> Reset it! </Link></p>
         <Button disabled={!form.formState.isValid}
             type="submit" className="bg-blue-500 mt-1 hover:bg-blue-400 disabled:bg-blue-400 text-white w-full" >
             Login

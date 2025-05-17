@@ -44,31 +44,65 @@ router.post('/login', async (req, res) => {
  * @param res 
  * @returns 
  */
-router.post('/reset-password', async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end()
-  const { ticket, newPassword } = req.body
-  try {
-    const response = await fetch('https://dev-hofbpgthf4zpl0rz.us.auth0.com/lo/reset', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ticket,
-        newPassword,
-      }),
-    })
+// router.post('/reset-password', async function handler(req, res) {
+//   if (req.method !== 'POST') return res.status(405).end()
+//   const {  password } = req.body
+//   try {
+//     const token = await getToken()
+//     const userId = await getUserId(token)
+//     const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/api/v2/users/${userId}`, {
+//       method: 'POST',
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({password : password}),
+//     })
+//     console.log(response)
+//     if (!response.ok) {
+//       const err = await response.text()
+//       return res.status(500).json({ error: err })
+//     }
+  
+//     return res.status(200).json({ message: 'Password reset successful' , response : JSON.stringify(response.body) })
+//   } catch (err) {
+//     return res.status(500).json({ error: err.message })
+//   }
+// })
 
-    if (!response.ok) {
-      const err = await response.text()
-      return res.status(500).json({ error: err })
-    }
-    console.log(JSON.stringify(response.body))
-    return res.status(200).json({ message: 'Password reset successful' , response : JSON.stringify(response.body) })
-  } catch (err) {
-    return res.status(500).json({ error: err.message })
-  }
-})
 
-
+// const getToken = async () => {
+//   try {
+//     const res = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         grant_type: 'client_credentials',
+//         client_id: process.env.AUTH0_CLIENT_ID,
+//         client_secret: process.env.AUTH0_CLIENT_SECRET,
+//         audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`
+//       })
+//     });
+//     const { access_token } = await res.json();
+//     return access_token
+//   }catch(e) {
+//     throw new Error(e)
+//   }
+// }
+// const getUserId = async (token, email) => {
+//   try {
+//     const res =  await fetch(`https://${process.env.AUTH0_DOMAIN}/api/v2/users-by-email`, {
+//       method: 'POST',
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ email })
+//     });
+//     const data  = await res.json()
+//     if(data.length == 0) throw new Error("Error")
+//     return data[0].user_id
+//   }catch(e) {
+//     throw new Error(e)
+//   }
+// }
 module.exports = router;
