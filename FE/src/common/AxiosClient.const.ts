@@ -3,7 +3,6 @@ import axios from 'axios'
 import { postRefreshTokenAPI } from "@auth/flows/ropc/ropc.api"
 export const AxiosClient = axios.create({
     timeout: import.meta.env.VITE_API_TIMEOUT,
-    withCredentials: true
 })
 
 
@@ -71,5 +70,6 @@ AxiosClient.interceptors.response.use(
                 isRefresh = false
             }
         }
-        return Promise.reject(error)
+        throw new Error(error)
+       // return Promise.reject(error)
     })

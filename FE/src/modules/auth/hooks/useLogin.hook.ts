@@ -13,11 +13,8 @@ export const useLogin = () => {
         login.mutate(values, {
             onSuccess: (res) => {
                 console.log(res)
-            },
-            onError: (e: Error) => {
-                throw new Error(e.message)
             }
         })
     }
-    return { form, onSubmit }
+    return { form, onSubmit, isLoading : login.isPending }
 }

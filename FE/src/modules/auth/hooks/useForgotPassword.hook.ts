@@ -13,11 +13,8 @@ export const useForgotPassword = () => {
         forgotPass.mutate(values, {
             onError: (e) => {
                 throw new Error(e.message)
-            },
-            onSuccess: (res) => {
-                console.log(res);
             }
         })
     }
-    return { form, onSubmit }
+    return { form, onSubmit, isLoading : forgotPass.isPending }
 }
