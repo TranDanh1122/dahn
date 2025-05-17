@@ -20,3 +20,5 @@ export const postForgotPassword = async (data: { email: string }) => await Axios
 export const postResetPassword = async (data: ResetPassData) => await AxiosClient.post(API_ENDPOINT.resetPass, {
     ...data
 })
+
+export const postGetUserAPI = async () => await AxiosClient.get(API_ENDPOINT.getUser)

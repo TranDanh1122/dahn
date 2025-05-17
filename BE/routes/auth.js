@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
     `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
-  return res.status(200).json({ success: true , access_token : tokens.access_token })
+  return res.status(200).json({ success: true , access_token : tokens.access_token, tokens })
 });
 
 
