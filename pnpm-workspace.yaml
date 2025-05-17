@@ -1,0 +1,5 @@
+packages:
+  - 'FE'
+  - 'BE'
+
+hoist: false
