@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
   const secureOption = isProduction ? '; Secure' : '';
 
   res.setHeader('Set-Cookie', [
-    // `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
+     `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
     `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 

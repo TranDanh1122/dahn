@@ -5,6 +5,7 @@ export const API_ENDPOINT = {
     forgotPass: `https://${domain}/dbconnections/change_password`,
     resetPass: `${import.meta.env.VITE_API_URL}/auth/reset-password`,
     getUser: `https://${domain}/userinfo`,
+    refreshToken : `https://${domain}/oauth/token`,
     googleAuth: (param: URLSearchParams) => `https://${domain}/authorize?${param}`
 
 }

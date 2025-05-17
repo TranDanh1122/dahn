@@ -1,9 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { type AuthRequestData, type ResetPassData } from "@auth/models"
-import { useDispatch } from "react-redux"
-import {loginThunk} from "@auth/stores/login.thunk"
-import {  postRegisterAPI, postForgotPassword, postResetPassword } from '@auth/flows/ropc/ropc.api'
-import type { AppDispatch } from '@/stores'
+import {  postRegisterAPI, postForgotPassword, postResetPassword, postLoginAPI } from '@auth/flows/ropc/ropc.api'
+
 export const useRegisterSvc = () => {
     return useMutation({
         mutationFn: async (data: AuthRequestData) => {
@@ -13,16 +11,13 @@ export const useRegisterSvc = () => {
     })
 }
 export const useLoginSvc = () => {
-    // return useMutation({
-    //     mutationFn: async (data: Omit<AuthRequestData, "confirmPassword">) => {
-    //         const res = await postLoginAPI(data)
-    //         return res.data
-    //     }
-    // })
-    const dispatch = useDispatch<AppDispatch>()
-    return (data: Omit<AuthRequestData, "confirmPassword">) => {
-        dispatch(loginThunk(data))
-    }
+    return useMutation({
+        mutationFn: async (data: Omit<AuthRequestData, "confirmPassword">) => {
+            const res = await postLoginAPI(data)
+            return res.data
+        }
+    })
+
 }
 
 export const useForgotPasswordSvc = () => {
