@@ -4,7 +4,7 @@ export const API_ENDPOINT = {
     login: `${import.meta.env.VITE_API_URL}/auth/login`,
     forgotPass: `https://${domain}/dbconnections/change_password`,
     resetPass: `${import.meta.env.VITE_API_URL}/auth/reset-password`,
-    getUser: `https://${domain}/userinfo`,
+    getUser: `${import.meta.env.VITE_API_URL}/auth/userinfo`,
     refreshToken : `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
     googleAuth: (param: URLSearchParams) => `https://${domain}/authorize?${param}`
 

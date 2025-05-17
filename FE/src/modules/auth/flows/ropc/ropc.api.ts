@@ -21,7 +21,7 @@ export const postResetPassword = async (data: ResetPassData) => await AxiosClien
     ...data
 })
 
-export const postGetUserAPI = async () => await AxiosClient.get(API_ENDPOINT.getUser)
+export const postGetUserAPI = async () => await AxiosClient.get(API_ENDPOINT.getUser , { withCredentials: true  })
 
 
 export const postRefreshTokenAPI = async () => await AxiosClient.post(API_ENDPOINT.refreshToken, {

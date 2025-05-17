@@ -5,6 +5,7 @@ import { useLogin } from "@/modules/auth/hooks/useLogin.hook";
 import { Link } from "react-router-dom"
 import AuthForm from "@auth/components/AuthForm";
 import Loading from "@/components/Loading.component";
+
 export default function Login(): React.JSX.Element {
     const { form, onSubmit, isLoading } = useLogin()
     return <AuthForm onSubmit={form.handleSubmit(onSubmit)}>

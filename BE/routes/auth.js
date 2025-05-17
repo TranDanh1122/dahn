@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
     `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
-  return res.status(200).json({ success: true, access_token: tokens.access_token, tokens })
+  return res.status(200).json({ success: true })
 });
 /**
  * A serverless function send refresh token request to auth0
@@ -50,7 +50,8 @@ router.post('/refresh-token', async (req, res) => {
   if (!refreshToken) {
     return res.status(401).json({ message: 'No refresh token found' });
   }
-  const tokenRes = await fetch(`https://dev-hofbpgthf4zpl0rz.us.auth0.com/oauth/token`, {
+
+  const tokenRes = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -70,13 +71,33 @@ router.post('/refresh-token', async (req, res) => {
   const isProduction = process.env.NODE_ENV === 'production';
   const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
   const secureOption = isProduction ? '; Secure' : '';
-  console.log(tokenRes)
   res.setHeader('Set-Cookie', [
     `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
-    // `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
+    `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
-  return res.status(200).json({ success: true, access_token: tokens.access_token, tokens })
+  return res.status(200).json({ success: true })
+});
+
+router.get('/userinfo', async (req, res) => {
+  if (req.method !== 'GET') return res.status(405).end()
+  const cookies = cookie.parse(req.headers.cookie || '');
+  const access_token = cookies['access_token'];
+  if (!access_token) {
+    return res.status(401).json({ message: 'No access token found' });
+  }
+  const resp = await fetch(`https://${process.env.AUTH0_DOMAIN}/userinfo`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization' : `Bearer ${access_token}` },
+  })
+  
+
+  if (!resp.ok) {
+    return res.status(401).json({ error: resp.error_description || 'get user failed' })
+  }
+  const user = await resp.json()
+
+  return res.status(200).json({ success: true , user })
 });
 
 /**
