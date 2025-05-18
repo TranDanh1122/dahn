@@ -20,7 +20,7 @@ export default function AuthLayout(): React.JSX.Element {
                 </div>
                 <div className="space-y-10">
                     <SocialAuth />
-                    <Outlet />
+                    <Outlet/>
                 </div>
             </div>
         </main>

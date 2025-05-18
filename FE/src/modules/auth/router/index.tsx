@@ -2,16 +2,27 @@ import LoadingFallback from "@/components/LoadingFallback.component"
 import React from "react"
 import { Navigate, type LoaderFunctionArgs } from "react-router-dom"
 import { postGetPKCEToken } from "@auth/flows/pkce/pkce.api"
-const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"))
-const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"))
-const AuthLayout = React.lazy(() => import("@/modules/auth/layouts/AuthLayout.view"))
+const RegisterView  = React.lazy(() => {
+  console.log("Start loading RegisterView");
+  return import("@/modules/auth/view/Register.view").then((module) => {
+    console.log("RegisterView loaded");
+    return module;
+  });
+});
+const LoginView = React.lazy(() => {
+  console.log("Start loading LoginView");
+  return import("@/modules/auth/view/Login.view").then((module) => {
+    console.log("LoginView loaded");
+    return module;
+  });
+});const AuthLayout = React.lazy(() => import("@/modules/auth/layouts/AuthLayout.view"))
 const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthCallback.view"))
 const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPassword.view"))
 // const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword"))
 export const AuthRouter = [
     {
         path: "auth",
-        element: <React.Suspense fallback={<LoadingFallback />}> <AuthLayout />  </React.Suspense>,
+        element: <AuthLayout />,
         children: [
             {
                 index: true,
@@ -19,7 +30,7 @@ export const AuthRouter = [
             },
             {
                 path: "register",
-                element: <RegisterView />
+                element:  <RegisterView />
             },
             {
                 path: "login",
