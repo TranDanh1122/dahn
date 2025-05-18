@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 import { postRefreshTokenAPI } from "@auth/flows/ropc/ropc.api"
+import { REFRESH_TOKEN_PARAM } from '@/modules/auth/flows/ropc/ropc.config'
+import { API_ENDPOINT } from './ApiEndpoint.const'
 export const AxiosClient = axios.create({
     timeout: import.meta.env.VITE_API_TIMEOUT,
 })
@@ -47,29 +49,42 @@ const processQueue = (error: any = null) => {
 AxiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
+
         const request = error.config
-        if (error.response.status == 401 && !request._retry) {
-            if (isRefresh) {
-                return new Promise((resolve, reject) => {
-                    failedQuerys.push({ resolve, reject })
-                }).then(() => AxiosClient(request)).catch(e => Promise.reject(e))
-            }
 
-            request._retry = true
-            isRefresh = true
-
-            try {
-                await postRefreshTokenAPI()
-                processQueue()
-                return AxiosClient(request)
-            } catch (refreshError) {
-                processQueue(refreshError)
+        if (error.response.status == 401) {
+            if (!request._retry) {
+                if (isRefresh) {
+                    return new Promise((resolve, reject) => {
+                        failedQuerys.push({ resolve, reject })
+                    }).then(() => AxiosClient(request)).catch(e => Promise.reject(e))
+                }
+                request._retry = true
+                isRefresh = true
+                try {
+                    const res = await fetch(API_ENDPOINT.refreshToken, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ ...REFRESH_TOKEN_PARAM }),
+                        credentials: "include"
+                    })
+                    if (res.status > 200) window.location.href = "/auth/login"
+                    processQueue()
+                    return AxiosClient(request)
+                } catch (refreshError) {
+                    processQueue(refreshError)
+                    window.location.href = "/auth/login"
+                    return Promise.reject(refreshError)
+                } finally {
+                    isRefresh = false
+                }
+            } else {
                 window.location.href = "/auth/login"
-                return Promise.reject(refreshError)
-            } finally {
-                isRefresh = false
             }
+
         }
-        throw new Error(error)
-        // return Promise.reject(error)
+        // throw new Error(error)
+        return Promise.reject(error)
     })

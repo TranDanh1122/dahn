@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
   const secureOption = isProduction ? '; Secure' : '';
 
   res.setHeader('Set-Cookie', [
-    `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
+    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
     `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
@@ -72,7 +72,7 @@ router.post('/refresh-token', async (req, res) => {
   const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
   const secureOption = isProduction ? '; Secure' : '';
   res.setHeader('Set-Cookie', [
-    `access_token=${tokens.access_token}; ${cookieOptions}1${secureOption}`,
+    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
     `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
@@ -88,16 +88,51 @@ router.get('/userinfo', async (req, res) => {
   }
   const resp = await fetch(`https://${process.env.AUTH0_DOMAIN}/userinfo`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization' : `Bearer ${access_token}` },
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}` },
   })
-  
+
 
   if (!resp.ok) {
     return res.status(401).json({ error: resp.error_description || 'get user failed' })
   }
   const user = await resp.json()
 
-  return res.status(200).json({ success: true , user })
+  return res.status(200).json({ success: true, user })
+});
+
+/**
+ * A serverless function send get access token request to auth0
+ * It use PKCE method, with ServerCode, and Client Code
+ * Main task: Set HTTPOnly Cookies
+ * ChatGPT write this fn
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+router.post('/pkce-token', async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).end()
+
+  const tokenRes = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req.body)
+  })
+
+  const tokens = await tokenRes.json()
+
+  if (!tokenRes.ok) {
+    return res.status(401).json({ error: tokens.error_description || 'Refresh token failed' })
+  }
+
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
+  const secureOption = isProduction ? '; Secure' : '';
+  res.setHeader('Set-Cookie', [
+    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
+    `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
+  ]);
+
+  return res.status(200).json({ success: true })
 });
 
 /**
