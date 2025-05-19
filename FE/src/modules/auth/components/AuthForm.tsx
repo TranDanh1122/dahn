@@ -1,5 +1,5 @@
 import React from "react";
-interface FormProps extends React.ComponentProps<"form"> {
+export interface FormProps extends React.ComponentProps<"form"> {
     children: React.ReactNode
 }
 export default function AuthForm({ children, className, ...props }: FormProps): React.JSX.Element {

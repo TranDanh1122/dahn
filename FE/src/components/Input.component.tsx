@@ -1,6 +1,6 @@
 import React from "react";
 import { Eye, EyeClosed } from "lucide-react"
-interface InputProps extends React.ComponentProps<"input"> {
+export interface InputProps extends React.ComponentProps<"input"> {
     error?: string;
     label: string;
 }
