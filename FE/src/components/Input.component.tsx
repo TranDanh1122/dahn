@@ -8,7 +8,7 @@ export default React.memo(function Input({ error, label, className, ...props }: 
     const [isShowPass, setShowPass] = React.useState<boolean>(false)
     return (
         <fieldset className="flex flex-col gap-2">
-            <label className="font-semibold text-neutral-600 cursor-pointer" htmlFor={props.id}>
+            <label className="font-semibold text-neutral-600 cursor-pointer" htmlFor={props.id} aria-label={label} >
                 {label}
             </label>
             <div className="relative w-full">
