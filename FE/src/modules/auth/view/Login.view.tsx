@@ -29,7 +29,7 @@ export default function Login(): React.JSX.Element {
         </Button>
         <p className="text-center text-sm space-y-1 font-semibold">
             "First time?"
-            <Link aria-label="Go to register" to="/auth/register" className="text-blue-600 w-full block underline text-base font-semibold"> Click here newbie!</Link>
+            <Link role="link" aria-label="Go to register" to="/auth/register" className="text-blue-600 w-full block underline text-base font-semibold"> Click here newbie!</Link>
         </p>
 
     </AuthForm>

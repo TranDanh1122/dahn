@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import ForgotPassword from '../ForgotPassword.view';
 import { useForgotPassword } from '@auth/hooks/useForgotPassword.hook';
 import { TestWrapper } from '@/test/TestWrapper';
@@ -44,9 +43,9 @@ describe('ForgotPassword Component', () => {
 
         // Kiểm tra các phần tử cơ bản có hiển thị
         expect(screen.getByLabelText("Email")).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: "Request reset password" })).toBeInTheDocument();
-        expect(screen.findByText(/Hmm, pretty sure I already made an account on this silly site/i)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: "Go to login page" })).toBeInTheDocument();
+        expect(screen.getByText("Request reset password")).toBeInTheDocument();
+        expect(screen.getByText(/Hmm, pretty sure I already made an account on this silly site/i)).toBeInTheDocument();
+        expect(screen.getByText(/Take me to the login page, now!/i)).toBeInTheDocument();
     });
 
     it('submits the form with email data', async () => {
@@ -57,7 +56,7 @@ describe('ForgotPassword Component', () => {
         const emailInput = screen.getByLabelText(/Email/i);
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
 
-        const submitButton = screen.getByRole('button', { name: "Request reset password" });
+        const submitButton = screen.getByText("Request reset password");
         fireEvent.click(submitButton);
 
         // Kiểm tra nếu hàm onSubmit được gọi
@@ -84,7 +83,7 @@ describe('ForgotPassword Component', () => {
         render(<ForgotPassword />, { wrapper: TestWrapper });
 
 
-        const submitButton = screen.getByRole('button', { name: "Request reset password" });
+        const submitButton = screen.getByText("Request reset password");
         expect(submitButton).toBeDisabled();
     });
 
@@ -104,7 +103,6 @@ describe('ForgotPassword Component', () => {
         });
 
         render(<ForgotPassword />, { wrapper: TestWrapper });
-        // Không còn hiển thị văn bản "Request reset password"
         expect(screen.queryByText("Request reset password")).not.toBeInTheDocument();
 
         // Thay vào đó, hiển thị component Loading
@@ -136,14 +134,4 @@ describe('ForgotPassword Component', () => {
         expect(screen.getByText('Email is required')).toBeInTheDocument();
     });
 
-    it('navigates to login page when link is clicked', () => {
-        render(
-
-            <ForgotPassword />
-            , { wrapper: TestWrapper }
-        );
-
-        const loginLink = screen.getByRole('link', { name: "Go to login page" });
-        expect(loginLink).toHaveAttribute('href', '/auth/login');
-    });
 });

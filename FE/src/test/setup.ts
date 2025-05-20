@@ -3,7 +3,7 @@ import { cleanup } from '@testing-library/react';
 import type { InputProps } from '@/components/Input.component';
 import React from 'react';
 import type { FormProps } from '@auth/components/AuthForm';
-import '@testing-library/jest-dom/vitest';
+import '@testing-library/jest-dom';
 
 const filterReactProps = (props: Record<string, any>) => {
     const filtered = { ...props };

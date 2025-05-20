@@ -22,7 +22,7 @@ export default function ForgotPassword(): React.JSX.Element {
         </Button>
         <p className="text-center text-sm space-y-1 font-semibold">
             "Hmm, pretty sure I already made an account on this silly site"
-            <Link aria-label="Go to login page" to="/auth/login" className="text-blue-600 w-full block underline text-base"> Take me to the login page, now! </Link>
+            <Link role="link" aria-label="Go to login page" to="/auth/login" className="text-blue-600 w-full block underline text-base"> Take me to the login page, now! </Link>
         </p>
     </AuthForm >
 }

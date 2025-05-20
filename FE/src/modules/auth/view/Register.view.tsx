@@ -3,12 +3,11 @@ import Input from "@/components/Input.component";
 import Button from "@/components/Button.component";
 import Loading from "@/components/Loading.component"
 import { useRegister } from "@/modules/auth/hooks/useRegister.hook";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthForm from "@auth/components/AuthForm";
 export default function Register(): React.JSX.Element {
 
     const { form, onSubmit, isLoading } = useRegister()
-    const Navigate = useNavigate()
     return <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
         <Input {...form.register("email")} type="email" id="email" error={form.formState.errors.email?.message} label="Email" />
         <Input {...form.register("password")} type="password" id="password" error={form.formState.errors.password?.message} label="Password" />
@@ -25,7 +24,7 @@ export default function Register(): React.JSX.Element {
         </Button>
         <p className="text-center text-sm space-y-1 font-semibold">
             "Hmm, pretty sure I already made an account on this silly site"
-            <button type="button" aria-label="Go to login page" onClick={() => Navigate("/auth/login")} className="text-blue-600 w-full block underline text-base"> Take me to the login page, now! </button>
+            <Link aria-label="Go to login page" to="/auth/login" className="text-blue-600 w-full block underline text-base"> Take me to the login page, now! </Link>
         </p>
     </AuthForm>
 
