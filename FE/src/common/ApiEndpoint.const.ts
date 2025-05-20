@@ -1,11 +1,12 @@
-const domain = import.meta.env.VITE_AUTH0_DOMAIN
+const domain = import.meta.env.VITE_SUP_URL
+const proxy = import.meta.env.VITE_PROXY_API_URL
 export const API_ENDPOINT = {
-    signup: `https://${domain}/dbconnections/signup`,
-    login: `${import.meta.env.VITE_API_URL}/auth/login`,
-    forgotPass: `https://${domain}/dbconnections/change_password`,
-    resetPass: `${import.meta.env.VITE_API_URL}/auth/reset-password`,
-    getUser: `${import.meta.env.VITE_API_URL}/auth/userinfo`,
-    refreshToken: `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
-    pkceAuth: (param: URLSearchParams) => `https://${domain}/authorize?${param}`,
-    pkceGetToken: `${import.meta.env.VITE_API_URL}/auth/pkce-token`
+    signup: `${proxy}/auth/register`,
+    login: `${proxy}/auth/login`,
+    forgotPass: `${proxy}/auth/forgot-password`,
+    resetPass: `${proxy}/auth/reset-password`,
+    getUser: `${domain}/auth/v1/user`,
+    refreshToken: `${domain}/auth/v1/token`,
+    pkceAuth: (param: URLSearchParams) => `${domain}/auth/v1/authorize?${param}`,
+    pkceGetToken: `${proxy}/auth/pkce-token`,
 }

@@ -1,9 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const cookie = require('cookie');
+const createClient = require('@supabase/supabase-js');
+const supabase = createClient.createClient(
+  process.env.AUTH_DOMAIN,
+  process.env.AUTH_API_KEY,
+  {
+    auth: {
+      flowType: 'pkce',
+    }
+  }
+);
+
+const supabaseAdmin = createClient(process.env.AUTH_DOMAIN, process.env.AUTH_SERVICE_KEY);
 
 /**
- * A serverless function send login data from FE to AUTH0
+ * A serverless function send login data from FE
+ * Main task: Set HTTPOnly Cookies that what i know
+ * ChatGPT write this fn
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+router.post('/register', async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).end()
+  const { data, error } = await supabase.auth.signUp(req.body);
+  if (error) {
+    return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  }
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
+  const secureOption = isProduction ? '; Secure' : '';
+
+  res.setHeader('Set-Cookie', [
+    `access_token=${data.session.access_token}; ${cookieOptions}${data.session.expires_in}${secureOption}`,
+    `refresh_token=${data.session.refresh_token}; ${cookieOptions}604800${secureOption}`,
+  ]);
+
+  return res.status(200).json({ success: true })
+});
+
+/**
+ * A serverless function send login data from FE
  * Main task: Set HTTPOnly Cookies that what i know
  * ChatGPT write this fn
  * @param req 
@@ -12,31 +50,55 @@ const cookie = require('cookie');
  */
 router.post('/login', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
-  const tokenRes = await fetch(`https://dev-hofbpgthf4zpl0rz.us.auth0.com/oauth/token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(req.body),
-  })
-
-  const tokens = await tokenRes.json()
-
-  if (!tokenRes.ok) {
-    return res.status(401).json({ error: tokens.error_description || 'Login failed' })
+  const { data, error } = await supabase.auth.signInWithPassword(req.body);
+  console.log('data', req.body)
+  console.log('data', data)
+  console.log('error', error)
+  if (error) {
+    return res.status(error.status ?? 400).json(error.code ?? 'Error')
   }
-
   const isProduction = process.env.NODE_ENV === 'production';
   const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
   const secureOption = isProduction ? '; Secure' : '';
 
   res.setHeader('Set-Cookie', [
-    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
-    `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
+    `access_token=${data.session.access_token}; ${cookieOptions}${data.session.expires_in}${secureOption}`,
+    `refresh_token=${data.session.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
   return res.status(200).json({ success: true })
 });
+
+router.post('/forgot-password', async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).end()
+  const { email } = req.body;
+  const { data, error } = await supabase.auth.resetPasswordForEmail(
+    email.trim().toLowerCase(),
+    { redirectTo: 'http://localhost:5173/auth/reset-password' }
+  );
+
+  if (error) {
+    return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  }
+  return res.status(200).json({ success: true })
+});
+
+router.post('/reset-password', async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).end()
+  const { password } = req.body;
+  const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers({ email });
+  if (listError || !users || users.length === 0)   return res.status((listError.status) ?? 400).json((listError?.message) ?? 'Error')
+  const user = users[0];
+  const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, { password });
+  console.log('data', updateError)
+  if (updateError)  return res.status((updateError.status) ?? 400).json((updateError.code) ?? 'Error')
+f
+  return res.status(200).json({ success: true })
+});
+
+
 /**
- * A serverless function send refresh token request to auth0
+ * A serverless function send refresh token request
  * Main task: Set HTTPOnly Cookies
  * ChatGPT write this fn
  * @param req 
@@ -91,7 +153,6 @@ router.get('/userinfo', async (req, res) => {
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}` },
   })
 
-
   if (!resp.ok) {
     return res.status(401).json({ error: resp.error_description || 'get user failed' })
   }
@@ -101,7 +162,7 @@ router.get('/userinfo', async (req, res) => {
 });
 
 /**
- * A serverless function send get access token request to auth0
+ * A serverless function send get access token request
  * It use PKCE method, with ServerCode, and Client Code
  * Main task: Set HTTPOnly Cookies
  * ChatGPT write this fn
@@ -112,96 +173,26 @@ router.get('/userinfo', async (req, res) => {
 router.post('/pkce-token', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const tokenRes = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(req.body)
-  })
+  const { code, code_verifier } = req.body;
 
-  const tokens = await tokenRes.json()
-
-  if (!tokenRes.ok) {
-    return res.status(401).json({ error: tokens.error_description || 'Refresh token failed' })
+  if (!code || !code_verifier) {
+    return res.status(400).json({ error: 'Missing code or code_verifier' });
   }
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code, code_verifier);
 
+  if (error) {
+    return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  }
   const isProduction = process.env.NODE_ENV === 'production';
   const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
   const secureOption = isProduction ? '; Secure' : '';
   res.setHeader('Set-Cookie', [
-    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
-    `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
+    `access_token=${data.session.access_token}; ${cookieOptions}${data.session.expires_in}${secureOption}`,
+    `refresh_token=${data.session.refresh_token}; ${cookieOptions}604800${secureOption}`,
   ]);
 
   return res.status(200).json({ success: true })
 });
 
-/**
- * A serverless function send data from FE to AUTH0
- * Main task: Reset account password with new pass
- * ChatGPT write this fn
- * @param req 
- * @param res 
- * @returns 
- */
-// router.post('/reset-password', async function handler(req, res) {
-//   if (req.method !== 'POST') return res.status(405).end()
-//   const {  password } = req.body
-//   try {
-//     const token = await getToken()
-//     const userId = await getUserId(token)
-//     const response = await fetch(`https://${process.env.AUTH0_DOMAIN}/api/v2/users/${userId}`, {
-//       method: 'POST',
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({password : password}),
-//     })
-//     console.log(response)
-//     if (!response.ok) {
-//       const err = await response.text()
-//       return res.status(500).json({ error: err })
-//     }
 
-//     return res.status(200).json({ message: 'Password reset successful' , response : JSON.stringify(response.body) })
-//   } catch (err) {
-//     return res.status(500).json({ error: err.message })
-//   }
-// })
-
-
-// const getToken = async () => {
-//   try {
-//     const res = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({
-//         grant_type: 'client_credentials',
-//         client_id: process.env.AUTH0_CLIENT_ID,
-//         client_secret: process.env.AUTH0_CLIENT_SECRET,
-//         audience: `https://${process.env.AUTH0_DOMAIN}/api/v2/`
-//       })
-//     });
-//     const { access_token } = await res.json();
-//     return access_token
-//   }catch(e) {
-//     throw new Error(e)
-//   }
-// }
-// const getUserId = async (token, email) => {
-//   try {
-//     const res =  await fetch(`https://${process.env.AUTH0_DOMAIN}/api/v2/users-by-email`, {
-//       method: 'POST',
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ email })
-//     });
-//     const data  = await res.json()
-//     if(data.length == 0) throw new Error("Error")
-//     return data[0].user_id
-//   }catch(e) {
-//     throw new Error(e)
-//   }
-// }
 module.exports = router;

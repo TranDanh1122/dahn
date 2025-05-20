@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-import { postRefreshTokenAPI } from "@auth/flows/ropc/ropc.api"
-import { REFRESH_TOKEN_PARAM } from '@/modules/auth/flows/ropc/ropc.config'
+import { REFRESH_TOKEN_PARAM } from '@auth/flows/ropc/ropc.config'
 import { API_ENDPOINT } from './ApiEndpoint.const'
 export const AxiosClient = axios.create({
     timeout: import.meta.env.VITE_API_TIMEOUT,
+    headers: {
+        apikey : import.meta.env.VITE_API_KEY,
+    }
+    
 })
 
 
@@ -75,13 +78,13 @@ AxiosClient.interceptors.response.use(
                     return AxiosClient(request)
                 } catch (refreshError) {
                     processQueue(refreshError)
-                    window.location.href = "/auth/login"
+                    // window.location.href = "/auth/login"
                     return Promise.reject(refreshError)
                 } finally {
                     isRefresh = false
                 }
             } else {
-                window.location.href = "/auth/login"
+               //  window.location.href = "/auth/login"
             }
 
         }

@@ -19,7 +19,7 @@ export const useRegister = () => {
         register.mutate(val, {
             onSuccess: (data) => {
                 console.log("A", data)
-                navigate("/auth/login")
+                // navigate("/auth/login")
             }
         })
     }

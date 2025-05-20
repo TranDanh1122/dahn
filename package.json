@@ -19,5 +19,13 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "auth-js": "link:../../AppData/Local/pnpm/global/5/node_modules/@supabase/auth-js"
+  },
+  "pnpm": {
+    "overrides": {
+      "@supabase/auth-js": "link:./BE/auth-sdk"
+    }
   }
 }

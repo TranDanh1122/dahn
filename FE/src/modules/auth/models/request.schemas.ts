@@ -40,7 +40,7 @@ export const ForgotPassSchema = z.object({
  * Reset password zod schema
  */
 export const ResetPassSchema = z.object({
-    ticket: z.coerce.string(),
+    code: z.coerce.string(),
     password: z.coerce.string().refine((val: string) => {
         return (PASSWORD_REGEX).test(val)
     }, { message: "Password must be at least 8 characters long, including uppercase and lowercase letters, a number, and a special character. No spaces allowed" }),

@@ -5,10 +5,10 @@ import { useLoaderData } from "react-router-dom";
 import { useResetPassword } from "../hooks/useResetPassword.hook";
 import Button from "@/components/Button.component";
 export default function ResetPassword(): React.JSX.Element {
-    const ticket = useLoaderData<string>()
-    const { form, onSubmit } = useResetPassword(ticket)
+    const { code } = useLoaderData<{ code: string }>()
+    const { form, onSubmit } = useResetPassword(code)
     return <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
-        <Input {...form.register("ticket")} type="hidden" label="" />
+        <Input {...form.register("code")} type="hidden" label="" />
         <Input {...form.register("password")} type="password" id="password" error={form.formState.errors.password?.message} label="Password" />
         <Input {...form.register("confirmPassword")} type="password" id="confirmPassword" error={form.formState.errors.confirmPassword?.message} label="Confirm Password" />
         <Button disabled={!form.formState.isValid}
