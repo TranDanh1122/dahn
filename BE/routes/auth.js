@@ -2,6 +2,55 @@ const express = require('express');
 const router = express.Router();
 const cookie = require('cookie');
 const createClient = require('@supabase/supabase-js');
+const crypto = require('crypto');
+
+
+const setHTTPOnlyCookie = (res, cookies) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
+  const secureOption = isProduction ? '; Secure' : '';
+  const cookieHeaders = cookies.map(({ name, value, expires }) => {
+    return `${name}=${value}; ${cookieOptions}${expires}${secureOption}`;
+  });
+  res.setHeader('Set-Cookie', cookieHeaders);
+}
+const secretKey = crypto.pbkdf2Sync(process.env.AUTH_SECRET_KEY, "somesalt", 100000, 32, "sha256");
+function encrypt(text) {
+  try {
+    if (!text || typeof text !== "string") {
+      throw new Error("Input text must be a non-empty string");
+    }
+
+    const iv = crypto.randomBytes(16); // Initialization vector
+    const cipher = crypto.createCipheriv("aes-256-cbc", secretKey, iv);
+    let encrypted = cipher.update(text, "utf8", "hex");
+    encrypted += cipher.final("hex");
+    return iv.toString("hex") + ":" + encrypted;
+  } catch (error) {
+    throw new Error(`Encryption failed: ${error.message}`);
+  }
+}
+
+function decrypt(data) {
+  try {
+    if (!data || typeof data !== "string") {
+      throw new Error("Input data must be a non-empty string");
+    }
+
+    const [ivHex, encryptedData] = data.split(":");
+    if (!ivHex || !encryptedData) {
+      throw new Error("Invalid encrypted data format");
+    }
+
+    const iv = Buffer.from(ivHex, "hex");
+    const decipher = crypto.createDecipheriv("aes-256-cbc", secretKey, iv);
+    let decrypted = decipher.update(encryptedData, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    return decrypted;
+  } catch (error) {
+    throw new Error(`Decryption failed: ${error.message}`);
+  }
+}
 const supabase = createClient.createClient(
   process.env.AUTH_DOMAIN,
   process.env.AUTH_API_KEY,
@@ -23,19 +72,17 @@ const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process
  * @returns 
  */
 router.post('/register', async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).end()
-  const { data, error } = await supabase.auth.signUp(req.body);
-  if (error) {
-    return res.status(error.status ?? 400).json(error.code ?? 'Error')
-  }
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
-  const secureOption = isProduction ? '; Secure' : '';
 
-  res.setHeader('Set-Cookie', [
-    `access_token=${data.session.access_token}; ${cookieOptions}${data.session.expires_in}${secureOption}`,
-    `refresh_token=${data.session.refresh_token}; ${cookieOptions}604800${secureOption}`,
-  ]);
+  if (req.method !== 'POST') return res.status(405).end()
+
+  const { data, error } = await supabase.auth.signUp(req.body);
+
+  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  setHTTPOnlyCookie(res, [
+    { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
+    { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
+  ])
+
 
   return res.status(200).json({ success: true })
 });
@@ -49,50 +96,72 @@ router.post('/register', async (req, res) => {
  * @returns 
  */
 router.post('/login', async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).end()
-  const { data, error } = await supabase.auth.signInWithPassword(req.body);
-  console.log('data', req.body)
-  console.log('data', data)
-  console.log('error', error)
-  if (error) {
-    return res.status(error.status ?? 400).json(error.code ?? 'Error')
-  }
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
-  const secureOption = isProduction ? '; Secure' : '';
 
-  res.setHeader('Set-Cookie', [
-    `access_token=${data.session.access_token}; ${cookieOptions}${data.session.expires_in}${secureOption}`,
-    `refresh_token=${data.session.refresh_token}; ${cookieOptions}604800${secureOption}`,
-  ]);
+  if (req.method !== 'POST') return res.status(405).end()
+
+  const { data, error } = await supabase.auth.signInWithPassword(req.body);
+
+  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error')
+
+  setHTTPOnlyCookie(res, [
+    { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
+    { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
+  ])
+
 
   return res.status(200).json({ success: true })
 });
-
+/**
+ * A serverless function send reset password request
+ * Main task: send reset password request, Set HTTPOnly Cookies, 5min lifetime, to validate user
+ * ChatGPT write this fn
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 router.post('/forgot-password', async (req, res) => {
+
   if (req.method !== 'POST') return res.status(405).end()
+
   const { email } = req.body;
+
   const { data, error } = await supabase.auth.resetPasswordForEmail(
     email.trim().toLowerCase(),
     { redirectTo: 'http://localhost:5173/auth/reset-password' }
   );
 
-  if (error) {
-    return res.status(error.status ?? 400).json(error.code ?? 'Error')
-  }
+  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  const token = encrypt(email.trim().toLowerCase())
+  console.log(token)
+
+  setHTTPOnlyCookie(res, [
+    { name: 'reset_password', value: data.session.access_token, expires: 900 },
+  ])
   return res.status(200).json({ success: true })
 });
 
+
 router.post('/reset-password', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
+  const cookies = cookie.parse(req.headers.cookie || '');
+  const resetCookies = cookies['reset_password'];
+  if (!resetCookies) {
+    return res.status(401).json({ message: 'Expired request, please send another reset password request' });
+  }
+  const email = decrypt(resetCookies)
   const { password } = req.body;
+
   const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers({ email });
-  if (listError || !users || users.length === 0)   return res.status((listError.status) ?? 400).json((listError?.message) ?? 'Error')
-  const user = users[0];
+
+  if (listError || !users || users.length === 0) return res.status((listError.status) ?? 400).json((listError?.message) ?? 'Error')
+  if (!users.users || users.user.length === 0) return res.status(400).json('Error')
+
+  const user = users.users[0];
+
   const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, { password });
-  console.log('data', updateError)
-  if (updateError)  return res.status((updateError.status) ?? 400).json((updateError.code) ?? 'Error')
-f
+
+  if (updateError) return res.status((updateError.status) ?? 400).json((updateError.code) ?? 'Error')
+
   return res.status(200).json({ success: true })
 });
 
@@ -109,34 +178,17 @@ router.post('/refresh-token', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
   const cookies = cookie.parse(req.headers.cookie || '');
   const refreshToken = cookies['refresh_token'];
-  if (!refreshToken) {
-    return res.status(401).json({ message: 'No refresh token found' });
-  }
+  if (!refreshToken) return res.status(401).json({ message: 'No refresh token found' });
 
-  const tokenRes = await fetch(`https://${process.env.AUTH0_DOMAIN}/oauth/token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: process.env.AUTH0_CLIENT_ID,
-      client_secret: process.env.AUTH0_CLIENT_SECRET,
-      ...req.body,
-      refresh_token: refreshToken,
-    }),
-  })
+  const { data, error } = await supabase.auth.refreshSession({ refresh_token: refreshToken })
+  const { session } = data
 
-  const tokens = await tokenRes.json()
+  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error wwhen refresh token')
 
-  if (!tokenRes.ok) {
-    return res.status(401).json({ error: tokens.error_description || 'Refresh token failed' })
-  }
-
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
-  const secureOption = isProduction ? '; Secure' : '';
-  res.setHeader('Set-Cookie', [
-    `access_token=${tokens.access_token}; ${cookieOptions}900${secureOption}`,
-    `refresh_token=${tokens.refresh_token}; ${cookieOptions}604800${secureOption}`,
-  ]);
+  setHTTPOnlyCookie(res, [
+    { name: 'access_token', value: session.access_token, expires: session.expires_in },
+    { name: 'refresh_token', value: session.refresh_token, expires: 604800 },
+  ])
 
   return res.status(200).json({ success: true })
 });
@@ -148,17 +200,17 @@ router.get('/userinfo', async (req, res) => {
   if (!access_token) {
     return res.status(401).json({ message: 'No access token found' });
   }
-  const resp = await fetch(`https://${process.env.AUTH0_DOMAIN}/userinfo`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}` },
-  })
+  // const resp = await fetch(`https://${process.env.AUTH0_DOMAIN}/userinfo`, {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${access_token}` },
+  // })
 
-  if (!resp.ok) {
-    return res.status(401).json({ error: resp.error_description || 'get user failed' })
-  }
-  const user = await resp.json()
+  // if (!resp.ok) {
+  //   return res.status(401).json({ error: resp.error_description || 'get user failed' })
+  // }
+  // const user = await resp.json()
 
-  return res.status(200).json({ success: true, user })
+  return res.status(200).json({ success: true })
 });
 
 /**
@@ -183,13 +235,11 @@ router.post('/pkce-token', async (req, res) => {
   if (error) {
     return res.status(error.status ?? 400).json(error.code ?? 'Error')
   }
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = `Path=/; HttpOnly; SameSite=Strict; Max-Age=`;
-  const secureOption = isProduction ? '; Secure' : '';
-  res.setHeader('Set-Cookie', [
-    `access_token=${data.session.access_token}; ${cookieOptions}${data.session.expires_in}${secureOption}`,
-    `refresh_token=${data.session.refresh_token}; ${cookieOptions}604800${secureOption}`,
-  ]);
+
+  setHTTPOnlyCookie(res, [
+    { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
+    { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 },
+  ])
 
   return res.status(200).json({ success: true })
 });

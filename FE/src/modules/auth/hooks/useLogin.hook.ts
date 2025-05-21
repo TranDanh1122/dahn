@@ -7,7 +7,7 @@ export const useLogin = () => {
     const form = useForm<z.infer<typeof LoginSchema>>({
         defaultValues: { email: "", password: "" },
         resolver: zodResolver(LoginSchema),
-        mode : "onBlur"
+        mode : "all"
     })
     const login = useLoginSvc()
     const onSubmit = (values: AuthRequestData) => {

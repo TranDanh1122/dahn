@@ -35,7 +35,7 @@ export const AuthRouter = [
                     const url = new URL(request.url)
                     const searchParams = new URL(url).searchParams
                     if (!searchParams.has("code")) throw new Error("You dont have permission here")
-                    window.history.replaceState(null, '', '/reset-password')
+                    window.history.replaceState(null, '', '/auth/reset-password')
                     return { code: searchParams.get("code") }
                 }
             }
