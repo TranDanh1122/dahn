@@ -27,12 +27,13 @@ interface SelectProps<T> {
 export default function Select<T>({ className, dataSets, valueKey, textKey, onChange, changeValue, defaultValue }: SelectProps<T>): React.JSX.Element {
     const [value, setValue] = React.useState<T>(defaultValue)
     const [open, setOpen] = React.useState<boolean>(false)
-    const dropboxRef  = useOutsideClick<HTMLDivElement>(() => setOpen(false)) 
+    const dropboxRef = useOutsideClick<HTMLDivElement>(() => setOpen(false))
+
+    console.log("re-render", changeValue);
+
     const handleChange = React.useCallback((dataSet: T) => {
-        console.log(value === dataSet,  isObjectEqual(dataSet, value) , value === dataSet || isObjectEqual(dataSet, value));
-        
         if (value === dataSet || isObjectEqual(dataSet, value)) return
-        setValue(dataSet)
+        setOpen(false)
         switch (changeValue) {
             case "value":
                 if (!valueKey) throw new Error("Missing valueKey props")
@@ -46,8 +47,8 @@ export default function Select<T>({ className, dataSets, valueKey, textKey, onCh
                 onChange?.(dataSet)
                 break;
         }
-        setOpen(false)
-    }, [])
+        setValue(dataSet)
+    }, [value])
 
     return <div className={`relative ${className}`} role="combobox" aria-expanded={open} aria-haspopup="listbox">
         <div className="p-2 w-full cursor-pointer bg-white rounded-md font-light hover:bg-neutral-200" onClick={() => setOpen(!open)}>
@@ -58,7 +59,7 @@ export default function Select<T>({ className, dataSets, valueKey, textKey, onCh
                 dataSets.length > 0 && dataSets.map((dataSet: T) => {
                     const content = getDisplayText(dataSet, textKey)
                     return (
-                        <p  role="option"
+                        <p role="option"
                             onClick={() => handleChange(dataSet)}
                             className={` px-2 py-1 cursor-pointer font-light rounded-md w-full hover:bg-neutral-200`}
                             dangerouslySetInnerHTML={{ __html: content }}

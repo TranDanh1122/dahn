@@ -5,7 +5,7 @@ export const useLanguageSelector = () => {
     const { i18n } = useTranslation()
     const handleChange = (data: string | LanguageDataType) => {
         if (typeof data == "string") throw new Error("Wrong Language Datasets")
-        const { value, text } = data
+        const { value, text } = data    
         i18n.changeLanguage(value);
         localStorage.setItem("i18nextLngText", text)
     }
