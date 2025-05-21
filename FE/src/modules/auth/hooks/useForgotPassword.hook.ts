@@ -6,15 +6,16 @@ import { useForgotPasswordSvc } from "@auth/flows/ropc/ropc.service";
 export const useForgotPassword = () => {
     const form = useForm<z.infer<typeof ForgotPassSchema>>({
         defaultValues: { email: "" },
-        resolver: zodResolver(ForgotPassSchema)
+        resolver: zodResolver(ForgotPassSchema),
+        mode: "all"
     })
     const forgotPass = useForgotPasswordSvc()
     const onSubmit = (values: z.infer<typeof ForgotPassSchema>) => {
         forgotPass.mutate(values, {
             onError: (e) => {
-                throw new Error(e.message)
+                // throw new Error(e.message)
             }
         })
     }
-    return { form, onSubmit, isLoading : forgotPass.isPending }
+    return { form, onSubmit, isLoading: forgotPass.isPending }
 }

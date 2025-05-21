@@ -34,10 +34,7 @@ Feel free to clone or copy this logic — just replace the API endpoints and UI 
 
 - If you have a real backend → just call your own reset-password API  
   No need for this complexity.
-- I've **removed the reset flow** for now.  
-  → I didn’t have access to all the necessary Auth0 APIs,  
-  → and allowing password change via only email was too risky.  
-  (Yes, I was stuck 3 days on this 🔥😅)
+
 
 ---
 

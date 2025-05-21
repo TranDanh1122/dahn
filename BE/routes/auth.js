@@ -135,7 +135,7 @@ router.post('/forgot-password', async (req, res) => {
   console.log(token)
 
   setHTTPOnlyCookie(res, [
-    { name: 'reset_password', value: data.session.access_token, expires: 900 },
+    { name: 'reset_password', value: token, expires: 900 },
   ])
   return res.status(200).json({ success: true })
 });

@@ -11,7 +11,8 @@ export const useRegister = () => {
             email: "",
             password: "",
             confirmPassword: ""
-        }
+        },
+        mode: "all"
     })
     const navigate = useNavigate()
     const register = useRegisterSvc()

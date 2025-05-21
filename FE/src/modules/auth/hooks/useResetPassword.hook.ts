@@ -6,7 +6,8 @@ import { z } from "zod"
 export const useResetPassword = (code: string) => {
     const form = useForm<z.infer<typeof ResetPassSchema>>({
         defaultValues: { code, password: "", confirmPassword: "" },
-        resolver: zodResolver(ResetPassSchema)
+        resolver: zodResolver(ResetPassSchema),
+        mode: "all"
     })
     const resetPassword = useResetPasswordSvc()
     const onSubmit = (values: ResetPassData) => {
@@ -19,5 +20,5 @@ export const useResetPassword = (code: string) => {
             }
         })
     }
-    return { form, onSubmit }
+    return { form, onSubmit, isLoading: resetPassword.isPending }
 }
