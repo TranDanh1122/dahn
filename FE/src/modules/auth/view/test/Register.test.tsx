@@ -3,12 +3,21 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Register from '../Register.view';
 import { useRegister } from '@auth/hooks/useRegister.hook';
 import { TestWrapper } from '@/test/TestWrapper';
+import { useTranslation } from 'react-i18next';
 
 // Mock cho useForgotPassword hook
 vi.mock('@auth/hooks/useRegister.hook', () => ({
     useRegister: vi.fn()
 }));
-
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key:string) => key,
+    i18n: {
+      changeLanguage: vi.fn(),
+      language: 'en',
+    },
+  }),
+}));
 describe('Register Component', () => {
     const mockHandleSubmit = vi.fn((callback) => (e) => {
         e.preventDefault();
@@ -16,7 +25,7 @@ describe('Register Component', () => {
     });
 
     const mockOnSubmit = vi.fn();
-
+    const {t} = useTranslation('auth')
     beforeEach(() => {
         vi.clearAllMocks();
 
@@ -40,14 +49,14 @@ describe('Register Component', () => {
         render(<Register />, { wrapper: TestWrapper })
 
         // Kiểm tra các phần tử cơ bản có hiển thị
-        expect(screen.getByLabelText("Email")).toBeInTheDocument()
-        expect(screen.getByLabelText("Password")).toBeInTheDocument()
-        expect(screen.getByLabelText("Confirm Password")).toBeInTheDocument()
+        expect(screen.getByLabelText('label.email')).toBeInTheDocument()
+        expect(screen.getByLabelText('label.password')).toBeInTheDocument()
+        expect(screen.getByLabelText('label.confirm_password')).toBeInTheDocument()
 
-        expect(screen.getByText("Register")).toBeInTheDocument()
-        expect(screen.getByText(/Hmm, pretty sure I already made an account on this silly site/i)).toBeInTheDocument()
-        expect(screen.getByText(/Take me to the login page, now!/i)).toBeInTheDocument()
-        expect(screen.getByText(/Take me to the login page, now!/i)).toHaveAttribute("href" , '/auth/login')
+        expect(screen.getByText('button.register')).toBeInTheDocument()
+        expect(screen.getByText(/label.login_description/i)).toBeInTheDocument()
+        expect(screen.getByText(/label.login_link/i)).toBeInTheDocument()
+        expect(screen.getByText(/label.login_link/i)).toHaveAttribute("href" , '/auth/login')
     });
 
     it('submits the form with email data', async () => {
@@ -55,9 +64,9 @@ describe('Register Component', () => {
 
 
         // Nhập email và submit form
-        const emailInput = screen.getByLabelText(/Email/i);
-        const passwordInput = screen.getByLabelText("Password");
-        const confirmPasswordInput = screen.getByLabelText("Confirm Password");
+        const emailInput = screen.getByLabelText(/label.email/i);
+        const passwordInput = screen.getByLabelText('label.password');
+        const confirmPasswordInput = screen.getByLabelText('label.confirm_password');
 
         const form = screen.getByRole('form');
 
@@ -92,7 +101,7 @@ describe('Register Component', () => {
         render(<Register />, { wrapper: TestWrapper });
 
 
-        const submitButton = screen.getByText("Register");
+        const submitButton = screen.getByText('button.register');
         expect(submitButton).toBeDisabled();
     });
 
@@ -112,7 +121,7 @@ describe('Register Component', () => {
         });
 
         render(<Register />, { wrapper: TestWrapper });
-        expect(screen.queryByText("Register")).not.toBeInTheDocument();
+        expect(screen.queryByText('button.register')).not.toBeInTheDocument();
 
         // Thay vào đó, hiển thị component Loading
         const buttonElement = screen.getByRole('button');

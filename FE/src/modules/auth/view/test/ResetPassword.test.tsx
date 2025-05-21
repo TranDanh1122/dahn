@@ -2,20 +2,28 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ResetPassword from '../ResetPassword.view';
 import { useResetPassword } from '@auth/hooks/useResetPassword.hook';
-import { TestWrapper } from '@/test/TestWrapper';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Mock cho useForgotPassword hook
 vi.mock('@auth/hooks/useResetPassword.hook', () => ({
     useResetPassword: vi.fn()
 }));
-
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key:string) => key,
+    i18n: {
+      changeLanguage: vi.fn(),
+      language: 'en',
+    },
+  }),
+}));
 describe('Register Component', () => {
     const mockHandleSubmit = vi.fn((callback) => (e) => {
         e.preventDefault();
         callback({ password: "Trandanh@1221", confirmPassword: "Trandanh@1221" });
     });
-
+    const {t} = useTranslation('auth')
     const mockOnSubmit = vi.fn();
     const routes = [
         {
@@ -52,9 +60,9 @@ describe('Register Component', () => {
         render(<RouterProvider router={router} />)
 
         // Kiểm tra các phần tử cơ bản có hiển thị
-        expect(screen.getByLabelText("Password")).toBeInTheDocument()
-        expect(screen.getByLabelText("Confirm Password")).toBeInTheDocument()
-        expect(screen.getByText("Reset Password")).toBeInTheDocument()
+        expect(screen.getByLabelText(t("label.password"))).toBeInTheDocument()
+        expect(screen.getByLabelText(t("label.confirm_password"))).toBeInTheDocument()
+        expect(screen.getByText(t("button.resetPassword"))).toBeInTheDocument()
     });
 
     it('submits the form with data', async () => {
@@ -62,8 +70,8 @@ describe('Register Component', () => {
 
 
         // Nhập email và submit form
-        const passwordInput = screen.getByLabelText("Password");
-        const confirmPasswordInput = screen.getByLabelText("Confirm Password");
+        const passwordInput = screen.getByLabelText(t("label.password"));
+        const confirmPasswordInput = screen.getByLabelText(t("label.confirm_password"));
 
         const form = screen.getByRole('form');
 
@@ -97,7 +105,7 @@ describe('Register Component', () => {
         render(<RouterProvider router={router} />);
 
 
-        const submitButton = screen.getByText("Reset Password");
+        const submitButton = screen.getByText(t("button.resetPassword"));
         expect(submitButton).toBeDisabled();
     });
 
@@ -117,7 +125,7 @@ describe('Register Component', () => {
         });
 
         render(<RouterProvider router={router} />);
-        expect(screen.queryByText("Reset Password")).not.toBeInTheDocument();
+        expect(screen.queryByText(t("button.resetPassword"))).not.toBeInTheDocument();
 
         // Thay vào đó, hiển thị component Loading
         const buttonElement = screen.getByRole('button');

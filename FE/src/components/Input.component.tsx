@@ -4,6 +4,9 @@ export interface InputProps extends React.ComponentProps<"input"> {
     error?: string;
     label: string;
 }
+/**
+ * Custom Input component
+ */
 export default React.memo(function Input({ error, label, className, ...props }: InputProps) {
     const [isShowPass, setShowPass] = React.useState<boolean>(false)
     return (

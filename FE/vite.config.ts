@@ -23,13 +23,15 @@ export default defineConfig({
     },
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@auth': path.resolve(__dirname, './src/modules/auth')
+      '@auth': path.resolve(__dirname, './src/modules/auth'),
+      '@lang': path.resolve(__dirname, './src/modules/language')
     }
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@auth': path.resolve(__dirname, './src/modules/auth')
+      '@auth': path.resolve(__dirname, './src/modules/auth'),
+      '@lang': path.resolve(__dirname, './src/modules/language')
     },
   }
 })

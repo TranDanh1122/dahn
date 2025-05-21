@@ -1,12 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import SocialAuth from "@auth/components/SocialAuth";
+import Header from "./Header";
 
 export default function AuthLayout(): React.JSX.Element {
     return <div className="w-screen h-screen bg-white relative overflow-hidden">
-        <header className="w-full relative">
-            <img src="/images/logo.png" alt="dahn logo" className="size-30 object-cover aspect-square absolute top-0 left-0" />
-        </header>
+        <Header />
         <main className="w-full h-full flex items-center justify-center">
 
             <div className="flex flex-col lg:w-1/5 gap-10">
@@ -20,7 +19,7 @@ export default function AuthLayout(): React.JSX.Element {
                 </div>
                 <div className="space-y-10">
                     <SocialAuth />
-                    <Outlet/>
+                    <Outlet />
                 </div>
             </div>
         </main>

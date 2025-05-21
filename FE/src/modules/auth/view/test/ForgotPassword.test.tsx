@@ -3,12 +3,21 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ForgotPassword from '../ForgotPassword.view';
 import { useForgotPassword } from '@auth/hooks/useForgotPassword.hook';
 import { TestWrapper } from '@/test/TestWrapper';
+import { useTranslation } from 'react-i18next';
 
 // Mock cho useForgotPassword hook
 vi.mock('@auth/hooks/useForgotPassword.hook', () => ({
     useForgotPassword: vi.fn()
 }));
-
+vi.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string) => key,
+        i18n: {
+            changeLanguage: vi.fn(),
+            language: 'en',
+        },
+    }),
+}));
 describe('ForgotPassword Component', () => {
     const mockHandleSubmit = vi.fn((callback) => (e) => {
         e.preventDefault();
@@ -16,7 +25,7 @@ describe('ForgotPassword Component', () => {
     });
 
     const mockOnSubmit = vi.fn();
-
+    const { t } = useTranslation('auth');
     beforeEach(() => {
         vi.clearAllMocks();
 
@@ -42,10 +51,10 @@ describe('ForgotPassword Component', () => {
 
 
         // Kiểm tra các phần tử cơ bản có hiển thị
-        expect(screen.getByLabelText("Email")).toBeInTheDocument();
-        expect(screen.getByText("Request reset password")).toBeInTheDocument();
-        expect(screen.getByText(/Hmm, pretty sure I already made an account on this silly site/i)).toBeInTheDocument();
-        expect(screen.getByText(/Take me to the login page, now!/i)).toBeInTheDocument();
+        expect(screen.getByLabelText('label.email')).toBeInTheDocument();
+        expect(screen.getByText('button.forgot')).toBeInTheDocument();
+        expect(screen.getByText(/label.login_description/i)).toBeInTheDocument();
+        expect(screen.getByText(/label.login_link/i)).toBeInTheDocument();
     });
 
     it('submits the form with email data', async () => {
@@ -56,7 +65,7 @@ describe('ForgotPassword Component', () => {
         const emailInput = screen.getByLabelText(/Email/i);
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
 
-        const submitButton = screen.getByText("Request reset password");
+        const submitButton = screen.getByText('button.forgot');
         fireEvent.click(submitButton);
 
         // Kiểm tra nếu hàm onSubmit được gọi
@@ -83,7 +92,7 @@ describe('ForgotPassword Component', () => {
         render(<ForgotPassword />, { wrapper: TestWrapper });
 
 
-        const submitButton = screen.getByText("Request reset password");
+        const submitButton = screen.getByText('button.forgot');
         expect(submitButton).toBeDisabled();
     });
 
@@ -103,7 +112,7 @@ describe('ForgotPassword Component', () => {
         });
 
         render(<ForgotPassword />, { wrapper: TestWrapper });
-        expect(screen.queryByText("Request reset password")).not.toBeInTheDocument();
+        expect(screen.queryByText('button.forgot')).not.toBeInTheDocument();
 
         // Thay vào đó, hiển thị component Loading
         const buttonElement = screen.getByRole('button');

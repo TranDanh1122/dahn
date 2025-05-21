@@ -1,7 +1,7 @@
 
 
-import { API_ENDPOINT } from '@/common/ApiEndpoint.const';
-import { AxiosClient } from '@/common/AxiosClient.const';
+import { API_ENDPOINT } from '@/common/ults/ApiEndpoint.const';
+import { AxiosClient } from '@/common/ults/AxiosClient.const';
 import { requestPKCEAuthParam, type SocialConnectionType, requestPKCEAccessTokenParam } from '@auth/flows/pkce/pkce.config'
 export const getAuthWSocial = async (type: SocialConnectionType) => {
     const param = new URLSearchParams(await requestPKCEAuthParam(type))

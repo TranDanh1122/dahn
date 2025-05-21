@@ -1,5 +1,5 @@
-import { API_ENDPOINT } from "@/common/ApiEndpoint.const";
-import { AxiosClient } from "@/common/AxiosClient.const";
+import { API_ENDPOINT } from "@/common/ults/ApiEndpoint.const";
+import { AxiosClient } from "@/common/ults/AxiosClient.const";
 import type { AuthRequestData, ResetPassData } from "@auth/models";
 import { REFRESH_TOKEN_PARAM, RESET_PASSSWORD_PARAM } from "@auth/flows/ropc/ropc.config"
 export const postRegisterAPI = async (data: AuthRequestData) => await AxiosClient.post(API_ENDPOINT.signup, data)

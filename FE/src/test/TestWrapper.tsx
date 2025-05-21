@@ -8,16 +8,19 @@ import { MemoryRouter } from 'react-router-dom';
 interface TestWrapperProps {
   children: React.ReactNode;
 }
+
 const client = new QueryClient
 export const TestWrapper = ({ children }: TestWrapperProps) => {
 
   return <Provider store={store}>
-    <QueryClientProvider client={client} >
-      <MemoryRouter>
-        {children}
-      </MemoryRouter>
-    </QueryClientProvider>
-  </Provider>;
+      <QueryClientProvider client={client} >
+        <MemoryRouter>
+          {children}
+        </MemoryRouter>
+      </QueryClientProvider>
+    </Provider>
+
+
 };
 
 const customRender = (

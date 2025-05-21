@@ -16,6 +16,9 @@
       ],
       "@auth/*": [
         "src/modules/auth/*"
+      ],
+      "@lang/*": [
+        "src/modules/language/*"
       ]
     }
   }

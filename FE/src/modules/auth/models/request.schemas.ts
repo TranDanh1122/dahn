@@ -1,4 +1,4 @@
-import { PASSWORD_REGEX } from '@/common/Regex.const'
+import { PASSWORD_REGEX } from '@/common/ults/Regex.const'
 import { z } from 'zod'
 /**
  * Register zod schema
