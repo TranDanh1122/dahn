@@ -8,7 +8,7 @@ export default React.memo(function LanguageSelector(): React.JSX.Element {
         changeValue="all"
         valueKey="value"
         textKey="text"
-        className="border-l px-3 border-l-neutral-300"
+        className="border-l px-2 border-l-neutral-300"
         dataSets={[
             { value: "en", text: "English" },
             { value: "vi", text: "Tiếng Việt" },

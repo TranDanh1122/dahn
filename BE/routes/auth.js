@@ -77,7 +77,7 @@ router.post('/register', async (req, res) => {
 
   const { data, error } = await supabase.auth.signUp(req.body);
 
-  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
     { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
@@ -100,8 +100,7 @@ router.post('/login', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
 
   const { data, error } = await supabase.auth.signInWithPassword(req.body);
-
-  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
 
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
@@ -130,7 +129,7 @@ router.post('/forgot-password', async (req, res) => {
     { redirectTo: 'http://localhost:5173/auth/reset-password' }
   );
 
-  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
   const token = encrypt(email.trim().toLowerCase())
   console.log(token)
 
@@ -160,7 +159,7 @@ router.post('/reset-password', async (req, res) => {
 
   const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, { password });
 
-  if (updateError) return res.status((updateError.status) ?? 400).json((updateError.code) ?? 'Error')
+  if (updateError) return res.status((updateError.status) ?? 400).json((updateError.message) ?? 'Error')
 
   return res.status(200).json({ success: true })
 });
@@ -183,7 +182,7 @@ router.post('/refresh-token', async (req, res) => {
   const { data, error } = await supabase.auth.refreshSession({ refresh_token: refreshToken })
   const { session } = data
 
-  if (error) return res.status(error.status ?? 400).json(error.code ?? 'Error wwhen refresh token')
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error wwhen refresh token')
 
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: session.access_token, expires: session.expires_in },
@@ -233,7 +232,7 @@ router.post('/pkce-token', async (req, res) => {
   const { data, error } = await supabase.auth.exchangeCodeForSession(code, code_verifier);
 
   if (error) {
-    return res.status(error.status ?? 400).json(error.code ?? 'Error')
+    return res.status(error.status ?? 400).json(error.message ?? 'Error')
   }
 
   setHTTPOnlyCookie(res, [

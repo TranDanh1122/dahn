@@ -6,6 +6,7 @@ export const useRegisterSvc = () => {
     return useMutation({
         mutationFn: async (data: AuthRequestData) => {
             const res = await postRegisterAPI(data)
+
             return res.data
         },
         retry: false
@@ -15,6 +16,7 @@ export const useLoginSvc = () => {
     return useMutation({
         mutationFn: async (data: Omit<AuthRequestData, "confirmPassword">) => {
             const res = await postLoginAPI(data)
+            if(res.status > 200)  throw new Error(res.data) 
             return res.data
         },
         retry: false

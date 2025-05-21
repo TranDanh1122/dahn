@@ -4,9 +4,10 @@ import App from './App.tsx'
 import { store } from "@/stores"
 import { Provider } from "react-redux"
 import "@lang/index.ts"
+import { ErrorBoundary } from './ErrorBoudary.tsx'
+
 createRoot(document.getElementById('root')!).render(
-  
-  // <Provider store={store}>
+  <ErrorBoundary >
     <App />
-  // </Provider>
+  </ErrorBoundary>
 )

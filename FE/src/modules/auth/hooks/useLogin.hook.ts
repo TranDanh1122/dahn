@@ -11,9 +11,13 @@ export const useLogin = () => {
     })
     const login = useLoginSvc()
     const onSubmit = (values: AuthRequestData) => {
+        
         login.mutate(values, {
             onSuccess: (res) => {
                 console.log(res)
+            },
+            onError : () => {
+               
             }
         })
     }
