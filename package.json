@@ -25,7 +25,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@supabase/auth-js": "link:./BE/auth-sdk"
+      "@supabase/auth-js": "link:./BE/auth-js-sdk"
     }
   }
 }

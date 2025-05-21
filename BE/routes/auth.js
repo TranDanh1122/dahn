@@ -12,7 +12,7 @@ const supabase = createClient.createClient(
   }
 );
 
-const supabaseAdmin = createClient(process.env.AUTH_DOMAIN, process.env.AUTH_SERVICE_KEY);
+const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process.env.AUTH_SERVICE_KEY);
 
 /**
  * A serverless function send login data from FE

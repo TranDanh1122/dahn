@@ -1,7 +1,7 @@
 packages:
   - FE
   - BE
-  - BE/auth-sdk
+  - BE/auth-js-sdk
 hoist: false
 overrides:
   auth-js: link:../../AppData/Local/pnpm/global/5/node_modules/@supabase/auth-js
