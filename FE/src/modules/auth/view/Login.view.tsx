@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 export default function Login(): React.JSX.Element {
     const { t } = useTranslation("auth")
     const { form, onSubmit, isLoading } = useLogin()
+    console.log("login re render")
     return <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
 
         <Input {...form.register("email")} type="email" id="email" error={form.formState.errors.email?.message} label={t('label.email')} />

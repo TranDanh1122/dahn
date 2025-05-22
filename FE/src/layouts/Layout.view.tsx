@@ -5,7 +5,7 @@ import Header from "./Header";
 export default function Layout(): React.JSX.Element {
     return <div className="w-screen h-screen bg-white relative overflow-hidden">
         <Header />
-        <main className="w-full h-full flex items-center justify-center">
+        <main className="w-full h-full flex  justify-center items-center relative z-1">
             <Outlet />
         </main>
     </div>
