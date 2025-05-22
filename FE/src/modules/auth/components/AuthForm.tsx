@@ -6,4 +6,6 @@ export default function AuthForm({ children, className, ...props }: FormProps): 
     return <form role="form" className={`${className} space-y-3 border-t border-neutral-200 pt-10 w-full`} {...props}>
         {children}
     </form>
+
+
 }

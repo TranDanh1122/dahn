@@ -1,10 +1,12 @@
 import { createBrowserRouter } from "react-router-dom"
-import BeforeEachRoute from "./BeforeEachRoute"
 import { AuthRouter } from "@/modules/auth"
+import React from "react"
+const Layout = React.lazy(() => import("@/layouts/Layout.view"))
+
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <BeforeEachRoute />,
+        element: <Layout />,
         children: [
             ...AuthRouter
         ]

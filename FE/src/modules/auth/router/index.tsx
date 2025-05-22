@@ -3,14 +3,14 @@ import { Navigate, type LoaderFunctionArgs } from "react-router-dom"
 import { postGetPKCEToken } from "@auth/flows/pkce/pkce.api"
 const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"));
 const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"));
-const AuthLayout = React.lazy(() => import("@/modules/auth/layouts/AuthLayout.view"))
 const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthCallback.view"))
 const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPassword.view"))
 const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword.view"))
+const AuthLayout = React.lazy(() => import("@auth/layout/AuthLayout") )
 export const AuthRouter = [
     {
         path: "auth",
-        element: <AuthLayout />,
+        element : <AuthLayout />,
         children: [
             {
                 index: true,
