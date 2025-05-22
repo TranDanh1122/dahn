@@ -84,7 +84,7 @@ router.post('/register', async (req, res) => {
   ])
 
 
-  return res.status(200).json({ success: true })
+  return res.status(200).json({ success: true , user : { id :  data.user.id , ...data.user.user_metadata }})
 });
 
 /**
@@ -108,7 +108,7 @@ router.post('/login', async (req, res) => {
   ])
 
 
-  return res.status(200).json({ success: true })
+  return res.status(200).json({ success: true, user : { id :  data.user.id , ...data.user.user_metadata } })
 });
 /**
  * A serverless function send reset password request
@@ -189,7 +189,7 @@ router.post('/refresh-token', async (req, res) => {
     { name: 'refresh_token', value: session.refresh_token, expires: 604800 },
   ])
 
-  return res.status(200).json({ success: true })
+  return res.status(200).json({ success: true, user : { id :  data.user.id , ...data.user.user_metadata } })
 });
 
 router.get('/userinfo', async (req, res) => {
@@ -240,7 +240,7 @@ router.post('/pkce-token', async (req, res) => {
     { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 },
   ])
 
-  return res.status(200).json({ success: true })
+  return res.status(200).json({ success: true , user : { id :  data.user.id , ...data.user.user_metadata } })
 });
 
 

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForgotPasswordSvc } from "@auth/flows/ropc/ropc.service";
+
 export const useForgotPassword = () => {
     const form = useForm<z.infer<typeof ForgotPassSchema>>({
         defaultValues: { email: "" },
@@ -14,6 +15,10 @@ export const useForgotPassword = () => {
         forgotPass.mutate(values, {
             onError: (e) => {
                 // throw new Error(e.message)
+            },
+            onSuccess: () => {
+                alert(1)
+             
             }
         })
     }

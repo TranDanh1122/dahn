@@ -7,7 +7,10 @@ import "@lang/index.ts"
 import { ErrorBoundary } from './ErrorBoudary.tsx'
 
 createRoot(document.getElementById('root')!).render(
+
   <ErrorBoundary >
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </ErrorBoundary>
 )

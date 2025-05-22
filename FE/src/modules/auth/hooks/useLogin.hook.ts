@@ -13,8 +13,8 @@ export const useLogin = () => {
     const onSubmit = (values: AuthRequestData) => {
         
         login.mutate(values, {
-            onSuccess: (res) => {
-                console.log(res)
+            onSuccess: () => {
+               //UI
             },
             onError : () => {
                
