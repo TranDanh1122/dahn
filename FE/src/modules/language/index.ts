@@ -7,7 +7,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    debug: true,
+    lng: "en",
+    debug: process.env.NODE_ENV == "development",
     fallbackLng: 'en',
     ns: ['auth'],
     defaultNS: 'auth',
@@ -21,7 +22,7 @@ i18n
       caches: ['localStorage'],
     },
     react: {
-      useSuspense: true,
+      useSuspense: false,
     },
   });
 export default i18n;

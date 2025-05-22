@@ -6,7 +6,13 @@ import storage from 'redux-persist/lib/storage'
 
 const persistConfig = {
     key: 'dahn',
-    storage: storage
+    storage: storage,
+    transforms: [{
+        in: (state: unknown) => state,
+        out: (state: unknown) => {
+            return state;
+        },
+    }],
 }
 const combine = combineReducers({ auth: AuthStore })
 const persistedReducer = persistReducer(persistConfig, combine)
@@ -15,7 +21,7 @@ export const store = configureStore({
     reducer: {
         persist: persistedReducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck : false})
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 })
 export const persistedStore = persistStore(store)
 export type AppState = ReturnType<typeof store.getState>

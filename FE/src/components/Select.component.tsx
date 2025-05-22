@@ -9,7 +9,8 @@ interface SelectProps<T> {
     className?: string,
     onChange?: (value: T[keyof T] | T) => void
     changeValue?: "all" | "value" | "text",
-    defaultValue: T
+    defaultValue: T,
+    children?: React.ReactNode
 }
 /**
  * Custom Select component
@@ -24,7 +25,7 @@ interface SelectProps<T> {
  * @returns 
  * 
  */
-export default function Select<T>({ className, dataSets, valueKey, textKey, onChange, changeValue, defaultValue }: SelectProps<T>): React.JSX.Element {
+export default function Select<T>({ children, className, dataSets, valueKey, textKey, onChange, changeValue, defaultValue }: SelectProps<T>): React.JSX.Element {
     const [value, setValue] = React.useState<T>(defaultValue)
     const [open, setOpen] = React.useState<boolean>(false)
     const dropboxRef = useOutsideClick<HTMLDivElement>(() => setOpen(false))
@@ -49,14 +50,15 @@ export default function Select<T>({ className, dataSets, valueKey, textKey, onCh
 
     return <div className={`relative ${className}`} role="combobox" aria-expanded={open} aria-haspopup="listbox">
         <div className="p-2 w-full cursor-pointer bg-white rounded-md font-light hover:bg-neutral-200" onClick={() => setOpen(!open)}>
-            {getDisplayText(value, textKey)}
+            {!children && getDisplayText(value, textKey)}
+            {children && children}
         </div>
-        {open && <div ref={dropboxRef} role="listbox" className="absolute h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-neutral-500 flex flex-col justify-stretch">
+        {open && dataSets.length > 0 && <div ref={dropboxRef} role="listbox" className="absolute h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-neutral-500 flex flex-col justify-stretch">
             {
-                dataSets.length > 0 && dataSets.map((dataSet: T) => {
+                dataSets.map((dataSet: T) => {
                     const content = getDisplayText(dataSet, textKey)
                     return (
-                        <p role="option"
+                        <p role="option" key={dataSet as unknown as string}
                             onClick={() => handleChange(dataSet)}
                             className={` px-2 py-1 cursor-pointer font-light rounded-md w-full hover:bg-neutral-200`}
                             dangerouslySetInnerHTML={{ __html: content }}
@@ -64,10 +66,7 @@ export default function Select<T>({ className, dataSets, valueKey, textKey, onCh
                     );
                 })
             }
-            {
 
-                dataSets.length == 0 && <p role="option" className="w-full text-center">No data</p>
-            }
         </div>
         }
     </div>
