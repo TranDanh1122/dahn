@@ -33,10 +33,12 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.0",
     "react-toastify": "^11.0.5",
+    "redux-persist": "^6.0.0",
     "tailwindcss": "^4.1.6",
     "zod": "^3.24.4"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
     "@eslint/js": "^9.25.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

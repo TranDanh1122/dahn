@@ -28,9 +28,6 @@ export default function Select<T>({ className, dataSets, valueKey, textKey, onCh
     const [value, setValue] = React.useState<T>(defaultValue)
     const [open, setOpen] = React.useState<boolean>(false)
     const dropboxRef = useOutsideClick<HTMLDivElement>(() => setOpen(false))
-
-    console.log("re-render", changeValue);
-
     const handleChange = React.useCallback((dataSet: T) => {
         if (value === dataSet || isObjectEqual(dataSet, value)) return
         setOpen(false)
