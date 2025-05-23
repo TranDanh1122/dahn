@@ -19,21 +19,20 @@ export const AuthRouter = [
             },
             {
                 path: "register",
-                element: <React.Suspense><RegisterView /></React.Suspense>
+                element: <RegisterView />
             },
             {
                 path: "login",
-                element: <React.Suspense><LoginView /></React.Suspense>
-                //if we dont have suspense here, it should work, 
-                // but AuthLayout out will re-render multiple time, i dont know why, but it took me 1 day to find out this shit
+                element: <LoginView />
+
             },
             {
                 path: "forgot-password",
-                element:  <React.Suspense><ForgotPassword /></React.Suspense>
+                element:  <ForgotPassword />
             },
             {
                 path: "reset-password",
-                element: <React.Suspense> <ResetPassword /></React.Suspense>,
+                element:  <ResetPassword />,
                 loader: async ({ request }: LoaderFunctionArgs) => {
                     const url = new URL(request.url)
                     const searchParams = new URL(url).searchParams
@@ -45,7 +44,7 @@ export const AuthRouter = [
     },
     {
         path: "/auth/callback",
-        element: <React.Suspense><AuthCallback /></React.Suspense>,
+        element: <AuthCallback />,
         loader: async ({ request }: LoaderFunctionArgs) => {
             const url = new URL(request.url)
             const searchParams = new URL(url).searchParams
