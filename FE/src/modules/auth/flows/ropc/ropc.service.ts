@@ -1,26 +1,22 @@
 import { useMutation } from '@tanstack/react-query'
 import { type AuthRequestData, type ResetPassData } from "@auth/models"
-import { postRegisterAPI, postForgotPassword, postResetPassword, postLoginAPI } from '@auth/flows/ropc/ropc.api'
+import { postRegisterAPI, postForgotPassword, postResetPassword, postLoginAPI, postLoginOTP } from '@auth/flows/ropc/ropc.api'
 import type { AppDispatch } from '@/stores'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@auth/stores'
-import type { AuthSuccessReponse } from '../../models/response.model'
+import type { AuthSuccessReponse } from '@auth/models/response.model'
+import type { VerifyOTPData } from '@auth/models/request.schemas'
 
 export const useRegisterSvc = () => {
-    const dispatch: AppDispatch = useDispatch()
     return useMutation({
         mutationFn: async (data: AuthRequestData) => {
             const res = await postRegisterAPI(data)
             return res.data
         },
-        onSuccess: (data: AuthSuccessReponse) => { // here logic part, UI part (like toast, message or something) need do it in view
-            dispatch(setUser(data.user))
-        },
         retry: false
     })
 }
 export const useLoginSvc = () => {
-    const dispatch: AppDispatch = useDispatch()
 
     return useMutation({
         mutationFn: async (data: Omit<AuthRequestData, "confirmPassword">) => {
@@ -28,9 +24,7 @@ export const useLoginSvc = () => {
             if (res.status > 200) throw new Error(res.data)
             return res.data
         },
-        onSuccess: (data: AuthSuccessReponse) => {
-            dispatch(setUser(data.user))
-        },
+
         retry: false
     })
 
@@ -53,5 +47,20 @@ export const useResetPasswordSvc = () => {
             return res.data
         },
         retry: false
+    })
+}
+
+export const useLoginOTPSvc = () => {
+    const dispatch: AppDispatch = useDispatch()
+
+    return useMutation({
+        mutationFn: async (data: VerifyOTPData) => {
+            const res = await postLoginOTP(data)
+            return res.data
+        },
+        retry: false,
+        onSuccess: (data: AuthSuccessReponse) => {
+            dispatch(setUser(data.user))
+        },
     })
 }

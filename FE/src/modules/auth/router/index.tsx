@@ -7,7 +7,7 @@ const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthC
 const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPassword.view"))
 const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword.view"))
 const AuthLayout = React.lazy(() => import("@auth/layout/AuthLayout"))
-
+const OTPModal = React.lazy(() => import("@auth/view/OTPModal.view"))
 export const AuthRouter = [
     {
         path: "auth",
@@ -19,20 +19,32 @@ export const AuthRouter = [
             },
             {
                 path: "register",
-                element: <RegisterView />
+                element: <RegisterView />,
+                children: [
+                    {
+                        path: "2fa",
+                        element: <OTPModal />
+                    }
+                ]
             },
             {
                 path: "login",
-                element: <LoginView />
+                element: <LoginView />,
+                children: [
+                    {
+                        path: "2fa",
+                        element: <OTPModal />
+                    }
+                ]
 
             },
             {
                 path: "forgot-password",
-                element:  <ForgotPassword />
+                element: <ForgotPassword />
             },
             {
                 path: "reset-password",
-                element:  <ResetPassword />,
+                element: <ResetPassword />,
                 loader: async ({ request }: LoaderFunctionArgs) => {
                     const url = new URL(request.url)
                     const searchParams = new URL(url).searchParams
