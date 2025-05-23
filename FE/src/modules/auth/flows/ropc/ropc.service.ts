@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { type AuthRequestData, type ResetPassData } from "@auth/models"
-import { postRegisterAPI, postForgotPassword, postResetPassword, postLoginAPI, postLoginOTP } from '@auth/flows/ropc/ropc.api'
+import { postRegisterAPI, postForgotPassword, postResetPassword, postLoginAPI, postLoginOTP, postResendOTP } from '@auth/flows/ropc/ropc.api'
 import type { AppDispatch } from '@/stores'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@auth/stores'
@@ -62,5 +62,15 @@ export const useLoginOTPSvc = () => {
         onSuccess: (data: AuthSuccessReponse) => {
             dispatch(setUser(data.user))
         },
+    })
+}
+
+export const useResendOTP = () => {
+    return useMutation({
+        mutationFn: async (data : {email : string}) => {
+            const res = await postResendOTP(data)
+            return res.data
+        },
+        retry : false
     })
 }

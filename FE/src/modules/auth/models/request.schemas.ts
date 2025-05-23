@@ -53,7 +53,7 @@ export type ResetPassData = z.infer<typeof ResetPassSchema>
 
 export const VerifyOTPSchema = z.object({
     otp: z.coerce.string().length(6).refine((val: string) => {
-        return LATIN_CHECK_RGX.test(val)
+        return !LATIN_CHECK_RGX.test(val)
     }, { message: "OTP not correct format" }),
     email: z.coerce.string().email({ message: "Invalid Email" })
 })

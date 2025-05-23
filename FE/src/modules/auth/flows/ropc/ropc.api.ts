@@ -12,3 +12,4 @@ export const postRefreshTokenAPI = async () => await AxiosClient.post(API_ENDPOI
     ...REFRESH_TOKEN_PARAM
 }, { withCredentials: true })
 export const postLoginOTP = async (data: VerifyOTPData) => await AxiosClient.post(API_ENDPOINT.login_otp, data, { withCredentials: true })
+export const postResendOTP = async (data: { email: string }) => await AxiosClient.post(API_ENDPOINT.sendOTP, data)
