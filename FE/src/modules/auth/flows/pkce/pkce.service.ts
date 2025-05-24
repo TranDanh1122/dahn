@@ -5,7 +5,7 @@ import type { AuthSuccessReponse } from "@auth/models/response.model"
 import type { AppDispatch } from "@/stores"
 import { useDispatch } from "react-redux"
 import { setUser } from "@auth/stores"
-
+import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 export const useAuthWSocial = () => {
 
     return {
@@ -20,8 +20,12 @@ export const useGetPKCEToken = () => {
             const res = await postGetPKCEToken(code)
             return res.data
         },
+        onError: (error) => {
+            ErrorHandler(error.message)
+        },
         onSuccess: (data: AuthSuccessReponse) => {
             dispatch(setUser(data.user))
+            SuccessHandle("Login success, now try my app!")
         }
     })
 }

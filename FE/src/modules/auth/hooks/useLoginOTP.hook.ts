@@ -1,5 +1,5 @@
-import useTimeout from "@/hooks/useTimeout";
-import { useLocation } from "react-router-dom";
+import useTimeout from "@/common/hooks/useTimeout";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLoginOTPSvc, useResendOTPSvc } from "@auth/flows/ropc/ropc.service";
 import { VerifyOTPSchema, type VerifyOTPData } from "@auth/models/request.schemas";
 import { useForm } from "react-hook-form";
@@ -20,9 +20,7 @@ export default function useLoginOTP() {
 
     const loginOTP = useLoginOTPSvc()
     const resendOTP = useResendOTPSvc()
-
-
-
+    const navigate = useNavigate()
     const form = useForm<VerifyOTPData>({
         defaultValues: { email: "", otp: "" },
         resolver: zodResolver(VerifyOTPSchema),
@@ -38,7 +36,7 @@ export default function useLoginOTP() {
     const onSubmit = (values: VerifyOTPData) => {
         loginOTP.mutate(values, {
             onSuccess: () => {
-
+                navigate("/")
             }
         })
     }

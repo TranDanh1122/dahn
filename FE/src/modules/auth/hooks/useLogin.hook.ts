@@ -16,11 +16,7 @@ export const useLogin = () => {
 
         login.mutate(values, {
             onSuccess: (_, values) => {
-                //UI
                 navigate("/auth/login/2fa", { replace: true, state: { from: "/auth/login", email: values.email } })
-            },
-            onError: () => {
-
             }
         })
     }
