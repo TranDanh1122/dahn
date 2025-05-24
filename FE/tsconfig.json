@@ -19,6 +19,9 @@
       ],
       "@lang/*": [
         "src/modules/language/*"
+      ],
+      "@workspace/*": [
+        "src/modules/workspace/*"
       ]
     }
   }

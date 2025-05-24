@@ -3,11 +3,12 @@ import { Eye, EyeClosed } from "lucide-react"
 export interface InputProps extends React.ComponentProps<"input"> {
     error?: string;
     label: string;
+    children?: React.ReactNode,
 }
 /**
  * Custom Input component
  */
-export default React.memo(function Input({ error, label, className, ...props }: InputProps) {
+export default React.memo(function Input({ error, label, className, children, ...props }: InputProps) {
     const [isShowPass, setShowPass] = React.useState<boolean>(false)
     return (
         <fieldset className="flex flex-col gap-2">
@@ -22,7 +23,7 @@ export default React.memo(function Input({ error, label, className, ...props }: 
                         {!isShowPass && <EyeClosed />}
                     </div>
                 }
-
+                {children && children}
             </div>
             {error && <p className="text-red-600 text-sm font-semibold w-full text-left" aria-label={error} aria-live="assertive">{error}</p>}
         </fieldset >

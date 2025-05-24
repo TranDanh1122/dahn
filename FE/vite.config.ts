@@ -24,14 +24,16 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@auth': path.resolve(__dirname, './src/modules/auth'),
-      '@lang': path.resolve(__dirname, './src/modules/language')
+      '@lang': path.resolve(__dirname, './src/modules/language'),
+      '@workspace': path.resolve(__dirname, './src/modules/workspace'),
     }
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@auth': path.resolve(__dirname, './src/modules/auth'),
-      '@lang': path.resolve(__dirname, './src/modules/language')
+      '@lang': path.resolve(__dirname, './src/modules/language'),
+      '@workspace': path.resolve(__dirname, './src/modules/workspace'),
     },
   }
 })
