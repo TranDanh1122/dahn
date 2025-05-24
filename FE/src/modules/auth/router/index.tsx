@@ -1,5 +1,6 @@
 import React from "react"
-import { Navigate, useLocation, type LoaderFunctionArgs } from "react-router-dom"
+import { Navigate } from "react-router-dom"
+import { getPKCECode } from "../loader/getPKCECode.loader";
 
 const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"));
 const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"));
@@ -45,23 +46,13 @@ export const AuthRouter = [
             {
                 path: "reset-password",
                 element: <ResetPassword />,
-                loader: async ({ request }: LoaderFunctionArgs) => {
-                    const url = new URL(request.url)
-                    const searchParams = new URL(url).searchParams
-                    if (!searchParams.has("code")) throw new Error("You dont have permission here")
-                    return { code: searchParams.get("code") }
-                }
+                loader: getPKCECode
             }
         ]
     },
     {
         path: "/auth/callback",
         element: <AuthCallback />,
-        loader: async ({ request }: LoaderFunctionArgs) => {
-            const url = new URL(request.url)
-            const searchParams = new URL(url).searchParams
-            if (!searchParams.has("code")) throw new Error("You dont have permission here")
-            return { code: searchParams.get("code") }
-        }
+        loader: getPKCECode
     }
 ]
