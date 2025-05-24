@@ -65,7 +65,7 @@ export const useLoginOTPSvc = () => {
     })
 }
 
-export const useResendOTP = () => {
+export const useResendOTPSvc = () => {
     return useMutation({
         mutationFn: async (data : {email : string}) => {
             const res = await postResendOTP(data)

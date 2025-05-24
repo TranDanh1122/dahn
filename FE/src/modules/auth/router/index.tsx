@@ -1,5 +1,5 @@
 import React from "react"
-import { Navigate, type LoaderFunctionArgs } from "react-router-dom"
+import { Navigate, useLocation, type LoaderFunctionArgs } from "react-router-dom"
 
 const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"));
 const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"));
@@ -33,7 +33,7 @@ export const AuthRouter = [
                 children: [
                     {
                         path: "2fa",
-                        element: <OTPModal />
+                        element: <OTPModal />,
                     }
                 ]
 
