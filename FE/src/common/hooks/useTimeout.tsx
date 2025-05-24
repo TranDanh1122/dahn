@@ -9,11 +9,12 @@ import React from "react";
  */
 export default function useTimeout() {
     const [wait, setWait] = React.useState<number>(0)
+    const timeout = React.useRef<NodeJS.Timeout>(null)
     const setDelay = (step: number, delay?: number) => {
 
         if (delay) setWait(delay)
-
-        setTimeout(() => {
+        if (timeout.current) clearTimeout(timeout.current)
+        timeout.current = setTimeout(() => {
             setWait(prev => {
                 if (prev == 0) return prev
                 setDelay(step)
@@ -23,7 +24,9 @@ export default function useTimeout() {
         }, 1000 * step)
 
     }
-
+    React.useEffect(() => {
+        return () => clearTimeout(timeout.current ?? "")
+    }, [])
 
     return { wait, setDelay }
 
