@@ -1,12 +1,24 @@
 import React from "react";
 import User from "@/components/User.component"
-import { Bell, BookUser, Cog, MessageCircleMore, Search } from "lucide-react";
+import {
+    Bell,
+    BookUser,
+    Cog,
+    Search,
+    FolderOpenDot,
+    FolderCheck,
+    ChartPie,
+    Folder
+} from "lucide-react";
 import Input from "@/components/Input.component";
-import MenuItem from "../components/MenuItem.component";
+import MenuItem from "@workspace/components/MenuItem.component";
+import Dropdown from "@/components/Dropdown.component"
+import CircleLogoWText from "@/components/CircleLogoWText.component"
+import WorkspaceList from "@workspace/components/WorkspaceList.component"
 export default React.memo(function Sidebar(): React.JSX.Element {
     return <div className="h-full border-r border-neutral-300 ">
         <div className="flex items-center justify-between p-2">
-            <User className="max-w-2/3" />
+            <User className="max-w-[200px] w-full" />
             <Bell className="size-9 p-2 rounded-md text-neutral-500 shrink-0 block hover:bg-neutral-100" />
         </div>
         <div className="px-2">
@@ -14,17 +26,24 @@ export default React.memo(function Sidebar(): React.JSX.Element {
                 <Search className="size-5 text-neutral-400 absolute top-1/2 left-1 -translate-y-1/2" />
             </Input>
         </div>
-
         <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
-            <MenuItem icon={<MessageCircleMore className="text-neutral-500 size-4" />} text="Message" >
-                <p className="text-neutral-500 font-medium px-2 py-1 text-xs bg-fuchsia-100 rounded-md ml-auto">1</p>
-            </MenuItem>
+           
             <MenuItem icon={<BookUser className="text-neutral-500 size-4" />} text="Contact" />
             <MenuItem icon={<Cog className="text-neutral-500 size-4" />} text="Setting" />
         </div>
+        <Dropdown dropContent={<WorkspaceList />}>
+            <CircleLogoWText text="Company 1" img="" />
+        </Dropdown>
 
-        <div>
-            
+        <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
+            <MenuItem icon={<FolderOpenDot className="text-neutral-500 size-4" />} text="All Projects" />
+            <MenuItem icon={<FolderCheck className="text-neutral-500 size-4" />} text="Completed" />
+            <MenuItem icon={<ChartPie className="text-neutral-500 size-4" />} text="Report" />
         </div>
-    </div>
+        <div className="p-2">
+            <h2 className="text-sm font-medium mb-2">Pinned Projects</h2>
+            <MenuItem icon={<Folder className="text-neutral-500 size-4" />} text="Eccommerce" />
+            <MenuItem icon={<Folder className="text-neutral-500 size-4" />} text="Vexere" />
+        </div>
+    </div >
 })
