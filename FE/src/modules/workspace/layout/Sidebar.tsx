@@ -14,7 +14,9 @@ import Input from "@/components/Input.component";
 import MenuItem from "@workspace/components/MenuItem.component";
 import Dropdown from "@/components/Dropdown.component"
 import CircleLogoWText from "@/components/CircleLogoWText.component"
-import WorkspaceList from "@workspace/components/WorkspaceList.component"
+import Loading from "@/components/Loading.component"
+const WorkspaceList = React.lazy(() => import("@workspace/components/WorkspaceList.component"))
+
 export default React.memo(function Sidebar(): React.JSX.Element {
     return <div className="h-full border-r border-neutral-300 ">
         <div className="flex items-center justify-between p-2">
@@ -27,11 +29,13 @@ export default React.memo(function Sidebar(): React.JSX.Element {
             </Input>
         </div>
         <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
-           
+
             <MenuItem icon={<BookUser className="text-neutral-500 size-4" />} text="Contact" />
             <MenuItem icon={<Cog className="text-neutral-500 size-4" />} text="Setting" />
         </div>
-        <Dropdown dropContent={<WorkspaceList />}>
+        <Dropdown dropContent={
+            <React.Suspense fallback={<Loading className = "size-5 border-s-neutral-400 mt-4"/>}><WorkspaceList /></React.Suspense>
+        }>
             <CircleLogoWText text="Company 1" img="" />
         </Dropdown>
 
