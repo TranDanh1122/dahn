@@ -7,21 +7,24 @@ import { useFormContext } from 'react-hook-form'
 export default React.memo(function Step1(): React.JSX.Element {
     const form = useFormContext()
     return <div className="space-y-4">
-        <h1 className="text-neutral-600 text-2xl font-light text-center">Create Workspace</h1>
         <div>
-            <Input label="Workspace Name" className="text-sm"
+            <Input label="Workspace Name"
                 placeholder="eg: Dream team 1"
-                labelClass="text-sm font-light!"
-                {...form.register("name")} />
+                labelClass=" font-light!"
+                error={form.formState.errors.name?.message}
+                {...form.register("name")}
+              
+                 />
             <small className="pl-2">Workspace, mean that you company/team or something you want</small>
         </div>
 
         <TextArea {...form.register("description")}
-            label="Description" labelClass="text-sm font-light!"
+            label="Description" labelClass="font-light!"
             placeholder="eg: This is my start up"
-            className="text-sm"
+            error={form.formState.errors.description?.message}
+            rows={3}
         />
-        <ImageUpload id="workspace_img" label="Workspace Logo" {...form.register("thumbnail")} />
+        <ImageUpload id="workspace_img" label="Workspace Logo" {...form.register("thumbnail")} labelClass="font-light!"/>
     </div>
 
 })
