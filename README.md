@@ -1,4 +1,4 @@
-# ĐẶC TẢ DỰ ÁN QUẢN LÝ KANBAN - LEVEL MIDDLE DEVELOPER
+# ĐẶC TẢ DỰ ÁN QUẢN LÝ KANBAN
 
 ## PHẦN 1: CẤU TRÚC HỆ THỐNG & AUTHENTICATION
 
@@ -7,16 +7,13 @@
 * **Đầu vào**: 
   * Email/password (validate email format, mật khẩu mạnh)
   * Social login (Google, GitHub)
-  * Magic link (email verification)
 * **Đầu ra**: 
   * JWT token (access token + refresh token)
   * User session (lưu thông tin người dùng)
   * Auth state (logged in/out)
 * **Yêu cầu kỹ thuật**:
-  * Sử dụng JWT với expiry time (15 phút) và refresh token (7 ngày)
-  * RBAC (Role-Based Access Control) với permission matrix
-  * Xác thực 2 lớp (2FA) cho admin accounts
-  * Lưu session user với secure HTTP only cookies
+  * Sử dụng JWT với expiry time và refresh token 
+  * Lưu token user với secure HTTP only cookies
   * Password hashing (bcrypt/Argon2)
 * **UI**:
   * Form đăng nhập/đăng ký responsive
