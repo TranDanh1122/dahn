@@ -3,12 +3,13 @@ import React from "react"
 interface TextAreaProps extends React.ComponentProps<"textarea"> {
     children?: React.ReactNode,
     label: string,
-    error?: string
+    error?: string,
+    labelClass?: string,
 }
 
-export default React.memo(function TextArea({ error, label, children, className, ...props }: TextAreaProps): React.JSX.Element {
+export default React.memo(function TextArea({ labelClass, error, label, children, className, ...props }: TextAreaProps): React.JSX.Element {
     return <fieldset className="flex flex-col gap-2">
-        <label className="font-semibold text-neutral-600 cursor-pointer" htmlFor={props.id} aria-label={label} >
+        <label className={`font-semibold text-neutral-600 cursor-pointer ${labelClass}`} htmlFor={props.id} aria-label={label} >
             {label}
         </label>
         <div className="relative w-full">

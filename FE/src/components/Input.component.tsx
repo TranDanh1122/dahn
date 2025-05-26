@@ -4,15 +4,17 @@ export interface InputProps extends React.ComponentProps<"input"> {
     error?: string;
     label: string;
     children?: React.ReactNode,
+    fieldsetClass?: string,
+    labelClass?: string
 }
 /**
  * Custom Input component
  */
-export default React.memo(function Input({ error, label, className, children, ...props }: InputProps) {
+export default React.memo(function Input({ fieldsetClass, labelClass, error, label, className, children, ...props }: InputProps) {
     const [isShowPass, setShowPass] = React.useState<boolean>(false)
     return (
-        <fieldset className="flex flex-col gap-2">
-            <label className="font-semibold text-neutral-600 cursor-pointer" htmlFor={props.id} aria-label={label} >
+        <fieldset className={`flex flex-col gap-2 ${fieldsetClass}`}>
+            <label className={`font-semibold text-neutral-600 cursor-pointer ${labelClass}`} htmlFor={props.id} aria-label={label} >
                 {label}
             </label>
             <div className="relative w-full">

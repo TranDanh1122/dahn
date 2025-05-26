@@ -6,8 +6,9 @@ export const WorkspaceFormSchema = z.object({
     description: z.coerce.string().length(250).optional(),
     members: z.array(z.object({
         email: z.string().email(),
-        position: z.string()
+        avg_salary: z.string()
     })).optional()
 })
+
 
 export type WorkspaceFormData = z.infer<typeof WorkspaceFormSchema>
