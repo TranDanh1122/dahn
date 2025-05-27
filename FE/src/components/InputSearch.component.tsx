@@ -1,20 +1,20 @@
 import React from "react"
 import Input from "@/components/Input.component"
 import useDebounce from "@/common/hooks/useDebounce"
-import { useSearchUserSvc } from "@/modules/user"
-interface SearchUserByEmailProps extends React.ComponentProps<"input"> {
-    children?: React.ReactNode
-    resultItemClick?: (user: any) => void
+import type { UseMutationResult } from "@tanstack/react-query"
+interface InputSearchProps<T, K> extends React.ComponentProps<"input"> {
+    childrenFn?: (data: T) => React.ReactNode,
+    resultItemClick?: (data: T) => void,
+    searchService: UseMutationResult<T[], Error, K, unknown>
 }
 
-export default function SearchUserByEmail({resultItemClick, ...props }: SearchUserByEmailProps): React.JSX.Element {
+export default function SearchUserByEmail<T, K>({ childrenFn, searchService, resultItemClick, ...props }: InputSearchProps<T, K>): React.JSX.Element {
     const { debouce } = useDebounce()
-    const searchService = useSearchUserSvc()
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         if (value.length < 3) return;
         debouce(() => {
-            searchService.mutate({ search: value })
+            searchService.mutate({ search: value } as K)
         }, 500)
     }
     return <>
@@ -23,15 +23,15 @@ export default function SearchUserByEmail({resultItemClick, ...props }: SearchUs
             <Input label="" className="text-sm placeholder:font-light!" placeholder="Search user by email" onChange={handleSearch}></Input>
             {searchService.isPending && <span className="ml-2 text-xs text-blue-500">Searching...</span>}
             {
-                searchService.data && searchService.data.users.length > 0 && (
+                searchService.data && searchService.data.length > 0 && (
                     <ul className="absolute top-full left-0 w-full bg-white border border-neutral-300 rounded-md shadow-lg z-10">
-                        {searchService.data.user.map((user: any) => (
+                        {searchService.data.map((data: T) => (
                             <li
-                                key={user.id}
-                                className="px-4 py-2 hover:bg-neutral-100 cursor-pointer"
-                                onClick={() => resultItemClick?.(user)}
+                                key={data as unknown as string} // Assuming T has a unique string representation
+                                className="p-2 hover:bg-neutral-100 cursor-pointer"
+                                onClick={() => resultItemClick?.(data)}
                             >
-                                {user.email}
+                                {childrenFn?.(data)}
                             </li>
                         ))}
                     </ul>
