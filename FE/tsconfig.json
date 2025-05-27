@@ -22,6 +22,9 @@
       ],
       "@workspace/*": [
         "src/modules/workspace/*"
+      ],
+      "@user/*": [
+        "src/modules/user/*"
       ]
     }
   }

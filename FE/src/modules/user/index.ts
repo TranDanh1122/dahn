@@ -1,0 +1,1 @@
+export { useSearchUserSvc } from "@user/flows/user/user.service";

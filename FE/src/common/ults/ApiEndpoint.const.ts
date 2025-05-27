@@ -16,5 +16,5 @@ export const API_ENDPOINT = {
     refreshToken: `${proxy}/auth/refresh-token`,
     //----------- User API -------------
     getUser: `${proxy}/auth/userinfo`,
-
+    searhUser: `${proxy}/user/search`,
 }

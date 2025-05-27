@@ -1,23 +1,41 @@
 const express = require('express');
 const router = express.Router();
-router.post('/register', async (req, res) => {
 
-    if (req.method !== 'POST') return res.status(405).end()
-    const {email , password } = req.body
-    const { data, error } = await supabase.auth.signUp({email , password});
-  
-    if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
-  
-    const { error: otpError } = await supabase.auth.signInWithOtp({email})
-  
-    if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
-  
-    // setHTTPOnlyCookie(res, [
-    //   { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
-    //   { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
-    // ])
-  
-    return res.status(200).json({ success: true })
-  });
 
-  module.exports = router;
+/**
+ * Again, im not backend dev, so you beter not use this code in production
+ */
+
+
+
+router.post('/create-workspace', async (req, res) => {
+
+  if (req.method !== 'POST') return res.status(405).end()
+  const supabase = req.supabase
+  const user = req.user
+  const { email, description, members } = req.body
+  const { data, error } = await supabase.from('workspaces').insert({
+    name: email,
+    description: description,
+    owner_id: user.id
+  }).select()
+
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+
+  if (members && members.length > 0) {
+    // Insert members into workspace_invited table
+    const memberData = members.map(member => {
+      return {
+        workspace: data[0].id,
+        user_id: member.id
+      }
+
+    })
+    const { error: memberError } = await supabase.from('workspace_invited').insert(memberData)
+    if (memberError) return res.status(memberError.status ?? 400).json(memberError.message ?? 'Error')
+  }
+
+  return res.status(200).json({ success: true, workspace: data })
+});
+
+module.exports = router;
