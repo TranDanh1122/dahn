@@ -5,6 +5,7 @@ export const WorkspaceFormSchema = z.object({
     thumbnail: z.coerce.string().optional(),
     description: z.string().max(250).optional(),
     members: z.array(z.object({
+        id : z.string().optional(),
         email: z.string().optional(),
         avg_salary: z.string().optional()
     })).optional()

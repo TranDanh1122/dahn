@@ -16,15 +16,13 @@ router.post('/search', async (req, res) => {
     const search = searchData.toLowerCase().trim()
     if (workspace) {
         const { data, error } = await supabase.from('workspace_members')
-            .select(
-                `joined_at,
-             users(id, email, full_name, avatar_url)`)
+            .select(`users(id, email, full_name, avatar_url)`)
             .eq("workspace", workspace)
-            .ilike('users.email', `%${search}%`)
+            .ilike('users.email', `%${search}%`).limit(5)
         if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
         return res.status(200).json({ success: true, users: data })
     } else {
-        const { data, error } = await supabase.from('users').select('*').ilike('email', `%${search}%`)
+        const { data, error } = await supabase.from('users').select('*').ilike('email', `%${search}%`).limit(5)
         if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
         return res.status(200).json({ success: true, users: data })
     }

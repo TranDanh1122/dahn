@@ -13,11 +13,17 @@ export default React.memo(function Step2(): React.JSX.Element {
     })
 
     const userSearchService = useSearchUserSvc()
+
+    const handleResultItemClick = (data: User) => {
+        console.log("Selected user:", data);
+        
+    }
     return <div className="space-y-4">
         {
             members.map((field, index) => {
                 return <div key={field.id} className="flex items-center gap-2 relative">
-                    <InputSearch<User, SearchUserParams> searchService={userSearchService} childrenFn={
+                    <Input {...form.register(`members.${index}.id`)} label="" hidden />
+                    <InputSearch<User, SearchUserParams> resultItemClick={handleResultItemClick} {...form.register(`members.${index}.email`)} searchService={userSearchService} childrenFn={
                         (data: User) => <>{data.email}</>
                     } />
                     <Input {...form.register(`members.${index}.avg_salary`)} fieldsetClass="w-1/3" label="" placeholder="Avg. Rate ($/h)" className="placeholder:font-light!" />
