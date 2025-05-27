@@ -14,18 +14,25 @@ export default React.memo(function Step2(): React.JSX.Element {
 
     const userSearchService = useSearchUserSvc()
 
-    const handleResultItemClick = (data: User) => {
-        console.log("Selected user:", data);
-        
-    }
+    const handleResultItemClick = React.useCallback((data: User, index: number) => {
+        form.setValue(`members.${index}.id`, data.id)
+        form.setValue(`members.${index}.email`, data.email)
+    }, [form])
+    const filter = React.useCallback((data: User) => {
+        return form.getValues("members").some((item: { email: string }) => item.email !== data.email)
+    }, [form])
+    const childrenFn = React.useCallback((data: User) => <>{data.email}</>, [])
     return <div className="space-y-4">
         {
             members.map((field, index) => {
                 return <div key={field.id} className="flex items-center gap-2 relative">
                     <Input {...form.register(`members.${index}.id`)} label="" hidden />
-                    <InputSearch<User, SearchUserParams> resultItemClick={handleResultItemClick} {...form.register(`members.${index}.email`)} searchService={userSearchService} childrenFn={
-                        (data: User) => <>{data.email}</>
-                    } />
+                    <InputSearch<User, SearchUserParams>
+                        resultItemClick={(data: User) => handleResultItemClick(data, index)}
+                        {...form.register(`members.${index}.email`)}
+                        searchService={userSearchService}
+                        filter={filter}
+                        childrenFn={childrenFn} />
                     <Input {...form.register(`members.${index}.avg_salary`)} fieldsetClass="w-1/3" label="" placeholder="Avg. Rate ($/h)" className="placeholder:font-light!" />
                     {members.length > 1 && <Trash onClick={() => remove(index)} className="font-light! size-5 text-red-400 cursor-pointer" />}
                 </div>
