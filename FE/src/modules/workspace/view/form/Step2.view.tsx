@@ -11,15 +11,8 @@ export default React.memo(function Step2(): React.JSX.Element {
         control: form.control,
         name: "members"
     })
-    const { debouce } = useDebounce()
-    const searchService = useSearchUserSvc()
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        if (value.length < 3) return;
-        debouce(() => {
-            searchService.mutate({ search: value })
-        }, 500)
-    }
+
+
     return <div className="space-y-4">
         {
             members.map((field, index) => {
