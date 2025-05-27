@@ -10,26 +10,25 @@ const router = express.Router();
 
 router.post('/search', async (req, res) => {
 
-    if (req.method !== 'GET') return res.status(405).end()
+    if (req.method !== 'POST') return res.status(405).end()
     const supabase = req.supabase
-    const { search, workspace } = req.body
+    const { search: searchData, workspace } = req.body
+    const search = searchData.toLowerCase().trim()
     if (workspace) {
         const { data, error } = await supabase.from('workspace_members')
             .select(
-            `joined_at,
+                `joined_at,
              users(id, email, full_name, avatar_url)`)
             .eq("workspace", workspace)
             .ilike('users.email', `%${search}%`)
         if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
         return res.status(200).json({ success: true, users: data })
     } else {
-        const { data, error } = await supabase.from('users')
-            .select('*')
-            .ilike('email', `%${search}%`)
+        const { data, error } = await supabase.from('users').select('*').ilike('email', `%${search}%`)
         if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
         return res.status(200).json({ success: true, users: data })
     }
-    
+
 });
 
 module.exports = router;

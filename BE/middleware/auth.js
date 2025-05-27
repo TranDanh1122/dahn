@@ -4,14 +4,12 @@ const { createClient } = require('@supabase/supabase-js')
 async function authMiddleware(req, res, next) {
     const cookies = cookie.parse(req.headers.cookie || '')
     const token = cookies['access_token']
-    console.log('Token:', token)
-    if (!token) {
-        return res.status(401).json({ error: 'No token' })
-    }
+    if (!token) return res.status(401).json({ error: 'No token' })
 
-    req.supabase = createClient(process.env.AUTH_DOMAIN, process.env.AUTH_API_KEY, {
+    const supabase = createClient(process.env.AUTH_DOMAIN, process.env.AUTH_API_KEY, {
         global: { headers: { Authorization: `Bearer ${token}` } },
     })
+    req.supabase = supabase
     const { data: { user }, error } = await supabase.auth.getUser()
 
     if (error || !user) {

@@ -1,4 +1,4 @@
 export interface SearchUserParams { 
-    email : string,
+    search : string,
     workspace?: string
 }

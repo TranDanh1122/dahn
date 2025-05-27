@@ -3,9 +3,9 @@ import Input from "@/components/Input.component"
 import TextArea from "@/components/TextArea.component"
 import ImageUpload from "@/components/ImageUpload.component"
 import { useFormContext } from 'react-hook-form'
-
+import type { WorkspaceFormData } from '@workspace/models/request.schema'
 export default React.memo(function Step1(): React.JSX.Element {
-    const form = useFormContext()
+    const form = useFormContext<WorkspaceFormData>()
     return <div className="space-y-4">
         <div>
             <Input label="Workspace Name"
