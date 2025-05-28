@@ -10,12 +10,14 @@ async function authMiddleware(req, res, next) {
         global: { headers: { Authorization: `Bearer ${token}` } },
     })
     req.supabase = supabase
-    const { data: { user }, error } = await supabase.auth.getUser()
-
+    const { data: { user : authUser }, error: authError } = await supabase.auth.getUser()
+    if (authError || !authUser) {
+        return res.status(401).json({ error: 'Invalid user' })
+    }
+    const { data : [user], error } = await supabase.from("users").select().eq("user_id", authUser.id)
     if (error || !user) {
         return res.status(401).json({ error: 'Invalid user' })
     }
-
     req.user = user
 
     next()

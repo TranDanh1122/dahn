@@ -1,0 +1,38 @@
+import { Dropdown } from "@/components/Dropdown";
+import Loading from "@/components/Loading.component";
+import React from "react";
+import { useGetWorkspaceSvc } from "@workspace/flow/workspace/workspace.service";
+import CircleLogoWText from "@/components/CircleLogoWText.component";
+import { useNavigate } from "react-router-dom";
+import MenuItem from "@workspace/components/MenuItem.component"
+import { Plus } from "lucide-react"
+import Skeleton from "@/components/Skeleton.component"
+const WorkspaceList = React.lazy(() => import("@/modules/workspace/components/WorkspaceList/WorkspaceList.component"))
+export default React.memo(function WorkspaceItem(): React.JSX.Element {
+    const { data, isLoading } = useGetWorkspaceSvc()
+    const navigate = useNavigate()
+    return <>
+        {
+            isLoading && <Skeleton className="bg-neutral-300 w-full h-10" />
+        }
+        {
+            !isLoading && data && data.length == 0 && <MenuItem
+                action={() => navigate("/create-workspace")}
+                className=" hover:bg-blue-100!"
+                icon={<Plus class="size-5 text-neutral-400" />}
+                text="Create new project" />
+        }
+
+        {
+            data && data.length > 0 && <Dropdown dropContent={
+                <React.Suspense
+                    fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
+                    <WorkspaceList />
+                </React.Suspense>
+            }>
+                <CircleLogoWText text={data[0].name} img={data[0].image} />
+            </Dropdown>
+        }
+
+    </>
+})

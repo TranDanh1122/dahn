@@ -1,6 +1,5 @@
 import React from "react"
 import { Navigate } from "react-router-dom"
-import { getPKCECode } from "../loader/getPKCECode.loader";
 
 const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"));
 const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"));
@@ -9,6 +8,12 @@ const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPasswo
 const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword.view"))
 const AuthLayout = React.lazy(() => import("@auth/layout/AuthLayout"))
 const OTPModal = React.lazy(() => import("@auth/view/OTPModal.view"))
+const getPKCECode = async () => {
+    const loader = await import("@auth/loader/getPKCECode.loader")
+    return loader.default
+}
+
+
 export const AuthRouter = [
     {
         path: "auth",

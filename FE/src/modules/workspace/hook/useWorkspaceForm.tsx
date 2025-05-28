@@ -3,6 +3,7 @@ import { WorkspaceFormSchema, type WorkspaceFormData } from "@workspace/models/r
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useCreateWorkspaceSvc } from "@workspace/flow/workspace/workspace.service";
+import { useNavigate } from "react-router-dom";
 const stepFields: Record<number, (keyof WorkspaceFormData)[]> = {
     1: ["name", "description", "thumbnail"],
     2: ["members"],
@@ -19,9 +20,12 @@ export default function useWorkspaceForm() {
         resolver: zodResolver(WorkspaceFormSchema),
         mode: "all"
     })
+    const navigate = useNavigate()
     const createWorkspace = useCreateWorkspaceSvc()
     const onSubmit = (values: WorkspaceFormData) => {
-        createWorkspace.mutate(values)
+        createWorkspace.mutate(values, {
+            onSuccess: () => navigate("/")
+        })
     }
     const [step, changeStep] = React.useState<number>(1)
     const handleBack = () => {

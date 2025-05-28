@@ -18,5 +18,5 @@ export const API_ENDPOINT = {
     getUser: `${proxy}/auth/userinfo`,
     searchUser: `${proxy}/user/search`,
     //----------- Workspace API --------
-    createWorkspace: `${proxy}/workspace`
+    workspace: `${proxy}/workspace`,
 }

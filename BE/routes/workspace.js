@@ -8,34 +8,43 @@ const router = express.Router();
 
 
 
-router.post('/create-workspace', async (req, res) => {
+router.post('/', async (req, res) => {
 
   if (req.method !== 'POST') return res.status(405).end()
   const supabase = req.supabase
   const user = req.user
-  const { email, description, members } = req.body
-  const { data, error } = await supabase.from('workspaces').insert({
-    name: email,
-    description: description,
-    owner_id: user.id
+  const { name, description, members } = req.body
+  const { data, error } = await supabase.from('workspace').insert({
+    name,
+    description,
+    owner: user.id
   }).select()
 
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error when trying to create workspace')
 
-  if (members && members.length > 0) {
+  const memberData = members.filter(el => el.id)
+  if (memberData && memberData.length > 0) {
     // Insert members into workspace_invited table
     const memberData = members.map(member => {
       return {
         workspace: data[0].id,
-        user_id: member.id
+        users: member.id
       }
 
     })
     const { error: memberError } = await supabase.from('workspace_invited').insert(memberData)
     if (memberError) return res.status(memberError.status ?? 400).json(memberError.message ?? 'Error')
   }
-
-  return res.status(200).json({ success: true, workspace: data })
+  return res.status(200).json({ success: true, workspace: data.workspaces })
 });
+
+router.get("/", async (req, res) => {
+  if (req.method !== 'GET') return res.status(405).end()
+  const supabase = req.supabase
+  const user = req.user
+  const { data, error } = await supabase.from('workspace').select().eq("owner", user.id).limit(3)
+  if (error) return res.status(error?.status ?? 400).json(error?.message ?? "Error when try to fetch workspace")
+  return res.status(200).json({ success: true, data: data })
+})
 
 module.exports = router;
