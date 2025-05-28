@@ -1,3 +1,4 @@
+import { FLOAT_REGEX } from "@/common/ults/Regex.const"
 import { z } from "zod"
 
 export const WorkspaceFormSchema = z.object({
@@ -5,10 +6,17 @@ export const WorkspaceFormSchema = z.object({
     thumbnail: z.coerce.string().optional(),
     description: z.string().max(250).optional(),
     members: z.array(z.object({
-        id : z.string().optional(),
+        id: z.string().optional(),
         email: z.string().optional(),
         avg_salary: z.string().optional()
-    })).optional()
+    }).refine(({ id, email, avg_salary }) => {
+        if (id && email) {          
+            if (!avg_salary) return false
+            return FLOAT_REGEX.test(avg_salary)
+        }
+    
+        return true
+    }, { message: "Invalid Avg. Rate", path : ["avg_salary"] })).optional()
 })
 
 
