@@ -1,7 +1,7 @@
 import React from 'react'
 import Input from "@/components/Input.component"
 import TextArea from "@/components/TextArea.component"
-import ImageUpload from "@/components/ImageUpload.component"
+import { ImageUpload } from "@/components/ImageUpload"
 import { useFormContext } from 'react-hook-form'
 import type { WorkspaceFormData } from '@workspace/models/request.schema'
 export default React.memo(function Step1(): React.JSX.Element {
@@ -13,8 +13,8 @@ export default React.memo(function Step1(): React.JSX.Element {
                 labelClass=" font-light!"
                 error={form.formState.errors.name?.message}
                 {...form.register("name")}
-              
-                 />
+
+            />
             <small className="pl-2">Workspace, mean that you company/team or something you want</small>
         </div>
 
@@ -24,7 +24,7 @@ export default React.memo(function Step1(): React.JSX.Element {
             error={form.formState.errors.description?.message}
             rows={3}
         />
-        <ImageUpload id="workspace_img" label="Workspace Logo" {...form.register("thumbnail")} labelClass="font-light!"/>
+        <ImageUpload id="workspace_img" label="Workspace Logo" {...form.register("thumbnail")} labelClass="font-light!" />
     </div>
 
 })

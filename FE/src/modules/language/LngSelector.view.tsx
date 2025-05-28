@@ -1,5 +1,5 @@
 import React from "react";
-import Select from "@/components/Select.component";
+import { Select } from "@/components/Select";
 import { useLanguageSelector } from "@lang/useLngSelector.hook";
 import type { LanguageDataType } from "@lang/type";
 export default React.memo(function LanguageSelector(): React.JSX.Element {

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Input from "@/components/Input.component";
 import MenuItem from "@workspace/components/MenuItem.component";
-import Dropdown from "@/components/Dropdown.component"
+import { Dropdown } from "@/components/Dropdown"
 import CircleLogoWText from "@/components/CircleLogoWText.component"
 import Loading from "@/components/Loading.component"
 const WorkspaceList = React.lazy(() => import("@workspace/components/WorkspaceList.component"))
@@ -34,7 +34,7 @@ export default React.memo(function Sidebar(): React.JSX.Element {
             <MenuItem icon={<Cog className="text-neutral-500 size-4" />} text="Setting" />
         </div>
         <Dropdown dropContent={
-            <React.Suspense fallback={<Loading className = "size-5 border-s-neutral-400 mt-4"/>}><WorkspaceList /></React.Suspense>
+            <React.Suspense fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}><WorkspaceList /></React.Suspense>
         }>
             <CircleLogoWText text="Company 1" img="" />
         </Dropdown>

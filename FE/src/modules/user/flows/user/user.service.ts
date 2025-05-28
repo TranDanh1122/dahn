@@ -10,3 +10,8 @@ export const useSearchUserSvc = () => {
         },
     })
 }
+
+export const searchUserFn = async (data: SearchUserParams) => {
+    const res = await searchUserAPI(data)
+    return res.data.users
+}

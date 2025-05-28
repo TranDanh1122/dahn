@@ -1,14 +1,12 @@
 import React from "react";
-import { useOutsideClick } from '@/common/hooks/useOutsideClick'
 import { ChevronDown } from 'lucide-react'
+import useDropdown from "./useDropdown.hook";
 interface DropdownProps extends React.ComponentProps<"div"> {
     children?: React.ReactNode,
     dropContent: React.ReactElement
 }
 export default React.memo(function Dropdown({ children, dropContent, className }: DropdownProps): React.JSX.Element {
-    const [show, isShow] = React.useState<boolean>(false)
-    const handleOutSideClick = () => isShow(false)
-    const dropdownRef = useOutsideClick<HTMLDivElement>(handleOutSideClick)
+    const {dropdownRef, isShow , show } = useDropdown()
     return <div ref={dropdownRef} onClick={() => isShow(prev => !prev)} className={`relative ${className}`}>
         {children}
         {
