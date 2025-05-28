@@ -14,10 +14,11 @@ export default React.memo(function Step2(): React.JSX.Element {
     const handleResultItemClick = React.useCallback((data: User, index: number) => {
         form.setValue(`members.${index}.id`, data.id)
         form.setValue(`members.${index}.email`, data.email)
-    }, [form.getValues("members")])
+    }, [form.watch("members")])
     const filter = React.useCallback((data: User) => {
-        return form.getValues("members").some((item: { email: string }) => item.email !== data.email)
-    }, [form.getValues("members")])
+        console.log("asdffv" , form.getValues("members"), data)
+        return !form.getValues("members").some((item: { email: string }) => item.email === data.email)
+    }, [form.watch("members")])
     const childrenFn = React.useCallback((data: User) => <>{data.email}</>, [])
     return <div className="space-y-4">
         {
