@@ -1,2 +1,2 @@
 
-export {default as Dropdown} from "./Dropdown.component"
+export {default as Dropdown} from "./Dropdown.view"

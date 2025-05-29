@@ -1,1 +1,1 @@
-export {default as ImageUpload} from "./ImageUpload.component"
+export {default as ImageUpload} from "./ImageUpload.view"

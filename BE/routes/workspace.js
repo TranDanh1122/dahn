@@ -47,4 +47,14 @@ router.get("/", async (req, res) => {
   return res.status(200).json({ success: true, data: data })
 })
 
+router.delete("/:id", async (req, res) => {
+  if (req.method != "DELETE") return res.status(405).end()
+  const supabase = req.supabase
+  const user = req.user
+  const id = req.params.id
+  const { data, error } = await supabase.from('workspace').delete().eq('id', id)
+  if (error) return res.status(error?.status ?? 400).json(error?.message ?? "Error when try to delete workspace")
+  return res.status(200).json({ success: true, data })
+
+})
 module.exports = router;

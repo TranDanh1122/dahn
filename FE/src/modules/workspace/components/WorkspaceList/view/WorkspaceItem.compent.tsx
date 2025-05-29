@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MenuItem from "@workspace/components/MenuItem.component"
 import { Plus } from "lucide-react"
 import Skeleton from "@/components/Skeleton.component"
-const WorkspaceList = React.lazy(() => import("@/modules/workspace/components/WorkspaceList/WorkspaceList.component"))
+const WorkspaceList = React.lazy(() => import("@/modules/workspace/components/WorkspaceList/components/WorkspaceList.component"))
 export default React.memo(function WorkspaceItem(): React.JSX.Element {
     const { data, isLoading } = useGetWorkspaceSvc()
     const navigate = useNavigate()
@@ -17,14 +17,14 @@ export default React.memo(function WorkspaceItem(): React.JSX.Element {
         }
         {
             !isLoading && data && data.length == 0 && <MenuItem
-                action={() => navigate("/create-workspace")}
+                onClick={() => navigate("/create-workspace")}
                 className=" hover:bg-blue-100!"
                 icon={<Plus class="size-5 text-neutral-400" />}
                 text="Create new project" />
         }
 
         {
-            data && data.length > 0 && <Dropdown dropContent={
+            data && data.length > 0 && <Dropdown hasIcon={true} dropContent={
                 <React.Suspense
                     fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
                     <WorkspaceList />
