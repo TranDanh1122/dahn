@@ -28,6 +28,9 @@
       ],
       "@project/*": [
         "src/modules/project/*"
+      ],
+      "@dashboard/*": [
+        "src/modules/dashboard/*"
       ]
     }
   }

@@ -28,6 +28,7 @@ export default defineConfig({
       '@workspace': path.resolve(__dirname, './src/modules/workspace'),
       '@user': path.resolve(__dirname, './src/modules/user'),
       '@project': path.resolve(__dirname, './src/modules/project'),
+      '@dashboard': path.resolve(__dirname, './src/modules/dashboard'),
     }
   },
   resolve: {
@@ -38,6 +39,7 @@ export default defineConfig({
       '@workspace': path.resolve(__dirname, './src/modules/workspace'),
       '@user': path.resolve(__dirname, './src/modules/user'),
       '@project': path.resolve(__dirname, './src/modules/project'),
+      '@dashboard': path.resolve(__dirname, './src/modules/dashboard'),
     },
   }
 })
