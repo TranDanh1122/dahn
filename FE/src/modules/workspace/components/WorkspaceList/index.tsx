@@ -1,1 +1,1 @@
-export { default as WorkspaceItem } from "./view/WorkspaceItem.compent"
+export { default as WorkspaceItem } from "./view/WorkspaceItem.view"

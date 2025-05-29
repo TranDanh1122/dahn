@@ -40,6 +40,9 @@
       ],
       "@user/*": [
         "src/modules/user/*"
+      ],
+      "@project/*": [
+        "src/modules/project/*"
       ]
     }
   },

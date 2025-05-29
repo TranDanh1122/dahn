@@ -27,6 +27,7 @@ export default defineConfig({
       '@lang': path.resolve(__dirname, './src/modules/language'),
       '@workspace': path.resolve(__dirname, './src/modules/workspace'),
       '@user': path.resolve(__dirname, './src/modules/user'),
+      '@project': path.resolve(__dirname, './src/modules/project'),
     }
   },
   resolve: {
@@ -36,6 +37,7 @@ export default defineConfig({
       '@lang': path.resolve(__dirname, './src/modules/language'),
       '@workspace': path.resolve(__dirname, './src/modules/workspace'),
       '@user': path.resolve(__dirname, './src/modules/user'),
+      '@project': path.resolve(__dirname, './src/modules/project'),
     },
   }
 })

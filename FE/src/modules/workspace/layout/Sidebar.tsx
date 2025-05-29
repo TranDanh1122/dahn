@@ -32,14 +32,13 @@ export default React.memo(function Sidebar(): React.JSX.Element {
             <MenuItem icon={<Cog className="text-neutral-500 size-4" />} text="Setting" />
         </div>
         <WorkspaceItem />
-
         <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
             <MenuItem icon={<FolderOpenDot className="text-neutral-500 size-4" />} text="All Projects" />
             <MenuItem icon={<FolderCheck className="text-neutral-500 size-4" />} text="Completed" />
             <MenuItem icon={<ChartPie className="text-neutral-500 size-4" />} text="Report" />
         </div>
         <div className="p-2">
-            <h2 className="text-sm font-medium mb-2">Pinned Projects</h2>
+            <h2 className="text-sm font-medium mb-2">Shared Workspace</h2>
             <MenuItem icon={<Folder className="text-neutral-500 size-4" />} text="Eccommerce" />
             <MenuItem icon={<Folder className="text-neutral-500 size-4" />} text="Vexere" />
         </div>
