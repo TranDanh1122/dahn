@@ -1,0 +1,1 @@
+export { default as WorkspaceRouter } from "@workspace/router"

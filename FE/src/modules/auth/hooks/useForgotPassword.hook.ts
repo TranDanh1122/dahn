@@ -12,15 +12,7 @@ export const useForgotPassword = () => {
     })
     const forgotPass = useForgotPasswordSvc()
     const onSubmit = (values: z.infer<typeof ForgotPassSchema>) => {
-        forgotPass.mutate(values, {
-            onError: (e) => {
-                // throw new Error(e.message)
-            },
-            onSuccess: () => {
-                alert(1)
-             
-            }
-        })
+        forgotPass.mutate(values)
     }
     return { form, onSubmit, isLoading: forgotPass.isPending }
 }

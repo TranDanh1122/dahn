@@ -1,0 +1,1 @@
+export { default as WorkspaceItem } from "./view/WorkspaceItem.view"

@@ -19,6 +19,18 @@
       ],
       "@lang/*": [
         "src/modules/language/*"
+      ],
+      "@workspace/*": [
+        "src/modules/workspace/*"
+      ],
+      "@user/*": [
+        "src/modules/user/*"
+      ],
+      "@project/*": [
+        "src/modules/project/*"
+      ],
+      "@dashboard/*": [
+        "src/modules/dashboard/*"
       ]
     }
   }

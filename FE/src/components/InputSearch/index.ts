@@ -1,0 +1,1 @@
+export {default as InputSearch} from "./view/InputSearch.component"

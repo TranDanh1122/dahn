@@ -1,17 +1,8 @@
-import { useOutsideClick } from "@/common/hooks/useOutsideClick";
-import { isObjectEqual, getDisplayText } from "@/common/ults/Tool";
+import { getDisplayText } from "@/common/ults/Tool";
 import React from "react";
+import type { SelectProps } from "./type";
+import useSelect from "./useSelect.hook";
 
-interface SelectProps<T> {
-    dataSets: T[],
-    valueKey?: keyof T,
-    textKey?: keyof T,
-    className?: string,
-    onChange?: (value: T[keyof T] | T) => void
-    changeValue?: "all" | "value" | "text",
-    defaultValue: T,
-    children?: React.ReactNode
-}
 /**
  * Custom Select component
  * 
@@ -26,27 +17,7 @@ interface SelectProps<T> {
  * 
  */
 export default function Select<T>({ children, className, dataSets, valueKey, textKey, onChange, changeValue, defaultValue }: SelectProps<T>): React.JSX.Element {
-    const [value, setValue] = React.useState<T>(defaultValue)
-    const [open, setOpen] = React.useState<boolean>(false)
-    const dropboxRef = useOutsideClick<HTMLDivElement>(() => setOpen(false))
-    const handleChange = React.useCallback((dataSet: T) => {
-        if (value === dataSet || isObjectEqual(dataSet, value)) return
-        setOpen(false)
-        switch (changeValue) {
-            case "value":
-                if (!valueKey) throw new Error("Missing valueKey props")
-                onChange?.(dataSet[valueKey])
-                break;
-            case "text":
-                if (!textKey) throw new Error("Missing textKey props")
-                onChange?.(dataSet[textKey])
-                break;
-            default:
-                onChange?.(dataSet)
-                break;
-        }
-        setValue(dataSet)
-    }, [value])
+    const { open, dropboxRef, handleChange, setOpen, value } = useSelect<T>({ defaultValue, onChange, changeValue, valueKey, textKey })
 
     return <div className={`relative ${className}`} role="combobox" aria-expanded={open} aria-haspopup="listbox">
         <div className="p-2 w-full cursor-pointer bg-white rounded-md font-light hover:bg-neutral-200" onClick={() => setOpen(!open)}>

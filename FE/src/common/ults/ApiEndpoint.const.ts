@@ -7,6 +7,8 @@ export const API_ENDPOINT = {
     login: `${proxy}/auth/login`,
     forgotPass: `${proxy}/auth/forgot-password`,
     resetPass: `${proxy}/auth/reset-password`,
+    login_otp: `${proxy}/auth/login-otp`,
+    sendOTP: `${proxy}/auth/send-otp`,
     // PKCE
     pkceAuth: (param: URLSearchParams) => `${domain}/auth/v1/authorize?${param}`,
     pkceGetToken: `${proxy}/auth/pkce-token`,
@@ -14,5 +16,8 @@ export const API_ENDPOINT = {
     refreshToken: `${proxy}/auth/refresh-token`,
     //----------- User API -------------
     getUser: `${proxy}/auth/userinfo`,
-
+    searchUser: `${proxy}/user/search`,
+    //----------- Workspace API --------
+    workspace: `${proxy}/workspace`,
+    acceptedInvite: `${proxy}/workspace/accepted`
 }

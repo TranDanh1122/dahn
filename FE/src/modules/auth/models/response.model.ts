@@ -1,7 +1,7 @@
 export interface User {
     id: string,
     avatar_url: string,
-    email: boolean,
+    email: string,
     email_verified: boolean,
     full_name: string,
     name: string,

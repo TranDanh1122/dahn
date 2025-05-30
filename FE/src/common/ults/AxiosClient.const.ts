@@ -5,9 +5,9 @@ import { API_ENDPOINT } from './ApiEndpoint.const'
 export const AxiosClient = axios.create({
     timeout: import.meta.env.VITE_API_TIMEOUT,
     headers: {
-        apikey : import.meta.env.VITE_API_KEY,
+        apikey: import.meta.env.VITE_API_KEY,
     }
-    
+
 })
 
 
@@ -73,18 +73,18 @@ AxiosClient.interceptors.response.use(
                         body: JSON.stringify({ ...REFRESH_TOKEN_PARAM }),
                         credentials: "include"
                     })
-                   if (res.status > 200) window.location.href = "/auth/login"
+                    if (res.status > 200) window.location.href = "/auth/login"
                     processQueue()
                     return AxiosClient(request)
                 } catch (refreshError) {
                     processQueue(refreshError)
-                     window.location.href = "/auth/login"
+                    window.location.href = "/auth/login"
                     return Promise.reject(refreshError)
                 } finally {
                     isRefresh = false
                 }
             } else {
-                 window.location.href = "/auth/login"
+                window.location.href = "/auth/login"
             }
 
         }

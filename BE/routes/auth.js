@@ -54,11 +54,6 @@ function decrypt(data) {
 const supabase = createClient.createClient(
   process.env.AUTH_DOMAIN,
   process.env.AUTH_API_KEY,
-  {
-    auth: {
-      flowType: 'pkce',
-    }
-  }
 );
 
 const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process.env.AUTH_SERVICE_KEY);
@@ -66,7 +61,7 @@ const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process
 /**
  * A serverless function send login data from FE
  * Main task: Set HTTPOnly Cookies that what i know
- * ChatGPT write this fn
+
  * @param req 
  * @param res 
  * @returns 
@@ -74,23 +69,26 @@ const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process
 router.post('/register', async (req, res) => {
 
   if (req.method !== 'POST') return res.status(405).end()
-
-  const { data, error } = await supabase.auth.signUp(req.body);
+  const { email, password } = req.body
+  const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
-  setHTTPOnlyCookie(res, [
-    { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
-    { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
-  ])
 
+  const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
-  return res.status(200).json({ success: true , user : { id :  data.user.id , ...data.user.user_metadata }})
+  if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
+
+  // setHTTPOnlyCookie(res, [
+  //   { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
+  //   { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
+  // ])
+
+  return res.status(200).json({ success: true })
 });
 
 /**
- * A serverless function send login data from FE
- * Main task: Set HTTPOnly Cookies that what i know
- * ChatGPT write this fn
+ * A serverless function send login request with OTP from FE
+
  * @param req 
  * @param res 
  * @returns 
@@ -100,20 +98,63 @@ router.post('/login', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
 
   const { data, error } = await supabase.auth.signInWithPassword(req.body);
+
+  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+
+  const { email } = req.body
+
+  const { error: otpError } = await supabase.auth.signInWithOtp({ email })
+
+  if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
+
+  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
+});
+
+
+router.post('/send-otp', async (req, res) => {
+
+  if (req.method !== 'POST') return res.status(405).end()
+
+
+  const { email } = req.body
+
+  const { error: otpError } = await supabase.auth.signInWithOtp({ email })
+
+  if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
+
+  return res.status(200).json({ success: true })
+});
+
+/**
+ * A serverless function send OTP from FE
+ * Main task: Set HTTPOnly Cookies that what i know
+
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+
+router.post('/login-otp', async (req, res) => {
+
+  if (req.method !== 'POST') return res.status(405).end()
+
+  const { email, otp: token } = req.body
+  const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
+
   if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
 
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
     { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
   ])
-
-
-  return res.status(200).json({ success: true, user : { id :  data.user.id , ...data.user.user_metadata } })
+  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
 });
+
+
 /**
  * A serverless function send reset password request
  * Main task: send reset password request, Set HTTPOnly Cookies, 5min lifetime, to validate user
- * ChatGPT write this fn
+
  * @param req 
  * @param res 
  * @returns 
@@ -126,7 +167,7 @@ router.post('/forgot-password', async (req, res) => {
 
   const { data, error } = await supabase.auth.resetPasswordForEmail(
     email.trim().toLowerCase(),
-    { redirectTo: 'http://localhost:5173/auth/reset-password' }
+    { redirectTo: `${process.env.FE_DOMAIN}/auth/reset-password` }
   );
 
   if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
@@ -168,7 +209,7 @@ router.post('/reset-password', async (req, res) => {
 /**
  * A serverless function send refresh token request
  * Main task: Set HTTPOnly Cookies
- * ChatGPT write this fn
+
  * @param req 
  * @param res 
  * @returns 
@@ -189,7 +230,7 @@ router.post('/refresh-token', async (req, res) => {
     { name: 'refresh_token', value: session.refresh_token, expires: 604800 },
   ])
 
-  return res.status(200).json({ success: true, user : { id :  data.user.id , ...data.user.user_metadata } })
+  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
 });
 
 router.get('/userinfo', async (req, res) => {
@@ -216,11 +257,20 @@ router.get('/userinfo', async (req, res) => {
  * A serverless function send get access token request
  * It use PKCE method, with ServerCode, and Client Code
  * Main task: Set HTTPOnly Cookies
- * ChatGPT write this fn
+
  * @param req 
  * @param res 
  * @returns 
  */
+const supabasePKCE = createClient.createClient(
+  process.env.AUTH_DOMAIN,
+  process.env.AUTH_API_KEY,
+  {
+    auth: {
+      flowType: 'pkce',
+    }
+  }
+);
 router.post('/pkce-token', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
 
@@ -229,7 +279,7 @@ router.post('/pkce-token', async (req, res) => {
   if (!code || !code_verifier) {
     return res.status(400).json({ error: 'Missing code or code_verifier' });
   }
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code, code_verifier);
+  const { data, error } = await supabasePKCE.auth.exchangeCodeForSession(code, code_verifier);
 
   if (error) {
     return res.status(error.status ?? 400).json(error.message ?? 'Error')
@@ -240,7 +290,7 @@ router.post('/pkce-token', async (req, res) => {
     { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 },
   ])
 
-  return res.status(200).json({ success: true , user : { id :  data.user.id , ...data.user.user_metadata } })
+  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
 });
 
 

@@ -1,4 +1,4 @@
-import { PASSWORD_REGEX } from '@/common/ults/Regex.const'
+import { LATIN_CHECK_RGX, PASSWORD_REGEX } from '@/common/ults/Regex.const'
 import { z } from 'zod'
 /**
  * Register zod schema
@@ -50,3 +50,11 @@ export const ResetPassSchema = z.object({
 }).refine(val => val.password === val.confirmPassword, { message: "Password and confirm password not match" })
 
 export type ResetPassData = z.infer<typeof ResetPassSchema>
+
+export const VerifyOTPSchema = z.object({
+    otp: z.coerce.string().length(6).refine((val: string) => {
+        return !LATIN_CHECK_RGX.test(val)
+    }, { message: "OTP not correct format" }),
+    email: z.coerce.string().email({ message: "Invalid Email" })
+})
+export type VerifyOTPData = z.infer<typeof VerifyOTPSchema>

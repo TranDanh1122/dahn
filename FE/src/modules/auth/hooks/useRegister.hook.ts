@@ -18,9 +18,8 @@ export const useRegister = () => {
     const register = useRegisterSvc()
     const onSubmit: SubmitHandler<z.infer<typeof RegisterSchema>> = (val) => {
         register.mutate(val, {
-            onSuccess: (data) => {
-                console.log("A", data)
-                // navigate("/auth/login")
+            onSuccess: (_, values) => {
+                navigate("/auth/register/2fa", { state: { email: values.email } })
             }
         })
     }
