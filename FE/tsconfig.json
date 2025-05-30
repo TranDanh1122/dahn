@@ -8,6 +8,11 @@
       "path": "./tsconfig.node.json"
     }
   ],
+  "exclude": [
+    "**/*.test.ts",
+     "**/*.test.tsx",
+    "**/__tests__/**"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
