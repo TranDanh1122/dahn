@@ -8,13 +8,15 @@ interface WorkspaceItemUtl {
     id: string
 }
 export default React.memo(function WorkspaceItemUtl({ id }: WorkspaceItemUtl): React.JSX.Element {
-    return <Dropdown contentPosition="right-2! top-[100%+2px]" onClick={(e) => {
+    return <Dropdown role="dropdown" contentPosition="right-2! top-[100%+2px]" onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
     }} dropContent={
         <React.Suspense
             fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
-            <ItemUtl id={id} />
+            <ItemUtl id={id} action={() => {
+                document.body.click()
+            }} />
         </React.Suspense>
     }>
         <Ellipsis className="size-5 text-neutral-500 mr-2 -z-10" />
@@ -25,7 +27,7 @@ export default React.memo(function WorkspaceItemUtl({ id }: WorkspaceItemUtl): R
  * why split here?
  * Imagine if mutation status change, and the whole list of item re-render.....
  */
-const ItemUtl = ({ id }: WorkspaceItemUtl): React.JSX.Element => {
+const ItemUtl = ({ id, action }: WorkspaceItemUtl & {action? : () => void}): React.JSX.Element => {
     const deleteMutation = useDeleteWorkspaceSvc()
     return <>
         {
@@ -35,7 +37,9 @@ const ItemUtl = ({ id }: WorkspaceItemUtl): React.JSX.Element => {
             !deleteMutation.isPending && <MenuItem onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                deleteMutation.mutate(id)
+                deleteMutation.mutate(id, {
+                    onSuccess: () => action?.()
+                })
             }} text="Delete Workspace" icon={<></>}>
                 <Trash className="text-red-400 text-sm size-4" />
             </MenuItem>
