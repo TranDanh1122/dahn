@@ -9,7 +9,7 @@ export default React.memo(function DBWorkspaceList(): React.JSX.Element {
     return <div className="space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
             <h2 className="font-medium text-lg">My Workspace</h2>
-            <Link className=" underline text-neutral-500">View all</Link>
+            <Link to="" className=" underline text-neutral-500">View all</Link>
         </div>
         <div className="grid grid-cols-5 gap-10 auto-rows-[230px]">
             {

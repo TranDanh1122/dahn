@@ -24,6 +24,6 @@ export default React.memo(function WorkspaceList(): React.JSX.Element {
             })
         }
         <hr className="text-neutral-300" />
-        <MenuItem onClick={() => navigate("/workspace/create")} className=" hover:bg-neutral-100!" icon={<Plus class="size-5 text-neutral-400" />} text="Create new" />
+        <MenuItem onClick={() => navigate("/workspace/create")} className=" hover:bg-neutral-100!" icon={<Plus className="size-5 text-neutral-400" />} text="Create new" />
     </div>
 })

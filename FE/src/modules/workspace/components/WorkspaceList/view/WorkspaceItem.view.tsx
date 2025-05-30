@@ -19,7 +19,7 @@ export default React.memo(function WorkspaceItem(): React.JSX.Element {
             !isLoading && data && data.length == 0 && <MenuItem
                 onClick={() => navigate("/workspace/create")}
                 className=" hover:bg-blue-100!"
-                icon={<Plus class="size-5 text-neutral-400" />}
+                icon={<Plus className="size-5 text-neutral-400" />}
                 text="Create new project" />
         }
 
