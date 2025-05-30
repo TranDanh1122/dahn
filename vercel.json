@@ -5,8 +5,7 @@
       "src": "FE/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
-        "buildCommand": "pnpm install && pnpm run build"
+        "distDir": "dist"
       }
     },
     {
