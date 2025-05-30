@@ -2,28 +2,28 @@
   "version": 2,
   "builds": [
     {
-      "src": "FE/package.json",
+      "src": "./FE/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+     "config": { "distDir": "../dist" }
     },
     {
-      "src": "BE/index.js",
+      "src": "./BE/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "BE/index.js"
+      "dest": "./BE/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "FE/dist/$1"
+      "dest": "./FE/dist/$1"
     }
   ],
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "buildCommand": "pnpm install && pnpm run build && pwd && find . -name 'dist' -type d",
+  "outputDirectory": "./dist"
 }
