@@ -11,7 +11,7 @@ app.use(cors({ origin: process.env.FE_DOMAIN, credentials: true }))
 
 // app.use(authMiddleware)
 app.use(express.json());
-app.listen(3000)
+// app.listen(3000)
 
 app.use('/api/auth', authRoute);
 app.use('/api/workspace', authMiddleware, workspaceRoute);
@@ -23,3 +23,4 @@ app.get('/api/test', (req, res) => {
 
 
 module.exports.handler = serverless(app);
+module.exports = app

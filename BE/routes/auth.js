@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const cookie = require('cookie');
-const createClient = require('@supabase/supabase-js');
 const crypto = require('crypto');
+const createClient = require('@supabase/supabase-js');
 
 
 const setHTTPOnlyCookie = (res, cookies) => {
@@ -51,12 +51,7 @@ function decrypt(data) {
     throw new Error(`Decryption failed: ${error.message}`);
   }
 }
-const supabase = createClient.createClient(
-  process.env.AUTH_DOMAIN,
-  process.env.AUTH_API_KEY,
-);
-
-const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process.env.AUTH_SERVICE_KEY);
+const supabase = require("../utls/supabase")
 
 /**
  * A serverless function send login data from FE
@@ -190,6 +185,7 @@ router.post('/reset-password', async (req, res) => {
   }
   const email = decrypt(resetCookies)
   const { password } = req.body;
+  const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process.env.AUTH_SERVICE_KEY);
 
   const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers({ email });
 
@@ -262,18 +258,18 @@ router.get('/userinfo', async (req, res) => {
  * @param res 
  * @returns 
  */
-const supabasePKCE = createClient.createClient(
-  process.env.AUTH_DOMAIN,
-  process.env.AUTH_API_KEY,
-  {
-    auth: {
-      flowType: 'pkce',
-    }
-  }
-);
+
 router.post('/pkce-token', async (req, res) => {
   if (req.method !== 'POST') return res.status(405).end()
-
+  const supabasePKCE = createClient.createClient(
+    process.env.AUTH_DOMAIN,
+    process.env.AUTH_API_KEY,
+    {
+      auth: {
+        flowType: 'pkce',
+      }
+    }
+  );
   const { code, code_verifier } = req.body;
 
   if (!code || !code_verifier) {

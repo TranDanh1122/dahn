@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "FE/package.json",
-      "use": "@vercel/static",
+      "use": "@vercel/static-build",
       "config": { "distDir": "FE/build" }
     },
     {
@@ -24,6 +24,6 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "buildCommand": "cd FE && npm run build && cd ../BE && npm run build",
+  "buildCommand": "pnpm install && pnpm run build:fe && pnpm run build:be",
   "outputDirectory": "FE/build"
 }

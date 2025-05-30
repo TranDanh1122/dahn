@@ -2,7 +2,7 @@
   "name": "dahn-be",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js",
+    "dev": "nodemon -r dotenv/config local.js",
     "build": "echo 'No build step for BE' || exit 0",
     "lint": "eslint .",
     "test": "echo 'No tests' || exit 0"
