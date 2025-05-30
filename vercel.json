@@ -1,31 +1,8 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "./FE/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "./dist"
-      }
-    },
-    {
-      "src": "./BE/index.js",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "./BE/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "./dist/$1"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "buildCommand": "pnpm install && pnpm run build",
-  "outputDirectory": "./dist"
+  ]
 }
