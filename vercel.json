@@ -26,6 +26,6 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "buildCommand": "pnpm install && pnpm run build && mv FE/dist dist",
+  "buildCommand": "pnpm install && pnpm run build && mv ./FE/dist ./dist",
   "outputDirectory": "./FE/dist"
 }
