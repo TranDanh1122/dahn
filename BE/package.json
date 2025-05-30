@@ -1,6 +1,7 @@
 {
   "name": "dahn-be",
   "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config local.js",
     "build": "echo 'No build step for BE' || exit 0",
