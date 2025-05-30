@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deleteWorkspaceAPI, getWorkspaceAPI, postWorkspaceAPI } from "@workspace/flow/workspace/workspace.api"
+import { acceptedInviteAPI, deleteWorkspaceAPI, getWorkspaceAPI, postWorkspaceAPI } from "@workspace/flow/workspace/workspace.api"
 import type { WorkspaceFormData } from "@workspace/models/request.schema"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { AxiosError } from "axios"
@@ -47,10 +47,23 @@ export const useDeleteWorkspaceSvc = () => {
             const res = await deleteWorkspaceAPI(id)
             return res.data
         },
-        onError: (error: AxiosError) => ErrorHandler(error),
+        onError: (error: AxiosError) => ErrorHandler(error.response?.data || "Error"),
         onSuccess: () => {
             SuccessHandle(`Delete success, all data deleted, but you can rollback in history`)
             client.invalidateQueries({ queryKey: ["workspace"] })
         }
+    })
+}
+export const useAccepInvite = () => {
+    return useMutation({
+        mutationFn: async (token: string) => {
+            const res = await acceptedInviteAPI(token)
+            return res.data
+        },
+        onError: (e: AxiosError) => {
+            ErrorHandler(e.response?.data || "Error")
+        },
+        onSuccess: () => SuccessHandle(`You joined to workspace!`),
+        retry: false
     })
 }

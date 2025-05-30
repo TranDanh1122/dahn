@@ -1,6 +1,7 @@
 import React from "react"
-import { Navigate } from "react-router-dom"
-import getPKCECode from "@auth/loader/getPKCECode.loader"
+import { Navigate, type LoaderFunctionArgs } from "react-router-dom"
+import getParamLoader from "@/loaders/getParam.loader"
+
 const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"));
 const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"));
 const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthCallback.view"))
@@ -8,8 +9,6 @@ const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPasswo
 const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword.view"))
 const AuthLayout = React.lazy(() => import("@auth/layout/AuthLayout"))
 const OTPModal = React.lazy(() => import("@auth/view/OTPModal.view"))
-
-
 
 export const AuthRouter = [
     {
@@ -48,13 +47,13 @@ export const AuthRouter = [
             {
                 path: "reset-password",
                 element: <ResetPassword />,
-                loader: await getPKCECode
+                loader: (arg: LoaderFunctionArgs) => getParamLoader(arg, "code")
             }
         ]
     },
     {
         path: "/auth/callback",
         element: <AuthCallback />,
-        loader: getPKCECode
+        loader: (arg: LoaderFunctionArgs) => getParamLoader(arg, "code")
     }
 ]

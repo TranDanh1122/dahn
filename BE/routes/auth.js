@@ -69,12 +69,12 @@ const supabaseAdmin = createClient.createClient(process.env.AUTH_DOMAIN, process
 router.post('/register', async (req, res) => {
 
   if (req.method !== 'POST') return res.status(405).end()
-  const {email , password } = req.body
-  const { data, error } = await supabase.auth.signUp({email , password});
+  const { email, password } = req.body
+  const { data, error } = await supabase.auth.signUp({ email, password });
 
   if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
 
-  const { error: otpError } = await supabase.auth.signInWithOtp({email})
+  const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
   if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
 
@@ -103,7 +103,7 @@ router.post('/login', async (req, res) => {
 
   const { email } = req.body
 
-  const { error: otpError } = await supabase.auth.signInWithOtp({email})
+  const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
   if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
 
@@ -115,10 +115,10 @@ router.post('/send-otp', async (req, res) => {
 
   if (req.method !== 'POST') return res.status(405).end()
 
- 
+
   const { email } = req.body
 
-  const { error: otpError } = await supabase.auth.signInWithOtp({email})
+  const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
   if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
 
@@ -138,7 +138,7 @@ router.post('/login-otp', async (req, res) => {
 
   if (req.method !== 'POST') return res.status(405).end()
 
-  const { email, otp:token } = req.body
+  const { email, otp: token } = req.body
   const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
 
   if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
@@ -167,7 +167,7 @@ router.post('/forgot-password', async (req, res) => {
 
   const { data, error } = await supabase.auth.resetPasswordForEmail(
     email.trim().toLowerCase(),
-    { redirectTo: 'http://localhost:5173/auth/reset-password' }
+    { redirectTo: `${process.env.FE_DOMAIN}/auth/reset-password` }
   );
 
   if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')

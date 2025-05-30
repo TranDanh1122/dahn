@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sendMail = require('../utls/sendmail')
-
+const jwt = require("jsonwebtoken")
 /**
  * Again, im not backend dev, so you beter not use this code in production
  */
@@ -41,10 +41,16 @@ router.post('/', async (req, res) => {
     if (memberError) return res.status(memberError.status ?? 400).json(memberError.message ?? 'Error')
 
     members.forEach(el => {
+      const token = jwt.sign({
+        salary: el.avg_salary,
+        user: el.id,
+        workspace: data[0].id,
+        type: "invite"
+      }, process.env.AUTH_SECRET_KEY, { expiresIn: '3d' })
       sendMail({
         to: el.email,
         subject: 'Dahn',
-        html: `${user.full_name || user.email} invited you to join their workspace. Average pay: $${el.avg_salary}/h.`
+        html: `${user.full_name || user.email} invited you to join their workspace. Average pay: $${el.avg_salary}/h. <a href="${process.env.FE_DOMAIN}/workspace/invite-accepted?token=${token}">Click here (expired in 3 day)</a>`
       })
     })
   }
@@ -69,5 +75,34 @@ router.delete("/:id", async (req, res) => {
   if (error) return res.status(error?.status ?? 400).json(error?.message ?? "Error when try to delete workspace")
   return res.status(200).json({ success: true, data })
 
+})
+router.post("/accepted", async (req, res) => {
+  if (req.method != "POST") return res.status(405).end()
+  const supabase = req.supabase
+  const user = req.user
+  const { token } = req.body
+  try {
+    const decode = jwt.verify(token, process.env.AUTH_SECRET_KEY)
+    if (decode.type !== "invite") return res.status(400).json("Token type not correct")
+    const { workspace, user, salary } = decode
+
+    const { data: oInvite, error: oError } = await supabase.from("workspace_invited").select().eq("workspace", workspace).eq("users", user).eq("accepted", true)
+    if (oError) return res.status(oError.status || 400).json(oError.message || "Error when try to check history")
+    if (oInvite.length > 0) return res.status(400).json("You have been accepted this invited")
+
+    const { error: iError } = await supabase.from("workspace_members")
+      .insert({ user, workspace, avg_salary: salary }).select()
+    if (iError) return res.status(iError.status ?? 400).json(iError.message ?? "Error when try to add new members")
+
+    const { error: uError } = await supabase.from("workspace_invited").update({ accepted: true }).eq("workspace", workspace).eq("users", user)
+    if (uError) return res.status(uError.status || 400).json(uError.message || "Update Invite Status Error")
+
+    const { data, error } = await supabase.from("workspace").select().eq("id", workspace)
+    if (error) return res.status(error.status || 400).json(error.message || "Error when try to get workspace")
+
+    return res.status(200).json({ success: true, data: data[0] })
+  } catch (e) {
+    return res.status(400).json("Expired token!")
+  }
 })
 module.exports = router;

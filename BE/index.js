@@ -7,7 +7,7 @@ const cors = require('cors');
 const authMiddleware = require('./middleware/auth')
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+app.use(cors({ origin: process.env.FE_DOMAIN, credentials: true }))
 
 // app.use(authMiddleware)
 app.use(express.json());

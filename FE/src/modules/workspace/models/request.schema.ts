@@ -19,5 +19,4 @@ export const WorkspaceFormSchema = z.object({
     }, { message: "Invalid Avg. Rate", path : ["avg_salary"] })).optional()
 })
 
-
 export type WorkspaceFormData = z.infer<typeof WorkspaceFormSchema>

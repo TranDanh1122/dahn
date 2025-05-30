@@ -19,4 +19,5 @@ export const API_ENDPOINT = {
     searchUser: `${proxy}/user/search`,
     //----------- Workspace API --------
     workspace: `${proxy}/workspace`,
+    acceptedInvite: `${proxy}/workspace/accepted`
 }

@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 export function ErrorHandler(e: any) {
+    console.log(e)
     toast.error(e as string, {
         position: "bottom-right",
         autoClose: 5000,
