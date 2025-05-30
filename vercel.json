@@ -4,7 +4,9 @@
     {
       "src": "./FE/package.json",
       "use": "@vercel/static-build",
-     "config": { "distDir": "../dist" }
+      "config": {
+        "distDir": "dist"
+      }
     },
     {
       "src": "./BE/index.js",
@@ -24,6 +26,6 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "buildCommand": "pnpm install && pnpm run build && pwd && find . -name 'dist' -type d",
-  "outputDirectory": "./dist"
+  "buildCommand": "pnpm install && pnpm run build && mv FE/dist dist",
+  "outputDirectory": "./FE/dist"
 }
