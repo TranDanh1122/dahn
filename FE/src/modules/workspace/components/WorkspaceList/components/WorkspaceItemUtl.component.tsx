@@ -37,7 +37,7 @@ const ItemUtl = ({ id }: WorkspaceItemUtl): React.JSX.Element => {
                 e.stopPropagation()
                 deleteMutation.mutate(id)
             }} text="Delete Workspace" icon={<></>}>
-                <Trash className="text-red-400 text-sm size-5" />
+                <Trash className="text-red-400 text-sm size-4" />
             </MenuItem>
         }
 

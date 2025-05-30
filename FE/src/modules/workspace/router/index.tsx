@@ -1,22 +1,16 @@
 import React from "react"
 
-const WorkspaceLayout = React.lazy(() => import("@workspace/layout/WorkspaceLayout"))
+const SidebarLayout = React.lazy(() => import("@/layouts/SidebarLayout/SidebarLayout"))
 const WorkspaceForm = React.lazy(() => import("@workspace/view/WorkspaceForm.view"))
 // const WorkspaceDetail = React.lazy(() => import("@workspace/view/WorkspaceDetail.view"))
-const Dashboard = React.lazy(() => import("@/modules/dashboard/view/Dashboard.view"))
 const WorkspaceRouter = [
     {
-        element: <WorkspaceLayout />,
-        path: "",
+        element: <SidebarLayout />,
+        path: "workspace",
         children: [
             {
-                index: true,
-                element: <Dashboard />,
-                handle: { title: "All Project" }
-            },
-            {
                 element: <WorkspaceForm />,
-                path: "create-workspace"
+                path: "create"
             }
         ]
     }

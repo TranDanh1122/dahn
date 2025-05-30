@@ -16,14 +16,14 @@ export default React.memo(function WorkspaceList(): React.JSX.Element {
         {
             !isLoading && data && data.length > 0 && data.map((el) => {
                 return <MenuItem onClick={() => alert(2)}
-                    className="p-0! hover:bg-blue-100!"
-                    icon={<CircleLogoWText text={el.name} img={el.image} className="w-full hover:bg-blue-100!" />}
+                    className="p-0! hover:bg-neutral-100!"
+                    icon={<CircleLogoWText text={el.name} img={el.image} className="w-full hover:bg-neutral-100!" />}
                     text="" >
                     <WorkspaceItemUtl id={el.id} />
                 </MenuItem>
             })
         }
         <hr className="text-neutral-300" />
-        <MenuItem onClick={() => navigate("/create-workspace")} className=" hover:bg-blue-100!" icon={<Plus class="size-5 text-neutral-400" />} text="Create new" />
+        <MenuItem onClick={() => navigate("/workspace/create")} className=" hover:bg-neutral-100!" icon={<Plus class="size-5 text-neutral-400" />} text="Create new" />
     </div>
 })

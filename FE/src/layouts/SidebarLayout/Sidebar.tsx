@@ -8,12 +8,13 @@ import {
     FolderOpenDot,
     FolderCheck,
     ChartPie,
-    Folder
+    Folder,
+    House
 } from "lucide-react";
 import Input from "@/components/Input.component";
 import MenuItem from "@workspace/components/MenuItem.component";
 
-import { WorkspaceItem } from "../components/WorkspaceList";
+import { WorkspaceItem } from "../../modules/workspace/components/WorkspaceList";
 
 export default React.memo(function Sidebar(): React.JSX.Element {
     return <div className="h-full border-r border-neutral-300 ">
@@ -27,7 +28,7 @@ export default React.memo(function Sidebar(): React.JSX.Element {
             </Input>
         </div>
         <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
-
+            <MenuItem icon={<House className="text-neutral-500 size-4" />} text="Dashboard" to="/"  />
             <MenuItem icon={<BookUser className="text-neutral-500 size-4" />} text="Contact" />
             <MenuItem icon={<Cog className="text-neutral-500 size-4" />} text="Setting" />
         </div>
