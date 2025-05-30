@@ -7,8 +7,11 @@ const createClient = require('@supabase/supabase-js');
 
 const setHTTPOnlyCookie = (res, cookies) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = `Path=/; HttpOnly; SameSite=None; Max-Age=`;
+  const sameSite = isProduction ? '; SameSite=None' : '; SameSite=Strict';
+
+  const cookieOptions = `Path=/; HttpOnly${sameSite}; Max-Age=`;
   const secureOption = isProduction ? '; Secure' : '';
+
   const cookieHeaders = cookies.map(({ name, value, expires }) => {
     return `${name}=${value}; ${cookieOptions}${expires}${secureOption}`;
   });

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon -r dotenv/config local.js",
+    "dev": "nodemon -r dotenv/config index.js",
     "build": "echo 'No build step for BE' || exit 0",
     "lint": "eslint .",
     "test": "echo 'No tests' || exit 0"
