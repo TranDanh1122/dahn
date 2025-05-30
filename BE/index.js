@@ -19,8 +19,9 @@ app.use('/api/user', authMiddleware, userRoute);
 app.get('/api/test', (req, res) => {
   res.json({ message: 'BE is running!' });
 });
+app.listen(3000, () => {
+  console.log('BE listening on http://localhost:3000');
+});
 
 
-
-module.exports.handler = serverless(app);
 module.exports = app
