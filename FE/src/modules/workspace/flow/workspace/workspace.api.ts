@@ -6,3 +6,5 @@ export const postWorkspaceAPI = async (data: WorkspaceFormData) => AxiosClient.p
 export const getWorkspaceAPI = async () => AxiosClient.get(API_ENDPOINT.workspace, { withCredentials: true })
 export const deleteWorkspaceAPI = async (id: string) => AxiosClient.delete(`${API_ENDPOINT.workspace}/${id}`, { withCredentials: true })
 export const acceptedInviteAPI = async (token: string) => AxiosClient.post(`${API_ENDPOINT.acceptedInvite}`, { token }, { withCredentials: true })
+export const getWorkspaceByIDAPI = async (id: string) => AxiosClient.get(`${API_ENDPOINT.workspace}/${id}`, { withCredentials: true })
+export const putWorkspaceByIDAPI = async (id: string, data: WorkspaceFormData) => AxiosClient.put(`${API_ENDPOINT.workspace}/${id}`, data, { withCredentials: true })
