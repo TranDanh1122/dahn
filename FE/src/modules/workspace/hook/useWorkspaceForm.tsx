@@ -8,6 +8,7 @@ import {
     useGetWorkspaceByID
 } from "@workspace/flow/workspace/workspace.service";
 import { useNavigate, useLoaderData } from "react-router-dom";
+import { base64ToFile, isBase64Image } from "@/common/ults/Tool"
 const stepFields: Record<number, (keyof WorkspaceFormData)[]> = {
     1: ["name", "description", "thumbnail"],
     2: ["members"],
@@ -25,7 +26,6 @@ export default function useWorkspaceForm() {
         ]
     }
     const { data: workspace } = useGetWorkspaceByID(loaderData?.workspaceId || "")
-
     if (loaderData && workspace) {
 
         initData = {
@@ -53,12 +53,19 @@ export default function useWorkspaceForm() {
     const createMutation = useCreateWorkspaceSvc()
     const updateMutation = useUpdateWorkspace()
     const onSubmit = (values: WorkspaceFormData) => {
+        const thumb = values.thumbnail || ""
+        const formData = new FormData()
+        formData.append("name", values.name)
+        formData.append("members", JSON.stringify(values.members || []))
+        formData.append("description", values.description || "")
+        formData.append("thumbnail", isBase64Image(thumb) ? base64ToFile(thumb) : thumb)
+
         if (loaderData && workspace) {
-            updateMutation.mutate({ id: workspace.id, data: values }, {
+            updateMutation.mutate({ id: workspace.id, data: formData }, {
                 onSuccess: () => navigate("/")
             })
         } else {
-            createMutation.mutate(values, {
+            createMutation.mutate(formData, {
                 onSuccess: () => navigate("/")
             })
         }
@@ -74,7 +81,7 @@ export default function useWorkspaceForm() {
             changeStep(prev => prev + 1)
         }, (e) => console.log(e))
     }
-    React.useEffect(() => {console.log(form.formState.errors.members)} , [form.formState.errors.members])
+    React.useEffect(() => { console.log(form.formState.errors.members) }, [form.formState.errors.members])
     const pending = loaderData && workspace ? updateMutation.isPending : createMutation.isPending
     return {
         handleNext,

@@ -15,8 +15,8 @@ export default React.memo(function ListItem({ img, title, lastUpdate, onClick, c
     return <div onClick={(e) => onClick?.(e)}
         className={`w-full cursor-pointer hover:shadow-lg aspect-auto overflow-hidden border border-neutral-200 shadow rounded-2xl ${className}`}>
         <picture>
-            <source srcSet="/images/logo.png" />
-            <img src={img} alt={title ?? ""} className="object-cover w-full aspect-video " />
+            <source srcSet={img} />
+            <img src="/images/logo.png" alt={title ?? ""} className="object-cover w-full aspect-video " />
         </picture>
         <div className="py-2 px-5 flex items-center gap-4 border-t border-neutral-200 ">
             <div className="p-1 bg-neutral-400 rounded-md w-fit">

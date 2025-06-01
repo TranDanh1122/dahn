@@ -24,7 +24,13 @@ export default React.memo(function Step1(): React.JSX.Element {
             error={form.formState.errors.description?.message}
             rows={3}
         />
-        <ImageUpload id="workspace_img" label="Workspace Logo" {...form.register("thumbnail")} labelClass="font-light!" />
+        <ImageUpload
+            deleteAction={() => form.setValue("thumbnail" , "")}
+            reactValue={form.watch("thumbnail")}
+            id="workspace_img"
+            label="Workspace Logo"
+            {...form.register("thumbnail")}
+            labelClass="font-light!" />
     </div>
 
 })

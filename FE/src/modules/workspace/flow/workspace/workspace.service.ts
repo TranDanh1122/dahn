@@ -7,7 +7,6 @@ import {
     postWorkspaceAPI,
     putWorkspaceByIDAPI
 } from "@workspace/flow/workspace/workspace.api"
-import type { WorkspaceFormData } from "@workspace/models/request.schema"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { AxiosError } from "axios"
 import type { Workspace } from "@workspace/models/response.model"
@@ -17,7 +16,7 @@ import { setWorkspace } from "@workspace/store"
 export const useCreateWorkspaceSvc = () => {
     const client = useQueryClient()
     return useMutation({
-        mutationFn: async (data: WorkspaceFormData) => {
+        mutationFn: async (data: FormData) => {
             const res = await postWorkspaceAPI(data)
             return res.data
         },
@@ -107,7 +106,7 @@ export const useUpdateWorkspace = () => {
     const queryClient = useQueryClient()
     const dispatch: AppDispatch = useDispatch()
     return useMutation({
-        mutationFn: async ({ id, data }: { id: string, data: WorkspaceFormData }) => {
+        mutationFn: async ({ id, data }: { id: string, data: FormData }) => {
             const res = await putWorkspaceByIDAPI(id, data)
             return res.data
         },

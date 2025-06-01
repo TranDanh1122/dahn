@@ -9,6 +9,7 @@ import WorkspaceItemUtl from "./WorkspaceItemUtl.component"
 import type { AppState, AppDispatch } from "@/stores"
 import { useSelector, useDispatch } from "react-redux"
 import { setWorkspace } from "@workspace/store"
+import {v4} from "uuid"
 export default React.memo(function WorkspaceList(): React.JSX.Element {
     const navigate = useNavigate()
     const { data, isLoading } = useGetWorkspaceSvc()
@@ -20,7 +21,8 @@ export default React.memo(function WorkspaceList(): React.JSX.Element {
         }
         {
             !isLoading && data && data.length > 0 && data.map((el) => {
-                return <MenuItem onClick={() => dispatch(setWorkspace(el))}
+                console.log(el)
+                return <MenuItem key={v4()} onClick={() => dispatch(setWorkspace(el))}
                     className={`p-0! hover:bg-neutral-100! ${currentWorkspace?.id == el.id && "bg-neutral-100"} `}
                     icon={<CircleLogoWText text={el.name} img={el.image} className="w-full hover:bg-neutral-100!" />}
                     text="" >
@@ -29,6 +31,6 @@ export default React.memo(function WorkspaceList(): React.JSX.Element {
             })
         }
         <hr className="text-neutral-300" />
-        <MenuItem onClick={() => navigate("/workspace/create")} className=" hover:bg-neutral-100!" icon={<Plus class="size-5 text-neutral-400" />} text="Create new" />
+        <MenuItem key={v4()} onClick={() => navigate("/workspace/create")} className=" hover:bg-neutral-100!" icon={<Plus className="size-5 text-neutral-400" />} text="Create new" />
     </div>
 })
