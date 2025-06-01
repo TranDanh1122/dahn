@@ -176,11 +176,12 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
   let updateData = { name, description, image };
   if (req.file) {
     try {
-      const result = await uploadToCloudinary(req.file.path);
+      const [result] = await uploadToCloudinary(req.file.path);
       console.log("Cloudinary result:", result);
       if (!result?.url) throw new Error("Invalid Cloudinary URL");
       updateData.image = result.url;
       if (oldWorkspace.image) {
+        console.log(1)
         await deleteFromCloudinary(oldWorkspace.image);
       }
     } catch (e) {
