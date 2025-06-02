@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 import { ImageUpload } from "@components/ImageUpload";
-import { SquarePen } from "lucide-react";
 export default React.memo(function Avatar(): React.JSX.Element {
     const user = useSelector((state: AppState) => state.persist.auth.user)
     const form = useForm<z.infer<typeof AvatarSchema>>({
