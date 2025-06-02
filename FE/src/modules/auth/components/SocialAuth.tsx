@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAuthWSocial } from '@auth/flows/pkce/pkce.service'
-import Button from '@/components/Button.component'
+import Button from '@components/Button.component'
 import { useTranslation } from 'react-i18next'
 export default React.memo(function SocialAuth(): React.JSX.Element {
     const socialAuth = useAuthWSocial()

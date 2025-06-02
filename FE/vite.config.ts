@@ -28,23 +28,27 @@ export default defineConfig({
     },
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
       '@auth': path.resolve(__dirname, './src/modules/auth'),
       '@lang': path.resolve(__dirname, './src/modules/language'),
       '@workspace': path.resolve(__dirname, './src/modules/workspace'),
       '@user': path.resolve(__dirname, './src/modules/user'),
       '@project': path.resolve(__dirname, './src/modules/project'),
       '@dashboard': path.resolve(__dirname, './src/modules/dashboard'),
+      '@personally': path.resolve(__dirname, './src/modules/personally')
     }
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
       '@auth': path.resolve(__dirname, './src/modules/auth'),
       '@lang': path.resolve(__dirname, './src/modules/language'),
       '@workspace': path.resolve(__dirname, './src/modules/workspace'),
       '@user': path.resolve(__dirname, './src/modules/user'),
       '@project': path.resolve(__dirname, './src/modules/project'),
       '@dashboard': path.resolve(__dirname, './src/modules/dashboard'),
+      '@personally': path.resolve(__dirname, './src/modules/personally')
     },
   }
 })

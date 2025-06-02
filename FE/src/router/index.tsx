@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom"
-import { AuthRouter } from "@/modules/auth"
+import { AuthRouter } from "@auth"
 import Layout from "@/layouts/Layout.view"
-import { WorkspaceRouter } from "@/modules/workspace"
-import { DashboardRouter } from "@/modules/dashboard"
+import { WorkspaceRouter } from "@workspace"
+import { DashboardRouter } from "@dashboard"
 const router = createBrowserRouter([
     {
         path: "/",

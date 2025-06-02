@@ -1,7 +1,7 @@
 import React from 'react'
-import Input from "@/components/Input.component"
-import TextArea from "@/components/TextArea.component"
-import { ImageUpload } from "@/components/ImageUpload"
+import Input from "@components/Input.component"
+import TextArea from "@components/TextArea.component"
+import { ImageUpload } from "@components/ImageUpload"
 import { useFormContext } from 'react-hook-form'
 import type { WorkspaceFormData } from '@workspace/models/request.schema'
 export default React.memo(function Step1(): React.JSX.Element {

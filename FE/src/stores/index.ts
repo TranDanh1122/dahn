@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
-import { AuthStore } from "@/modules/auth"
-import { WorkspaceStore } from "@/modules/workspace"
+import { AuthStore } from "@auth"
+import { WorkspaceStore } from "@workspace"
 import { persistStore, persistReducer } from 'redux-persist'
 // defaults to localStorage for web, that suck, fk suck in security, beware what you save in redux store
 import storage from 'redux-persist/lib/storage'

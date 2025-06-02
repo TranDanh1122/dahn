@@ -1,6 +1,6 @@
 import React from "react"
-import Input from "@/components/Input.component"
-import DropdownSearch from "@/components/InputSearch/components/DropdownSearch.component"
+import Input from "@components/Input.component"
+import DropdownSearch from "@components/InputSearch/components/DropdownSearch.component"
 import type { InputSearchProps } from "../type"
 import useInputSearch from "../hooks/useInputSearch.hook"
 const InputSearch = <T, K>({ filter, childrenFn, searchServiceFn, resultItemClick, ...props }: InputSearchProps<T, K>): React.JSX.Element => {

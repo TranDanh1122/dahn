@@ -1,12 +1,12 @@
-import { Dropdown } from "@/components/Dropdown";
-import Loading from "@/components/Loading.component";
+import { Dropdown } from "@components/Dropdown";
+import Loading from "@components/Loading.component";
 import React from "react";
 import { useGetWorkspaceSvc } from "@workspace/flow/workspace/workspace.service";
-import CircleLogoWText from "@/components/CircleLogoWText.component";
+import CircleLogoWText from "@components/CircleLogoWText.component";
 import { useNavigate } from "react-router-dom";
 import MenuItem from "@workspace/components/MenuItem.component"
 import { Plus } from "lucide-react"
-import Skeleton from "@/components/Skeleton.component"
+import Skeleton from "@components/Skeleton.component"
 const WorkspaceList = React.lazy(() => import("@workspace/components/WorkspaceList/components/WorkspaceList.component"))
 import { useSelector } from "react-redux"
 import type { AppState } from "@/stores"

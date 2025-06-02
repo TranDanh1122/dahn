@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import LoadingFallback from "@/components/LoadingFallback.component";
+import LoadingFallback from "@components/LoadingFallback.component";
 
 export default React.memo(function Layout(): React.JSX.Element {
     const location = useLocation()

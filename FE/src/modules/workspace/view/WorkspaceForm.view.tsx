@@ -2,11 +2,11 @@ import React from "react"
 import Step1 from "@workspace/view/form/Step1.view"
 import Step2 from "@workspace/view/form/Step2.view"
 import { FormProvider } from "react-hook-form"
-import Button from "@/components/Button.component"
+import Button from "@components/Button.component"
 import { X } from "lucide-react"
 import { Link } from "react-router-dom"
 import useWorkspaceForm from "../hook/useWorkspaceForm"
-import Loading from "@/components/Loading.component"
+import Loading from "@components/Loading.component"
 /** 
  * @returns ok we have a form step here, but, again and again, this just FE code and it not use to lauch any rocket to the moon
  * So, please simple :  one form! We have 3 step, but just one form

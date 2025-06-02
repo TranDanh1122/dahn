@@ -1,5 +1,5 @@
-import { Dropdown } from "@/components/Dropdown";
-import Loading from "@/components/Loading.component";
+import { Dropdown } from "@components/Dropdown";
+import Loading from "@components/Loading.component";
 import { Ellipsis, Trash, SquarePen } from "lucide-react";
 import React from "react";
 import MenuItem from "@workspace/components/MenuItem.component";

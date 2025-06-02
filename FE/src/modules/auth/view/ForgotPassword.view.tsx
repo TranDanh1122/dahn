@@ -1,10 +1,10 @@
 import React from "react";
-import Input from "@/components/Input.component";
-import Button from "@/components/Button.component";
+import Input from "@components/Input.component";
+import Button from "@components/Button.component";
 import { Link } from "react-router-dom";
 import AuthForm from "@auth/components/AuthForm";
 import { useForgotPassword } from "@auth/hooks/useForgotPassword.hook";
-import Loading from "@/components/Loading.component";
+import Loading from "@components/Loading.component";
 import { useTranslation } from "react-i18next";
 
 export default function ForgotPassword(): React.JSX.Element {

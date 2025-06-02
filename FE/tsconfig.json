@@ -10,7 +10,7 @@
   ],
   "exclude": [
     "**/*.test.ts",
-     "**/*.test.tsx",
+    "**/*.test.tsx",
     "**/__tests__/**"
   ],
   "compilerOptions": {
@@ -19,8 +19,14 @@
       "@/*": [
         "src/*"
       ],
+      "@components/*": [
+        "src/components/*"
+      ],
       "@auth/*": [
         "src/modules/auth/*"
+      ],
+      "@auth": [
+        "src/modules/auth/index.ts"
       ],
       "@lang/*": [
         "src/modules/language/*"
@@ -28,14 +34,29 @@
       "@workspace/*": [
         "src/modules/workspace/*"
       ],
+      "@workspace": [
+        "src/modules/workspace/index.ts"
+      ],
       "@user/*": [
         "src/modules/user/*"
+      ],
+      "@user": [
+        "src/modules/user/index.ts"
       ],
       "@project/*": [
         "src/modules/project/*"
       ],
+      "@project": [
+        "src/modules/project/index.ts"
+      ],
       "@dashboard/*": [
         "src/modules/dashboard/*"
+      ],
+      "@dashboard": [
+        "src/modules/dashboard/index.ts"
+      ],
+      "@personally/*": [
+        "src/modules/personally/*"
       ]
     }
   }

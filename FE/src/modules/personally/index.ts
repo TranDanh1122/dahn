@@ -1,0 +1,1 @@
+export { default as Profile } from "./view/Profile.view"

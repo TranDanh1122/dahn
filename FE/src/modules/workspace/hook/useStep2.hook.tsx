@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from "react-hook-form"
 import type { WorkspaceFormData } from "@workspace/models/request.schema"
-import type { User } from "@/modules/user"
+import type { User } from "@user"
 import React from "react"
 export default function useStep2() {
     const form = useFormContext<WorkspaceFormData>()

@@ -1,8 +1,8 @@
-import Button from "@/components/Button.component";
-import Input from "@/components/Input.component";
+import Button from "@components/Button.component";
+import Input from "@components/Input.component";
 import React from "react";
 import useLoginOTP from "@auth/hooks/useLoginOTP.hook";
-import Loading from "@/components/Loading.component";
+import Loading from "@components/Loading.component";
 import { Navigate } from "react-router-dom";
 
 const OTPModal = React.memo((): React.JSX.Element => {

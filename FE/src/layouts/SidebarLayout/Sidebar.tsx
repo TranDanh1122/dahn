@@ -1,5 +1,5 @@
 import React from "react";
-import User from "@/components/User.component"
+import User from "@components/User.component"
 import {
     Bell,
     BookUser,
@@ -11,15 +11,16 @@ import {
     Folder,
     House
 } from "lucide-react";
-import Input from "@/components/Input.component";
-import MenuItem from "@workspace/components/MenuItem.component";
-
-import { WorkspaceItem } from "../../modules/workspace/components/WorkspaceList";
+import Input from "@components/Input.component";
+import { WorkspaceItem , MenuItem } from "@workspace";
+import { Dropdown } from "@components/Dropdown";
 
 export default React.memo(function Sidebar(): React.JSX.Element {
     return <div className="h-full border-r border-neutral-300 ">
         <div className="flex items-center justify-between p-2">
-            <User className="max-w-[200px] w-full" />
+            <Dropdown className="w-full" contentPosition="top-full -right-10" dropContent={<div className="w-[250px]"></div>} >
+                <User className="max-w-[200px] w-full" />
+            </Dropdown>
             <Bell className="size-9 p-2 rounded-md text-neutral-500 shrink-0 block hover:bg-neutral-100" />
         </div>
         <div className="px-2">
@@ -28,7 +29,7 @@ export default React.memo(function Sidebar(): React.JSX.Element {
             </Input>
         </div>
         <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
-            <MenuItem icon={<House className="text-neutral-500 size-4" />} text="Dashboard" to="/"  />
+            <MenuItem icon={<House className="text-neutral-500 size-4" />} text="Dashboard" to="/" />
             <MenuItem icon={<BookUser className="text-neutral-500 size-4" />} text="Contact" />
             <MenuItem icon={<Cog className="text-neutral-500 size-4" />} text="Setting" />
         </div>

@@ -1,10 +1,10 @@
 import React from "react";
-import Input from "@/components/Input.component";
-import Button from "@/components/Button.component";
-import { useLogin } from "@/modules/auth/hooks/useLogin.hook";
+import Input from "@components/Input.component";
+import Button from "@components/Button.component";
+import { useLogin } from "@auth/hooks/useLogin.hook";
 import { Link, Outlet } from "react-router-dom"
 import AuthForm from "@auth/components/AuthForm";
-import Loading from "@/components/Loading.component";
+import Loading from "@components/Loading.component";
 import { useTranslation } from "react-i18next";
 
 

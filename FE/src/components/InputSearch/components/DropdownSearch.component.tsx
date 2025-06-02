@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "@/components/Input.component"
+import Input from "@components/Input.component"
 import { v4 as uuid } from "uuid"
 import useDropdownSearch from "../hooks/useDropdownSearch.hook";
 import type { InputSearchProps } from "../type";

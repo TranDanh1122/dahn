@@ -1,8 +1,8 @@
 import React from "react";
-import { useGetWorkspaceSvc } from "@/modules/workspace/flow/workspace/workspace.service"
+import { useGetWorkspaceSvc } from "@workspace/flow/workspace/workspace.service"
 import { Link, useNavigate } from "react-router-dom"
-import ListItemButton from "@/components/ListItemButton.component"
-import SquareItem from "@/components/ListItem.component"
+import ListItemButton from "@components/ListItemButton.component"
+import SquareItem from "@components/ListItem.component"
 export default React.memo(function DBWorkspaceList(): React.JSX.Element {
     const { data, isLoading } = useGetWorkspaceSvc()
     const navigate = useNavigate()

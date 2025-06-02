@@ -6,7 +6,7 @@ export default React.memo(function User(props: React.ComponentProps<"div">): Rea
     const { user } = useSelector((state: AppState) => state.persist.auth)
 
     return <CircleLogoWText className={props.className} img={user?.avatar_url || ""} imgAlt={user?.full_name} text={user?.full_name || user?.email || ""}>
-        <div className="bg-white text-neutral-600 font-light absolute w-max top-full left-0 hidden group-hover:block shadow-md p-2 z-10 border-neutral-400 rounded-lg">
+        <div className="bg-white text-neutral-600 font-light absolute w-max top-full left-0 hidden group-hover:block shadow-md p-2 z-20 border-neutral-400 rounded-lg">
             {user?.email || user?.full_name}
         </div>
     </CircleLogoWText>

@@ -10,7 +10,7 @@ export default React.memo(function SidebarLayout({ rightHeadContent }: SidebarLa
     const data = matches[matches.length - 1] as { handle?: { title?: string } }
     return <main className="grid grid-cols-6 gap-x-20 w-screen h-screen pr-20">
         <div className=" col-span-1 h-screen">
-            <Sidebar />
+                <Sidebar />
         </div>
         <div className="col-span-5">
             <header className="w-full sticky bg-white h-max p-4 ">

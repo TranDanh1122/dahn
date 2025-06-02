@@ -1,7 +1,7 @@
 import React from "react";
 import SocialAuth from "@auth/components/SocialAuth";
 import { Outlet, useLocation } from "react-router-dom";
-import LoadingComponent from "@/components/Loading.component";
+import LoadingComponent from "@components/Loading.component";
 import Header from "./Header";
 export default function AuthLayout(): React.JSX.Element {
     const location = useLocation()

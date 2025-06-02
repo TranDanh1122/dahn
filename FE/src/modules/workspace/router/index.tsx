@@ -4,7 +4,7 @@ import type { LoaderFunctionArgs } from "react-router-dom"
 import { loadWorkspaceById } from "@workspace/loader"
 // const SidebarLayout = React.lazy(() => import("@/layouts/SidebarLayout/SidebarLayout"))
 const WorkspaceForm = React.lazy(() => import("@workspace/view/WorkspaceForm.view"))
-const InvitedCallback = React.lazy(() => import("@/modules/workspace/view/InvitedCallback.view"))
+const InvitedCallback = React.lazy(() => import("@workspace/view/InvitedCallback.view"))
 // const WorkspaceDetail = React.lazy(() => import("@workspace/view/WorkspaceDetail.view"))
 const WorkspaceRouter = [
     {

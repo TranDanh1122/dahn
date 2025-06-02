@@ -2,10 +2,10 @@ import React from "react"
 import { Navigate, type LoaderFunctionArgs } from "react-router-dom"
 import getParamLoader from "@/loaders/getParam.loader"
 
-const RegisterView = React.lazy(() => import("@/modules/auth/view/Register.view"));
-const LoginView = React.lazy(() => import("@/modules/auth/view/Login.view"));
-const AuthCallback = React.lazy(() => import("@/modules/auth/view/callback/AuthCallback.view"))
-const ForgotPassword = React.lazy(() => import("@/modules/auth/view/ForgotPassword.view"))
+const RegisterView = React.lazy(() => import("@auth/view/Register.view"));
+const LoginView = React.lazy(() => import("@auth/view/Login.view"));
+const AuthCallback = React.lazy(() => import("@auth/view/callback/AuthCallback.view"))
+const ForgotPassword = React.lazy(() => import("@auth/view/ForgotPassword.view"))
 const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword.view"))
 const AuthLayout = React.lazy(() => import("@auth/layout/AuthLayout"))
 const OTPModal = React.lazy(() => import("@auth/view/OTPModal.view"))

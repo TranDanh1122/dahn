@@ -1,10 +1,10 @@
 import React from "react";
 import AuthForm from "@auth/components/AuthForm";
-import Input from "@/components/Input.component";
+import Input from "@components/Input.component";
 import { useLoaderData } from "react-router-dom";
 import { useResetPassword } from "../hooks/useResetPassword.hook";
-import Button from "@/components/Button.component";
-import Loading from "@/components/Loading.component";
+import Button from "@components/Button.component";
+import Loading from "@components/Loading.component";
 import { useTranslation } from "react-i18next";
 export default function ResetPassword(): React.JSX.Element {
     const { code } = useLoaderData<{ code: string }>()
