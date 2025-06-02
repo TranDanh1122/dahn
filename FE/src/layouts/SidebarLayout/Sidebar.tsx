@@ -13,16 +13,16 @@ import {
 } from "lucide-react";
 import Input from "@components/Input.component";
 import { WorkspaceItem, MenuItem } from "@workspace";
-import { Dropdown } from "@components/Dropdown";
-import { Profile } from "@personally"
+
 export default React.memo(function Sidebar(): React.JSX.Element {
     return <div className="h-full border-r border-neutral-300 ">
         <div className="flex items-center justify-between p-2">
-            <Dropdown className="w-full"
+            {/* <Dropdown className="w-full"
                 contentPosition="top-full -right-10"
                 dropContent={<Profile className="w-[250px]" />} >
-                <User className="max-w-[200px] w-full" />
-            </Dropdown>
+               
+            </Dropdown> */}
+            <User className="max-w-[200px] w-full" />
             <Bell className="size-9 p-2 rounded-md text-neutral-500 shrink-0 block hover:bg-neutral-100" />
         </div>
         <div className="px-2">
