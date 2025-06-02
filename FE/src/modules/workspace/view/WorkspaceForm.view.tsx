@@ -16,6 +16,8 @@ import Loading from "@/components/Loading.component"
  */
 
 export default function WorkspaceForm(): React.JSX.Element {
+
+
     const { step, form, onSubmit, handleBack, handleNext, isLoading } = useWorkspaceForm()
 
     return <>

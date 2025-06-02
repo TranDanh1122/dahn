@@ -8,9 +8,12 @@ import MenuItem from "@workspace/components/MenuItem.component"
 import { Plus } from "lucide-react"
 import Skeleton from "@/components/Skeleton.component"
 const WorkspaceList = React.lazy(() => import("@workspace/components/WorkspaceList/components/WorkspaceList.component"))
+import { useSelector } from "react-redux"
+import type { AppState } from "@/stores"
 export default React.memo(function WorkspaceItem(): React.JSX.Element {
     const { data, isLoading } = useGetWorkspaceSvc()
     const navigate = useNavigate()
+    const { currentWorkspace } = useSelector((state: AppState) => state.persist.workspace)
     return <>
         {
             isLoading && <Skeleton className="bg-neutral-300 w-full h-10" />
@@ -30,7 +33,7 @@ export default React.memo(function WorkspaceItem(): React.JSX.Element {
                     <WorkspaceList />
                 </React.Suspense>
             }>
-                <CircleLogoWText text={data[0].name} img={data[0].image} />
+                <CircleLogoWText text={currentWorkspace?.name || ""} img={currentWorkspace?.image || ""} />
             </Dropdown>
         }
 

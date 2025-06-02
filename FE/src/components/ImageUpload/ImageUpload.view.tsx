@@ -1,25 +1,32 @@
 import React from "react"
-import { ImageUp } from "lucide-react"
+import { ImageUp, X } from "lucide-react"
 import useImageUpload from "./ImageUpload.hook"
 interface ImageUploadProps extends React.ComponentProps<"input"> {
     children?: string,
     label: string,
     id: string,
-    labelClass?: string
+    labelClass?: string,
+    reactValue?: string,
+    deleteAction?: () => void
 }
-export default React.memo(function ImageUpload({ id, label, labelClass, ...props }: ImageUploadProps): React.JSX.Element {
-    const { preview, handleChange } = useImageUpload()
+export default React.memo(function ImageUpload({ deleteAction, reactValue, id, label, labelClass, ...props }: ImageUploadProps): React.JSX.Element {
+    const { handleChange } = useImageUpload(props.name || "thumbnail")
     return <fieldset className="flex items-center gap-10">
         <label className={`font-semibold text-neutral-600 cursor-pointer ${labelClass}`} aria-label={label} htmlFor={id}>
             {label}
         </label>
         {
-            !preview && <ImageUp onClick={() => { document.getElementById(id)?.click() }} className="size-15 text-neutral-400 cursor-pointer" />
+            !reactValue && <ImageUp onClick={() => { document.getElementById(id)?.click() }} className="size-15 text-neutral-400 cursor-pointer" />
 
         }
         {
-            preview && <img onClick={() => { document.getElementById(id)?.click() }} className="size-15 object-cover" src={preview} />
+            reactValue && <div className="relative">
+                <img onClick={() => { document.getElementById(id)?.click() }} className="size-20 object-cover" src={reactValue} />
+                <div onClick={() => deleteAction?.()} className="absolute -top-2 -right-2 rounded-full bg-red-500 p-0.5 shadow">
+                    <X className="size-3 text-white" />
+                </div>
+            </div>
         }
-        <input id={id} hidden onChange={handleChange} type="file" {...props} accept="image/jpeg,image/png" multiple={false} />
+        <input {...props} id={id} hidden onChange={(e) => { handleChange(e) }} type="file" accept={import.meta.env.VITE_ALLOW_IMG_MIMETYPE} multiple={false} />
     </fieldset>
 })

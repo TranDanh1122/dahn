@@ -18,3 +18,22 @@ export const getDisplayText = (value: any, key?: any): string => {
     }
 
 }
+export function base64ToFile(base64: string, filename = 'file') {
+    const [metadata, data] = base64.split(',');
+
+    const mimeMatch = metadata.match(/data:(.*);base64/);
+    const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+
+    const byteCharacters = atob(data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+
+    return new File([byteArray], filename, { type: mime });
+}
+
+export function isBase64Image(input: string): boolean {
+    return /^data:image\/[a-zA-Z]+;base64,/.test(input);
+  }

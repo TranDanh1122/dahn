@@ -2,30 +2,74 @@ import { useForm } from "react-hook-form"
 import { WorkspaceFormSchema, type WorkspaceFormData } from "@workspace/models/request.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
-import { useCreateWorkspaceSvc } from "@workspace/flow/workspace/workspace.service";
-import { useNavigate } from "react-router-dom";
+import {
+    useCreateWorkspaceSvc,
+    useUpdateWorkspace,
+    useGetWorkspaceByID
+} from "@workspace/flow/workspace/workspace.service";
+import { useNavigate, useLoaderData } from "react-router-dom";
+import { base64ToFile, isBase64Image } from "@/common/ults/Tool"
 const stepFields: Record<number, (keyof WorkspaceFormData)[]> = {
     1: ["name", "description", "thumbnail"],
     2: ["members"],
 };
 export default function useWorkspaceForm() {
+    const loaderData = useLoaderData()
+    let initData = {
+        name: "",
+        thumbnail: "",
+        description: "",
+        members: [
+            {
+                email: "", avg_salary: ""
+            }
+        ]
+    }
+    const { data: workspace } = useGetWorkspaceByID(loaderData?.workspaceId || "")
+    if (loaderData && workspace) {
+
+        initData = {
+            name: workspace.name,
+            thumbnail: workspace.image,
+            description: workspace.description,
+            members: workspace.workspace_members?.map((el) => ({
+                avg_salary: String(el.avg_salary),
+                email: el.users.email,
+                id: String(el.user)
+            })) ?? [
+                    {
+                        email: "", avg_salary: ""
+                    }
+                ]
+        }
+    }
+
     const form = useForm<WorkspaceFormData>({
-        defaultValues: {
-            name: "", thumbnail: "", description: "", members: [
-                {
-                    email: "", avg_salary: ""
-                }
-            ]
-        },
+        defaultValues: initData,
         resolver: zodResolver(WorkspaceFormSchema),
         mode: "all"
     })
     const navigate = useNavigate()
-    const createWorkspace = useCreateWorkspaceSvc()
+    const createMutation = useCreateWorkspaceSvc()
+    const updateMutation = useUpdateWorkspace()
     const onSubmit = (values: WorkspaceFormData) => {
-        createWorkspace.mutate(values, {
-            onSuccess: () => navigate("/")
-        })
+        const thumb = values.thumbnail || ""
+        const formData = new FormData()
+        formData.append("name", values.name)
+        formData.append("members", JSON.stringify(values.members || []))
+        formData.append("description", values.description || "")
+        formData.append("thumbnail", isBase64Image(thumb) ? base64ToFile(thumb) : thumb)
+
+        if (loaderData && workspace) {
+            updateMutation.mutate({ id: workspace.id, data: formData }, {
+                onSuccess: () => navigate("/")
+            })
+        } else {
+            createMutation.mutate(formData, {
+                onSuccess: () => navigate("/")
+            })
+        }
+
     }
     const [step, changeStep] = React.useState<number>(1)
     const handleBack = () => {
@@ -35,7 +79,16 @@ export default function useWorkspaceForm() {
         form.trigger(stepFields[step]).then((isValid) => {
             if (!isValid) return
             changeStep(prev => prev + 1)
-        })
+        }, (e) => console.log(e))
     }
-    return { handleNext, handleBack, onSubmit, step, form, isLoading: createWorkspace.isPending }
+    React.useEffect(() => { console.log(form.formState.errors.members) }, [form.formState.errors.members])
+    const pending = loaderData && workspace ? updateMutation.isPending : createMutation.isPending
+    return {
+        handleNext,
+        handleBack,
+        onSubmit,
+        step,
+        form,
+        isLoading: pending
+    }
 }

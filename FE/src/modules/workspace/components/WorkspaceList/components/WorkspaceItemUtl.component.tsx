@@ -1,9 +1,10 @@
 import { Dropdown } from "@/components/Dropdown";
 import Loading from "@/components/Loading.component";
-import { Ellipsis, Trash } from "lucide-react";
+import { Ellipsis, Trash, SquarePen } from "lucide-react";
 import React from "react";
 import MenuItem from "@workspace/components/MenuItem.component";
 import { useDeleteWorkspaceSvc } from "@workspace/flow/workspace/workspace.service";
+import { useNavigate } from "react-router-dom";
 interface WorkspaceItemUtl {
     id: string
 }
@@ -27,9 +28,22 @@ export default React.memo(function WorkspaceItemUtl({ id }: WorkspaceItemUtl): R
  * why split here?
  * Imagine if mutation status change, and the whole list of item re-render.....
  */
-const ItemUtl = ({ id, action }: WorkspaceItemUtl & {action? : () => void}): React.JSX.Element => {
+const ItemUtl = ({ id, action }: WorkspaceItemUtl & { action?: () => void }): React.JSX.Element => {
     const deleteMutation = useDeleteWorkspaceSvc()
+    const navigate = useNavigate()
     return <>
+
+        {
+            <MenuItem text={"Edit Workspace"} icon={<></>} onClick={
+                (e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    navigate(`/workspace/${id}/edit`)
+                }
+            }>
+                <SquarePen className="text-neutral-400 size-4 ml-auto" />
+            </MenuItem>
+        }
         {
             deleteMutation.isPending && <Loading className="size-5 border-s-neutral-400" />
         }
@@ -41,9 +55,10 @@ const ItemUtl = ({ id, action }: WorkspaceItemUtl & {action? : () => void}): Rea
                     onSuccess: () => action?.()
                 })
             }} text="Delete Workspace" icon={<></>}>
-                <Trash className="text-red-400 text-sm size-4" />
+                <Trash className="text-red-400 text-sm size-4 ml-auto" />
             </MenuItem>
         }
+
 
     </>
 }
