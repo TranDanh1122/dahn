@@ -10,68 +10,125 @@ const { uploadToCloudinary, deleteFromCloudinary } = require('../utls/upload');
 
 
 router.post('/', upload.single("thumbnail"), async (req, res) => {
+  // Kiểm tra phương thức
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  if (req.method !== 'POST') return res.status(405).end()
-  const supabase = req.supabase
-  const user = req.user
-  const { name, description, members } = req.body
+  const supabase = req.supabase;
+  const user = req.user;
+  const { name, description, members } = req.body;
 
-  const { data: oldWorkspaces, error: gError } = await supabase.from("workspace").select().eq("owner", user.id)
-  if (gError) return res.status(gError.status ?? 400).json(gError.message ?? 'Error when trying to create workspace')
-  if (oldWorkspaces.length > 2) return res.status(400).json("Workspace limit per account is 3 due to free-tier database storage limits")
-
-  const { data, error } = await supabase.from('workspace').insert({
-    name,
-    description,
-    owner: user.id
-  }).select().single()
-
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error when trying to create workspace')
-  const membersArr = JSON.parse(members)
-  const memberData = membersArr.filter(el => el.id)
-  if (memberData && memberData.length > 0) {
-    // Insert members into workspace_invited table
-    const memberData = membersArr.map(member => {
-      return {
-        workspace: data.id,
-        users: member.id
-      }
-
-    })
-    const { error: memberError } = await supabase.from('workspace_invited').insert(memberData)
-    if (memberError) return res.status(memberError.status ?? 400).json(memberError.message ?? 'Error')
-
-    membersArr.forEach(el => {
-      const token = jwt.sign({
-        salary: el.avg_salary,
-        user: el.id,
-        workspace: data.id,
-        type: "invite"
-      }, process.env.AUTH_SECRET_KEY, { expiresIn: '3d' })
-      sendMail({
-        to: el.email,
-        subject: 'Dahn',
-        html: `${user.full_name || user.email} invited you to join their workspace. Average pay: $${el.avg_salary}/h. <a href="${process.env.FE_DOMAIN}/workspace/invite-accepted?token=${token}">Click here (expired in 3 day)</a>`
-      })
-    })
+  // Kiểm tra đầu vào
+  if (!name) {
+    return res.status(400).json({ error: 'Name are required' });
   }
+
+  let membersArr = [];
   try {
-    const file = req.file.path
-    const [result] = await uploadToCloudinary(file)
-
-    const { data: workspace, error: uError } = await supabase
-      .from("workspace")
-      .update({ image: result.url })
-      .eq("id", data.id)
-      .select()
-      .single();
-    return res.status(200).json({ success: true, workspace })
-
-  }
-  catch (e) {
-    return res.status(400).json(e.message ?? 'Error when upload image')
+    if (members) {
+      membersArr = JSON.parse(members);
+      membersArr = membersArr.filter(el => el.id)
+      if (!Array.isArray(membersArr)) throw new Error('Members must be an array');
+      if (membersArr.some(el => !el.id || !el.email || !el.avg_salary)) {
+        throw new Error('Each member must have id, email, and avg_salary');
+      }
+    }
+  } catch (e) {
+    return res.status(400).json({ error: `Invalid members format: ${e.message}` });
   }
 
+  // Kiểm tra giới hạn workspace
+  const { data: oldWorkspaces, error: gError } = await supabase
+    .from('workspace')
+    .select()
+    .eq('owner', user.id);
+  if (gError) {
+    console.error('Error checking workspace limit:', gError);
+    return res.status(gError.status ?? 400).json({ error: gError.message ?? 'Error checking workspace limit' });
+  }
+  if (oldWorkspaces.length > 2) {
+    return res.status(400).json({ error: 'Workspace limit per account is 3 due to free-tier database storage limits' });
+  }
+
+  // Tạo workspace
+  const { data: workspace, error: insertError } = await supabase
+    .from('workspace')
+    .insert({ name, description, owner: user.id })
+    .select()
+    .single();
+  if (insertError || !workspace) {
+    console.error('Error creating workspace:', insertError);
+    return res.status(insertError?.status ?? 400).json({ error: insertError?.message ?? 'Error creating workspace' });
+  }
+  console.log('Created workspace:', workspace);
+
+  // Xử lý thành viên
+  if (membersArr.length > 0) {
+    const memberData = membersArr.map(member => ({
+      workspace: workspace.id,
+      users: member.id,
+      email: member.email,
+      avg_salary: member.avg_salary,
+    }));
+
+    const { error: memberError } = await supabase.from('workspace_invited').insert(memberData);
+    if (memberError) {
+      console.error('Error adding members:', memberError);
+      return res.status(memberError.status ?? 400).json({ error: memberError.message ?? 'Error adding members' });
+    }
+
+    for (const member of membersArr) {
+      try {
+        const token = jwt.sign(
+          {
+            salary: member.avg_salary,
+            user: member.id,
+            workspace: workspace.id,
+            type: 'invite',
+          },
+          process.env.AUTH_SECRET_KEY,
+          { expiresIn: '3d' }
+        );
+        await sendMail({
+          to: member.email,
+          subject: 'Dahn',
+          html: `${user.full_name || user.email} invited you to join their workspace. Average pay: $${member.avg_salary}/h. <a href="${process.env.FE_DOMAIN}/workspace/invite-accepted?token=${token}">Click here (expires in 3 days)</a>`,
+        });
+      } catch (e) {
+        console.error(`Error sending email to ${member.email}:`, e);
+        // Tiếp tục với email khác
+      }
+    }
+  }
+
+  // Xử lý upload ảnh
+  if (req.file) {
+    try {
+      const [result] = await uploadToCloudinary(req.file.path);
+      if (!result?.url) throw new Error('Invalid Cloudinary URL');
+      console.log('Cloudinary result:', result);
+
+      const { data: updatedWorkspace, error: updateError } = await supabase
+        .from('workspace')
+        .update({ image: result.url })
+        .eq('id', workspace.id)
+        .eq('owner', user.id) // Đảm bảo quyền
+        .select()
+        .single();
+      if (updateError || !updatedWorkspace) {
+        console.error('Error updating workspace image:', updateError, 'Workspace ID:', workspace.id);
+        return res.status(updateError?.status ?? 400).json({
+          error: updateError?.message ?? 'Error updating workspace image',
+        });
+      }
+      console.log('Updated workspace:', updatedWorkspace);
+      return res.status(200).json({ success: true, workspace: updatedWorkspace });
+    } catch (e) {
+      console.error('Error uploading image:', e);
+      return res.status(400).json({ error: e.message ?? 'Error uploading image' });
+    }
+  }
+
+  return res.status(200).json({ success: true, workspace });
 });
 
 router.get("/", async (req, res) => {
@@ -88,7 +145,8 @@ router.delete("/:id", async (req, res) => {
   const supabase = req.supabase
   const user = req.user
   const id = req.params.id
-  const { data, error } = await supabase.from('workspace').delete().eq('id', id).single()
+  const { data, error } = await supabase.from('workspace').delete().eq('id', id).select().single()
+  if(data.image) await deleteFromCloudinary(data.image);
   if (error) return res.status(error?.status ?? 400).json(error?.message ?? "Error when try to delete workspace")
   return res.status(200).json({ success: true, data })
 

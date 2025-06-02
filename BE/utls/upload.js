@@ -1,6 +1,6 @@
 const v2 = require("cloudinary")
 const cloudinary = v2
-const fs = require("fs")
+const fs = require("fs").promises
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,23 +11,38 @@ cloudinary.config({
 
 
 const uploadToCloudinary = async (files, folder = "upload") => {
-    const fileArray = Array.isArray(files) ? files : [files]
+  const fileArray = Array.isArray(files) ? files : [files];
 
-    const uploads = await Promise.all(
-        fileArray.map(async (filePath) => {
-            const result = await cloudinary.uploader.upload(filePath, {
-                folder,
-            })
-            fs.unlinkSync(filePath)
-            return {
-                url: result.secure_url,
-                public_id: result.public_id,
-            }
-        })
-    )
+  const uploads = await Promise.all(
+    fileArray.map(async (filePath) => {
+      try {
+        console.log(`Uploading file: ${filePath}`);
+        const result = await cloudinary.uploader.upload(filePath, { folder });
+        if (!result?.secure_url || !result?.public_id) {
+          throw new Error('Invalid Cloudinary response');
+        }
 
-    return uploads
-}
+        // Xóa file tạm
+        try {
+          await fs.unlink(filePath);
+          console.log(`Deleted temp file: ${filePath}`);
+        } catch (deleteError) {
+          console.error(`Error deleting temp file ${filePath}:`, deleteError.message);
+        }
+
+        return {
+          url: result.secure_url,
+          public_id: result.public_id,
+        };
+      } catch (uploadError) {
+        console.error(`Error uploading file ${filePath}:`, uploadError.message);
+        throw uploadError; // Ném lỗi để hàm gọi xử lý
+      }
+    })
+  );
+
+  return uploads;
+};
 
 
 const deleteFromCloudinary = async (identifier) => {
