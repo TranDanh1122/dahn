@@ -57,6 +57,9 @@
       ],
       "@personally/*": [
         "src/modules/personally/*"
+      ],
+      "@personally": [
+        "src/modules/personally/index.ts"
       ]
     }
   }

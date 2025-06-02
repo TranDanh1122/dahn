@@ -111,13 +111,13 @@ export const useUpdateWorkspace = () => {
             return res.data
         },
         retry: false,
-        onError : (e: AxiosError) => {
+        onError: (e: AxiosError) => {
             ErrorHandler(e.response?.data || "Error")
         },
-        onSuccess: (data : Workspace) => {
+        onSuccess: (data: Workspace) => {
             SuccessHandle("Workspace Updated!")
-            queryClient.invalidateQueries({queryKey : ["workspaces"]})
-            queryClient.invalidateQueries({queryKey : ["workspace" , data.id] })
+            queryClient.invalidateQueries({ queryKey: ["workspaces"] })
+            queryClient.invalidateQueries({ queryKey: ["workspace", data.id] })
             dispatch(setWorkspace(data))
         }
     })

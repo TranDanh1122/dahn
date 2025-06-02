@@ -18,14 +18,16 @@ export default React.memo(function Step1(): React.JSX.Element {
             <small className="pl-2">Workspace, mean that you company/team or something you want</small>
         </div>
 
-        <TextArea {...form.register("description")}
+        <TextArea
+            {...form.register("description")}
             label="Description" labelClass="font-light!"
             placeholder="eg: This is my start up"
             error={form.formState.errors.description?.message}
             rows={3}
         />
         <ImageUpload
-            deleteAction={() => form.setValue("thumbnail" , "")}
+            hasDelete
+            deleteAction={() => form.setValue("thumbnail", "")}
             reactValue={form.watch("thumbnail")}
             id="workspace_img"
             label="Workspace Logo"
