@@ -13,8 +13,11 @@ import {
 } from "lucide-react";
 import Input from "@components/Input.component";
 import { WorkspaceItem, MenuItem } from "@workspace";
+import { useSelector } from "react-redux";
+import type { AppState } from "@/stores";
 
 export default React.memo(function Sidebar(): React.JSX.Element {
+    const workspace = useSelector((state: AppState) => state.persist.workspace.currentWorkspace)
     return <div className="h-full border-r border-neutral-300 ">
         <div className="flex items-center justify-between p-2">
             {/* <Dropdown className="w-full"
@@ -37,7 +40,7 @@ export default React.memo(function Sidebar(): React.JSX.Element {
         </div>
         <WorkspaceItem />
         <div className="space-y-1 mt-4 border-b border-b-neutral-300 pb-4">
-            <MenuItem icon={<FolderOpenDot className="text-neutral-500 size-4" />} text="All Projects" />
+            <MenuItem to={`workspace/${workspace?.id}/projects`} icon={<FolderOpenDot className="text-neutral-500 size-4" />} text="All Projects" />
             <MenuItem icon={<FolderCheck className="text-neutral-500 size-4" />} text="Completed" />
             <MenuItem icon={<ChartPie className="text-neutral-500 size-4" />} text="Report" />
         </div>

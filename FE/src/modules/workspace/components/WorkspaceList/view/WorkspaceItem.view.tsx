@@ -10,7 +10,11 @@ import Skeleton from "@components/Skeleton.component"
 const WorkspaceList = React.lazy(() => import("@workspace/components/WorkspaceList/components/WorkspaceList.component"))
 import { useSelector } from "react-redux"
 import type { AppState } from "@/stores"
-export default React.memo(function WorkspaceItem(): React.JSX.Element {
+interface WorkspaceItemProps {
+    className?: string,
+    disableDropdown?: boolean
+}
+export default React.memo(function WorkspaceItem({ className, disableDropdown }: WorkspaceItemProps): React.JSX.Element {
     const { data, isLoading } = useGetWorkspaceSvc()
     const navigate = useNavigate()
     const { currentWorkspace } = useSelector((state: AppState) => state.persist.workspace)
@@ -19,22 +23,46 @@ export default React.memo(function WorkspaceItem(): React.JSX.Element {
             isLoading && <Skeleton className="bg-neutral-300 w-full h-10" />
         }
         {
-            !isLoading && data && data.length == 0 && <MenuItem
+            !isLoading &&
+            data &&
+            data.length == 0 &&
+            <MenuItem
                 onClick={() => navigate("/workspace/create")}
                 className=" hover:bg-blue-100!"
                 icon={<Plus className="size-5 text-neutral-400" />}
-                text="Create new project" />
+                text="Create new project"
+            />
         }
 
         {
-            data && data.length > 0 && <Dropdown hasIcon={true} dropContent={
-                <React.Suspense
-                    fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
-                    <WorkspaceList />
-                </React.Suspense>
-            }>
-                <CircleLogoWText text={currentWorkspace?.name || ""} img={currentWorkspace?.image || ""} />
+            data &&
+            data.length > 0 &&
+            !disableDropdown &&
+            <Dropdown
+                hasIcon={true}
+                dropContent={
+                    <React.Suspense
+                        fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
+                        <WorkspaceList />
+                    </React.Suspense>
+                }>
+                <CircleLogoWText
+                    className={className}
+                    text={currentWorkspace?.name || ""}
+                    img={currentWorkspace?.image || ""}
+                />
             </Dropdown>
+        }
+        {
+            data &&
+            data.length > 0 &&
+            disableDropdown &&
+            <CircleLogoWText
+                className={className}
+                text={currentWorkspace?.name || ""}
+                img={currentWorkspace?.image || ""}
+            />
+
         }
 
     </>
