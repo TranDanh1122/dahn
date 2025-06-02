@@ -27,6 +27,6 @@ export default React.memo(function ImageUpload({ deleteAction, reactValue, id, l
                 </div>
             </div>
         }
-        <input {...props} id={id} hidden onChange={(e) => { handleChange(e) }} type="file" accept="image/*" multiple={false} />
+        <input {...props} id={id} hidden onChange={(e) => { handleChange(e) }} type="file" accept={import.meta.env.VITE_ALLOW_IMG_MIMETYPE} multiple={false} />
     </fieldset>
 })
