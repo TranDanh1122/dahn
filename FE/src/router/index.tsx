@@ -3,6 +3,7 @@ import { AuthRouter } from "@auth"
 import Layout from "@/layouts/Layout.view"
 import { WorkspaceRouter } from "@workspace"
 import { DashboardRouter } from "@dashboard"
+import { ProjectRouter } from "@project"
 import React from "react"
 const SidebarLayout = React.lazy(() => import("@/layouts/SidebarLayout/SidebarLayout"))
 
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
                 element: <SidebarLayout />,
                 children: [
                     ...WorkspaceRouter,
-                    ...DashboardRouter
+                    ...DashboardRouter,
+                    ...ProjectRouter
                 ]
             }
 

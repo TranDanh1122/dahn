@@ -1,7 +1,4 @@
-import { useForm } from "react-hook-form"
 import { WorkspaceFormSchema, type WorkspaceFormData } from "@workspace/models/request.schema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import React from "react"
 import {
     useCreateWorkspaceSvc,
     useUpdateWorkspace,
@@ -9,25 +6,29 @@ import {
 } from "@workspace/flow/workspace/workspace.service";
 import { useNavigate, useLoaderData } from "react-router-dom";
 import { base64ToFile, isBase64Image } from "@/common/ults/Tool"
+import useFormStep from "@/common/hooks/useFormStep";
+import React from "react";
 const stepFields: Record<number, (keyof WorkspaceFormData)[]> = {
     1: ["name", "description", "thumbnail"],
     2: ["members"],
 };
 export default function useWorkspaceForm() {
-    const loaderData = useLoaderData()
-    let initData = {
-        name: "",
-        thumbnail: "",
-        description: "",
-        members: [
-            {
-                email: "", avg_salary: ""
-            }
-        ]
-    }
-    const { data: workspace } = useGetWorkspaceByID(loaderData?.workspaceId || "")
-    if (loaderData && workspace) {
 
+    const loaderData = useLoaderData()
+    const { data: workspace } = useGetWorkspaceByID(loaderData?.workspaceId || "")
+
+    const initData = React.useMemo(() => {
+        let initData = {
+            name: "",
+            thumbnail: "",
+            description: "",
+            members: [
+                {
+                    email: "", avg_salary: ""
+                }
+            ]
+        }
+        if (!loaderData || !workspace) return initData
         initData = {
             name: workspace.name,
             thumbnail: workspace.image,
@@ -42,13 +43,21 @@ export default function useWorkspaceForm() {
                     }
                 ]
         }
-    }
+        return initData
+    }, [loaderData, workspace])
 
-    const form = useForm<WorkspaceFormData>({
-        defaultValues: initData,
-        resolver: zodResolver(WorkspaceFormSchema),
-        mode: "all"
-    })
+
+    const {
+        form,
+        handleBack,
+        handleNext,
+        step
+    } = useFormStep<WorkspaceFormData>(
+        {
+            initData,
+            stepFields,
+            schema: WorkspaceFormSchema
+        })
     const navigate = useNavigate()
     const createMutation = useCreateWorkspaceSvc()
     const updateMutation = useUpdateWorkspace()
@@ -71,18 +80,10 @@ export default function useWorkspaceForm() {
         }
 
     }
-    const [step, changeStep] = React.useState<number>(1)
-    const handleBack = () => {
-        changeStep(prev => prev - 1)
-    }
-    const handleNext = () => {
-        form.trigger(stepFields[step]).then((isValid) => {
-            if (!isValid) return
-            changeStep(prev => prev + 1)
-        }, (e) => console.log(e))
-    }
-    React.useEffect(() => { console.log(form.formState.errors.members) }, [form.formState.errors.members])
-    const pending = loaderData && workspace ? updateMutation.isPending : createMutation.isPending
+
+    const pending = loaderData && workspace
+        ? updateMutation.isPending
+        : createMutation.isPending
     return {
         handleNext,
         handleBack,
