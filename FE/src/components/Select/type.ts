@@ -1,5 +1,6 @@
+import type React from "react"
 
-export interface SelectProps<T> {
+export interface SelectProps<T> extends Omit<React.ComponentProps<"select">, "onChange" | "defaultValue"> {
     dataSets: T[],
     valueKey?: keyof T,
     textKey?: keyof T,

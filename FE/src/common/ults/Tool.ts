@@ -36,4 +36,4 @@ export function base64ToFile(base64: string, filename = 'file') {
 
 export function isBase64Image(input: string): boolean {
     return /^data:image\/[a-zA-Z]+;base64,/.test(input);
-  }
+}

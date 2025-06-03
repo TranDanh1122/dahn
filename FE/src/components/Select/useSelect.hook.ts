@@ -4,7 +4,7 @@ import { useOutsideClick } from "@/common/hooks/useOutsideClick";
 import { isObjectEqual } from "@/common/ults/Tool";
 type Props<T> = Omit<SelectProps<T>, "className" | "children" | "dataSets">
 export default function useSelect<T>({ defaultValue, onChange, changeValue, valueKey, textKey }: Props<T>) {
-    const [value, setValue] = React.useState<T>(defaultValue)
+    const [value, setValue] = React.useState<T | T[]>(defaultValue)
     const [open, setOpen] = React.useState<boolean>(false)
     const dropboxRef = useOutsideClick<HTMLDivElement>(() => setOpen(false))
     const handleChange = React.useCallback((dataSet: T) => {

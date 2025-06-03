@@ -9,6 +9,7 @@ interface FormStepParams<T extends Record<string, unknown>> {
     schema: ZodSchema<T>
 }
 export default function useFormStep<T extends Record<string, unknown>>({ initData, stepFields, schema }: FormStepParams<T>) {
+
     const form = useForm<T>({
         defaultValues: initData as DefaultValues<T>,
         resolver: zodResolver(schema)
