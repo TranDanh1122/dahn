@@ -27,7 +27,7 @@ export default function Step2(): React.JSX.Element {
         />
         <fieldset className="space-y-2">
             <div className="flex items-center gap-2">
-                <legend>Environments</legend>
+                <legend className="text-neutral-600">Environments</legend>
                 <Button
                     className="
                     font-light! text-neutral-600

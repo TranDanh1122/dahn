@@ -27,7 +27,7 @@ export default React.memo(function Picker({
     return (
         <Dropdown
             dropContent={
-                <ul>
+                <ul className="overflow-y-scroll max-h-32 scrollbar-thin">
                     {dataSet.length > 0 &&
                         dataSet.map((el) => (
                             <li key={v4()}

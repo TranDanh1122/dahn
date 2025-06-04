@@ -52,6 +52,7 @@ export const ProjectSchema = z.object({
 export const initData: z.infer<typeof ProjectSchema> = {
     name: "",
     overview: "",
+    techstack: "",
     type: "web_app",
     role: [],
     members: [],
