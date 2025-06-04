@@ -3,11 +3,15 @@ import { Dropdown } from "@components/Dropdown";
 import { v4 } from "uuid";
 interface PickerProps {
     dataSet: string[];
+    data?: string[],
+    onItemClick?: (values: string) => void
 }
 export default React.memo(function Picker({
     dataSet,
+    data,
+    onItemClick
 }: PickerProps): React.JSX.Element {
-    const [values, setValue] = React.useState<Set<string>>(new Set([]));
+    const [values, setValue] = React.useState<Set<string>>(new Set(data ?? []));
     const handleItemClick = React.useCallback((el: string) => {
         setValue((prev) => {
             const newData = new Set(prev)
@@ -16,6 +20,7 @@ export default React.memo(function Picker({
             } else {
                 newData.add(el)
             }
+            onItemClick?.([...newData].join(","))
             return newData
         })
     }, [])

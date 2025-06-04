@@ -10,10 +10,7 @@ export const ProjectSchema = z.object({
     description: z.coerce.string().optional(),
     type: z.coerce.string(),
     client: z.coerce.string().optional(),
-    techstack: z.array(z.object({
-        name: z.coerce.string(),
-        version: z.coerce.string().optional()
-    })).optional(),
+    techstack: z.coerce.string(),
     environment: z.array(z.object({
         name: z.coerce.string(),
         demoUrl: z.coerce.string(),

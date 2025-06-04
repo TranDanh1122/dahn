@@ -19,9 +19,12 @@ export default function Step2(): React.JSX.Element {
     })
     const handleApdItem = () => append({ name: "", demoUrl: "", status: "active" })
     const handleDelItem = (id: number) => remove(id)
-    console.log(environments)
     return <div className="space-y-4" >
-        <Picker dataSet={isLoading ? [] : techstacks} />
+        <Picker
+            dataSet={isLoading ? [] : techstacks}
+            data={form.getValues("techstack")?.split(",") ?? ""}
+            onItemClick={(val) => form.setValue("techstack", val)}
+        />
         <fieldset className="space-y-2">
             <div className="flex items-center gap-2">
                 <legend>Environments</legend>
@@ -39,7 +42,9 @@ export default function Step2(): React.JSX.Element {
             </div>
             {
                 environments.map((_, index) => (
-                    <div key={v4()} className="flex items-center gap-2">
+                    <div
+                        key={v4()}
+                        className="flex items-center gap-2">
                         <Input
                             fieldsetClass="w-1/3 shrink-0"
                             placeholder="eg: Production"
