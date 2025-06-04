@@ -20,4 +20,7 @@ export const API_ENDPOINT = {
     //----------- Workspace API --------
     workspace: `${proxy}/workspace`,
     acceptedInvite: `${proxy}/workspace/accepted`,
+
+    //----------- Common API -----------
+    techStacks: `${proxy}/common/techstacks`
 }

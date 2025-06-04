@@ -8,7 +8,7 @@ export const ProjectSchema = z.object({
     name: z.coerce.string().min(3).max(50),
     overview: z.coerce.string().min(1),
     description: z.coerce.string().optional(),
-    type: z.enum(["web", "web_app", "mobile_app", "api", "other"]),
+    type: z.coerce.string(),
     client: z.coerce.string().optional(),
     techstack: z.array(z.object({
         name: z.coerce.string(),
@@ -17,7 +17,7 @@ export const ProjectSchema = z.object({
     environment: z.array(z.object({
         name: z.coerce.string(),
         demoUrl: z.coerce.string(),
-        status: z.enum(["active", "inactive", "maintance"])
+        status: z.coerce.string()
     })).optional(),
     milestones: z.array(z.object({
         name: z.coerce.string(),

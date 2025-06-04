@@ -2,6 +2,8 @@ import { getDisplayText } from "@/common/ults/Tool";
 import React from "react";
 import type { SelectProps } from "./type";
 import useSelect from "./useSelect.hook";
+import { v4 } from "uuid";
+import { ChevronDown } from "lucide-react";
 
 /**
  * Custom Select component
@@ -25,7 +27,8 @@ export default function Select<T>({
     onChange,
     changeValue,
     defaultValue,
-    multiple
+    multiple,
+    hasIcon
 }: SelectProps<T>): React.JSX.Element {
     const { open, dropboxRef, handleChange, setOpen, value } = useSelect<T>({
         defaultValue,
@@ -43,22 +46,35 @@ export default function Select<T>({
             aria-expanded={open}
             aria-haspopup="listbox">
             <div
-                className="p-2 w-full cursor-pointer bg-white rounded-md font-light hover:bg-neutral-200"
+                className="p-2 pr-6 w-full cursor-pointer bg-white rounded-md font-light hover:bg-neutral-200 group"
                 onClick={() => setOpen(!open)}>
                 {!children && getDisplayText(value, textKey)}
                 {children && children}
+                {
+                    hasIcon &&
+                    <ChevronDown
+                        className={`
+                        ${open && "rotate-180"}
+                        text-neutral-600
+                        size-4 bg-white 
+                        group-hover:bg-neutral-200
+                        absolute top-1/2 right-2 
+                        -translate-y-1/2
+                            `}
+                    />
+                }
             </div>
             {open && dataSets.length > 0 && (
                 <div
                     ref={dropboxRef}
                     role="listbox"
-                    className="absolute h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-neutral-500 flex flex-col justify-stretch">
+                    className="absolute z-10 h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-neutral-500 flex flex-col justify-stretch">
                     {dataSets.map((dataSet: T) => {
                         const content = getDisplayText(dataSet, textKey);
                         return (
                             <p
                                 role="option"
-                                key={dataSet as unknown as string}
+                                key={v4()}
                                 onClick={() => handleChange(dataSet)}
                                 className={` px-2 py-1 cursor-pointer font-light rounded-md w-full hover:bg-neutral-200`}
                                 dangerouslySetInnerHTML={{ __html: content }}

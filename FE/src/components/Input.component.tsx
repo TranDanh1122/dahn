@@ -2,7 +2,7 @@ import React from "react";
 import { Eye, EyeClosed } from "lucide-react"
 export interface InputProps extends React.ComponentProps<"input"> {
     error?: string;
-    label: string;
+    label?: string;
     children?: React.ReactNode,
     fieldsetClass?: string,
     labelClass?: string
@@ -14,9 +14,9 @@ export default React.memo(function Input({ fieldsetClass, labelClass, error, lab
     const [isShowPass, setShowPass] = React.useState<boolean>(false)
     return (
         <fieldset className={`flex flex-col gap-2 ${fieldsetClass}`}>
-            <label className={`font-semibold text-neutral-600 cursor-pointer ${labelClass}`} htmlFor={props.id} aria-label={label} >
+            {label && <label className={`font-semibold text-neutral-600 cursor-pointer ${labelClass}`} htmlFor={props.id} aria-label={label} >
                 {label}
-            </label>
+            </label>}
             <div className="relative w-full">
                 <input {...props} type={isShowPass ? "text" : props.type} className={` ${className} ${props.type == "password" ? "pr-10" : ""} w-full cursor-pointer border border-neutral-200 font-medium px-3 py-2 focus-visible:outline-0 focus-visible:border-fuchsia-300 rounded-xl`} />
                 {

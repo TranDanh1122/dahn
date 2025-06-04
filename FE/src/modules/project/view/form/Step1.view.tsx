@@ -5,6 +5,7 @@ import { Select } from "@components/Select";
 import { useFormContext } from "react-hook-form";
 import { ProjectSchema } from "@project/models/request.schema";
 import { z } from "zod"
+import { TypeDataSet, type EnumSelectType } from "@project/const"
 export default function Step1(): React.JSX.Element {
     const form = useFormContext<z.infer<typeof ProjectSchema>>()
     return <div className="space-y-4">
@@ -33,28 +34,38 @@ export default function Step1(): React.JSX.Element {
         />
         <fieldset className="flex flex-col gap-2">
             <label htmlFor="type" className="font-light text-neutral-600 cursor-pointer ">Project type</label>
-            <Select<{ value: string, text: string }>
+            <Select<EnumSelectType[number]>
                 id="type"
-                className="border border-neutral-300 hover:border-fuchsia-300  rounded-lg"
+                className="border border-neutral-300 
+                hover:border-fuchsia-300 rounded-lg"
                 changeValue="value"
                 valueKey="value"
                 textKey="text"
+                onChange={(e) => form.setValue("type", String(e))}
+                defaultValue={TypeDataSet[0]}
+                dataSets={TypeDataSet}
+            />
+            {form.formState.errors.type &&
+                <p
+                    className="
+                    text-red-600 
+                    text-sm 
+                    font-semibold 
+                    w-full 
+                    text-left"
+                    aria-label={form.formState.errors.type.message}
+                    aria-live="assertive">
+                    {form.formState.errors.type.message}
+                </p>
+            }
 
-                defaultValue={{ value: "web", text: "Website (focus UI and SEO)" }}
-                dataSets={[
-                    { value: "web", text: "Website (focus UI and SEO)" },
-                    { value: "web_app", text: "Webapp (focus feature and functionally)" },
-                    { value: "mobile_app", text: "Mobile app" },
-                    { value: "api", text: "API Client" },
-                    { value: "other", text: "Other" }
-                ]} />
         </fieldset>
         <Input label="Client"
             placeholder="eg: My soul!"
             labelClass=" font-light!"
-            error={form.formState.errors.name?.message}
+            error={form.formState.errors.client?.message}
             {...form.register("client")}
-
         />
+
     </div>
 }

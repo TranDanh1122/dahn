@@ -3,6 +3,7 @@ const serverless = require('serverless-http');
 const authRoute = require('./routes/auth');
 const workspaceRoute = require('./routes/workspace');
 const userRoute = require('./routes/user')
+const commonRoute = require('./routes/common')
 const cors = require('cors');
 const authMiddleware = require('./middleware/auth')
 
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use('/api/auth', authRoute);
 app.use('/api/workspace', authMiddleware, workspaceRoute);
 app.use('/api/user', authMiddleware, userRoute);
+app.use('/api/common', authMiddleware, commonRoute);
+
 app.get('/api/test', (req, res) => {
   res.json({ message: 'BE is running!' });
 });

@@ -8,5 +8,6 @@ export interface SelectProps<T> extends Omit<React.ComponentProps<"select">, "on
     onChange?: (value: T[keyof T] | T) => void
     changeValue?: "all" | "value" | "text",
     defaultValue: T,
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    hasIcon?: boolean
 }
