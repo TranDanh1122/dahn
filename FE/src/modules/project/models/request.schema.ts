@@ -17,7 +17,7 @@ export const ProjectSchema = z.object({
         status: z.coerce.string()
     })).optional(),
     milestones: z.array(z.object({
-        name: z.coerce.string(),
+        name: z.coerce.string().min(3).max(30),
         description: z.coerce.string(),
         startDate: z.coerce.date(),
         endDate: z.coerce.date(),

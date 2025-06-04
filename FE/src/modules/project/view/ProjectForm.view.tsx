@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import type { z } from "zod";
 import { initData, ProjectSchema } from "@project/models/request.schema";
 import useFormStep from "@/common/hooks/useFormStep";
-import { Step1, Step2 } from "./form";
+import { Step1, Step2, Step3 } from "./form";
 import ChangeStep from "@components/ChangeStep.component";
 
 const stepFields: Record<number, (keyof z.infer<typeof ProjectSchema>)[]> = {
@@ -36,6 +36,8 @@ export default function ProjectForm(): React.JSX.Element {
                     {step == 1 && <Step1 />}
 
                     {step == 2 && <Step2 />}
+
+                    {step == 3 && <Step3 />}
 
                     <ChangeStep
                         step={step}
