@@ -11,7 +11,7 @@ export default React.memo(function Picker({
     data,
     onItemClick
 }: PickerProps): React.JSX.Element {
-    const [values, setValue] = React.useState<Set<string>>(new Set(data ?? []));
+    const [values, setValue] = React.useState<Set<string>>(new Set(data?.filter(el => el) ?? []));
     const handleItemClick = React.useCallback((el: string) => {
         setValue((prev) => {
             const newData = new Set(prev)

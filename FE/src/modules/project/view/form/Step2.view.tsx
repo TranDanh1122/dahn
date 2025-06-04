@@ -22,7 +22,7 @@ export default function Step2(): React.JSX.Element {
     return <div className="space-y-4" >
         <Picker
             dataSet={isLoading ? [] : techstacks}
-            data={form.getValues("techstack")?.split(",") ?? ""}
+            data={form.getValues("techstack")?.split(",") ?? []}
             onItemClick={(val) => form.setValue("techstack", val)}
         />
         <fieldset className="space-y-2">
