@@ -3,7 +3,7 @@ import React from "react";
 import type { SelectProps } from "./type";
 import useSelect from "./useSelect.hook";
 import { v4 } from "uuid";
-import { ChevronDown } from "lucide-react";
+import ChevronDown from "lucide-react/dist/esm/icons/chevron-down"
 
 /**
  * Custom Select component

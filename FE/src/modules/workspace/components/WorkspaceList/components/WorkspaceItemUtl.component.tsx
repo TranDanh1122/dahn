@@ -1,6 +1,8 @@
 import { Dropdown } from "@components/Dropdown";
 import Loading from "@components/Loading.component";
-import { Ellipsis, Trash, SquarePen } from "lucide-react";
+import Ellipsis from "lucide-react/dist/esm/icons/ellipsis";
+import Trash from "lucide-react/dist/esm/icons/trash";
+import SquarePen from "lucide-react/dist/esm/icons/square-pen";
 import React from "react";
 import MenuItem from "@workspace/components/MenuItem.component";
 import { useDeleteWorkspaceSvc } from "@workspace/flow/workspace/workspace.service";

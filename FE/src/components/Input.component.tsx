@@ -1,5 +1,6 @@
 import React from "react";
-import { Eye, EyeClosed } from "lucide-react"
+import Eye from "lucide-react/dist/esm/icons/eye"
+import EyeClosed from "lucide-react/dist/esm/icons/eye-closed"
 export interface InputProps extends React.ComponentProps<"input"> {
     error?: string;
     label?: string;

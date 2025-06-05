@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "@components/Input.component";
 import Button from "@components/Button.component";
-import { Trash } from "lucide-react";
+import Trash from "lucide-react/dist/esm/icons/trash";
 import { InputSearch } from "@components/InputSearch";
 import { searchUserFn, type User, type SearchUserParams } from "@user/index";
 import useStep2 from "@workspace/hook/useStep2.hook";

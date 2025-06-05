@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import X from "lucide-react/dist/esm/icons/x";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router-dom";

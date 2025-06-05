@@ -1,5 +1,6 @@
 import React from "react";
-import { FolderPlus } from "lucide-react";
+import FolderPlus from "lucide-react/dist/esm/icons/folder-plus"
+
 interface SquareItemProps extends React.ComponentProps<"div"> {
     img?: string,
     title?: string,

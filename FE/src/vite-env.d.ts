@@ -27,3 +27,9 @@ declare module 'nprogress' {
     const nprogress: NProgress;
     export = nprogress;
 }
+
+declare module "lucide-react/dist/esm/icons/*" {
+    import { ComponentType, SVGProps } from "react"
+    const Icon: ComponentType<SVGProps<SVGSVGElement>>
+    export default Icon
+}

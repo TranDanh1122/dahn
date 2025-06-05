@@ -1,5 +1,6 @@
 import React from "react"
-import { ImageUp, X } from "lucide-react"
+import X from "lucide-react/dist/esm/icons/x"
+import ImageUp from "lucide-react/dist/esm/icons/image-up"
 import useImageUpload from "./ImageUpload.hook"
 interface ImageUploadProps extends React.ComponentProps<"input"> {
     children?: React.ReactElement,

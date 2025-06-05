@@ -2,7 +2,7 @@ import { useOutsideClick } from "@/common/hooks/useOutsideClick";
 import TextArea from "@components/TextArea.component";
 import Button from "@components/Button.component";
 import Input from "@components/Input.component";
-import { X } from "lucide-react";
+import X from "lucide-react/dist/esm/icons/x";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 const DatePicker = React.lazy(() => import("@components/DatePicker.component"))

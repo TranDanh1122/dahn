@@ -1,6 +1,6 @@
 import React from "react";
 import { FormProvider } from "react-hook-form";
-import { X } from "lucide-react";
+import X from "lucide-react/dist/esm/icons/x";
 import { Link } from "react-router-dom";
 import useWorkspaceForm from "../hook/useWorkspaceForm";
 import ChangeStep from "@components/ChangeStep.component";

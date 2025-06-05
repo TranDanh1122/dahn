@@ -1,15 +1,14 @@
 import React from "react";
 import User from "@components/User.component"
-import {
-    Bell,
-    BookUser,
-    Cog,
-    Search,
-    FolderCheck,
-    ChartPie,
-    Folder,
-    House
-} from "lucide-react";
+import Bell from "lucide-react/dist/esm/icons/bell"
+import BookUser from "lucide-react/dist/esm/icons/book-user"
+import Cog from "lucide-react/dist/esm/icons/cog"
+import Search from "lucide-react/dist/esm/icons/search"
+import FolderCheck from "lucide-react/dist/esm/icons/folder-check"
+import ChartPie from "lucide-react/dist/esm/icons/chart-pie"
+import Folder from "lucide-react/dist/esm/icons/folder"
+import House from "lucide-react/dist/esm/icons/house"
+
 import Input from "@components/Input.component";
 import { WorkspaceItem, MenuItem } from "@workspace";
 import AllProjectItem from "../MenuItems/AllProject.item";

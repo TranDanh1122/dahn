@@ -8,7 +8,7 @@ import Input from "@/components/Input.component";
 import { Select } from "@/components/Select";
 import { type EnumSelectType, EnvironmentStatus } from "@project/const";
 import Button from "@components/Button.component";
-import { X } from "lucide-react";
+import X from "lucide-react/dist/esm/icons/x";
 import { v4 } from "uuid";
 export default function Step2(): React.JSX.Element {
     const form = useFormContext<z.infer<typeof ProjectSchema>>()

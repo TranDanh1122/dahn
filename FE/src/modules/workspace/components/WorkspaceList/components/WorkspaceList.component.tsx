@@ -1,7 +1,8 @@
 import React from "react"
 import MenuItem from "@workspace/components/MenuItem.component"
 import CircleLogoWText from "@components/CircleLogoWText.component"
-import { Plus } from "lucide-react"
+import Plus from "lucide-react/dist/esm/icons/plus";
+
 import { useNavigate } from "react-router-dom"
 import { useGetWorkspaceSvc } from "@workspace/flow/workspace/workspace.service"
 import Loading from "@components/Loading.component"
@@ -9,7 +10,7 @@ import WorkspaceItemUtl from "./WorkspaceItemUtl.component"
 import type { AppState, AppDispatch } from "@/stores"
 import { useSelector, useDispatch } from "react-redux"
 import { setWorkspace } from "@workspace/store"
-import {v4} from "uuid"
+import { v4 } from "uuid"
 export default React.memo(function WorkspaceList(): React.JSX.Element {
     const navigate = useNavigate()
     const { data, isLoading } = useGetWorkspaceSvc()
