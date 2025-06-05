@@ -70,11 +70,11 @@ router.post('/register', async (req, res) => {
   const { email, password } = req.body
   const { data, error } = await supabase.auth.signUp({ email, password });
 
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
 
   const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
-  if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
+  if (otpError) return res.status(otpError.status ?? 400).json({ message: otpError.message ?? 'Error' })
 
   // setHTTPOnlyCookie(res, [
   //   { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
@@ -97,13 +97,13 @@ router.post('/login', async (req, res) => {
 
   const { data, error } = await supabase.auth.signInWithPassword(req.body);
 
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
 
   const { email } = req.body
 
   const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
-  if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
+  if (otpError) return res.status(otpError.status ?? 400).json({ message: otpError.message ?? 'Error' })
 
   return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
 });
@@ -118,7 +118,7 @@ router.post('/send-otp', async (req, res) => {
 
   const { error: otpError } = await supabase.auth.signInWithOtp({ email })
 
-  if (otpError) return res.status(otpError.status ?? 400).json(otpError.message ?? 'Error')
+  if (otpError) return res.status(otpError.status ?? 400).json({ message: otpError.message ?? 'Error' })
 
   return res.status(200).json({ success: true })
 });
@@ -139,7 +139,7 @@ router.post('/login-otp', async (req, res) => {
   const { email, otp: token } = req.body
   const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
 
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
 
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
@@ -168,7 +168,7 @@ router.post('/forgot-password', async (req, res) => {
     { redirectTo: `${process.env.FE_DOMAIN}/auth/reset-password` }
   );
 
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error')
+  if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
   const token = encrypt(email.trim().toLowerCase())
   console.log(token)
 
@@ -192,14 +192,14 @@ router.post('/reset-password', async (req, res) => {
 
   const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers({ email });
 
-  if (listError || !users || users.length === 0) return res.status((listError.status) ?? 400).json((listError?.message) ?? 'Error')
-  if (!users.users || users.user.length === 0) return res.status(400).json('Error')
+  if (listError || !users || users.length === 0) return res.status((listError.status) ?? 400).json({ message: (listError?.message) ?? 'Error' })
+  if (!users.users || users.user.length === 0) return res.status(400).json({ message: 'Error' })
 
   const user = users.users[0];
 
   const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, { password });
 
-  if (updateError) return res.status((updateError.status) ?? 400).json((updateError.message) ?? 'Error')
+  if (updateError) return res.status((updateError.status) ?? 400).json({ message: (updateError.message) ?? 'Error' })
 
   return res.status(200).json({ success: true })
 });
@@ -222,7 +222,7 @@ router.post('/refresh-token', async (req, res) => {
   const { data, error } = await supabase.auth.refreshSession({ refresh_token: refreshToken })
   const { session } = data
 
-  if (error) return res.status(error.status ?? 400).json(error.message ?? 'Error wwhen refresh token')
+  if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error wwhen refresh token' })
 
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: session.access_token, expires: session.expires_in },
@@ -276,12 +276,12 @@ router.post('/pkce-token', async (req, res) => {
   const { code, code_verifier } = req.body;
 
   if (!code || !code_verifier) {
-    return res.status(400).json({ error: 'Missing code or code_verifier' });
+    return res.status(400).json({ message: 'Missing code or code_verifier' });
   }
   const { data, error } = await supabasePKCE.auth.exchangeCodeForSession(code, code_verifier);
 
   if (error) {
-    return res.status(error.status ?? 400).json(error.message ?? 'Error')
+    return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
   }
 
   setHTTPOnlyCookie(res, [

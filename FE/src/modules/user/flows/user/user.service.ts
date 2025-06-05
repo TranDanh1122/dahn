@@ -6,12 +6,12 @@ export const useSearchUserSvc = () => {
     return useMutation<User[], Error, SearchUserParams>({
         mutationFn: async (data: SearchUserParams) => {
             const res = await searchUserAPI(data)
-            return res.data.users
+            return (await res.json<{ users: User[] }>()).users
         },
     })
 }
 
 export const searchUserFn = async (data: SearchUserParams) => {
     const res = await searchUserAPI(data)
-    return res.data.users
+    return (await res.json<{ users: User[] }>()).users
 }

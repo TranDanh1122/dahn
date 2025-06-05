@@ -12,7 +12,7 @@ const { uploadToCloudinary, deleteFromCloudinary } = require('../utls/upload');
 
 router.post('/', upload.single("thumbnail"), async (req, res) => {
   // Kiểm tra phương thức
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
   const supabase = req.supabase;
   const user = req.user;
@@ -20,7 +20,7 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
 
   // Kiểm tra đầu vào
   if (!name) {
-    return res.status(400).json({ error: 'Name are required' });
+    return res.status(400).json({ message: 'Name are required' });
   }
 
   let membersArr = [];
@@ -34,7 +34,7 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
       }
     }
   } catch (e) {
-    return res.status(400).json({ error: `Invalid members format: ${e.message}` });
+    return res.status(400).json({ message: `Invalid members format: ${e.message}` });
   }
 
   // Kiểm tra giới hạn workspace
@@ -44,10 +44,10 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
     .eq('owner', user.id);
   if (gError) {
     console.error('Error checking workspace limit:', gError);
-    return res.status(gError.status ?? 400).json({ error: gError.message ?? 'Error checking workspace limit' });
+    return res.status(gError.status ?? 400).json({ message: gError.message ?? 'Error checking workspace limit' });
   }
   if (oldWorkspaces.length > 2) {
-    return res.status(400).json({ error: 'Workspace limit per account is 3 due to free-tier database storage limits' });
+    return res.status(400).json({ message: 'Workspace limit per account is 3 due to free-tier database storage limits' });
   }
 
   // Tạo workspace
@@ -58,7 +58,7 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
     .single();
   if (insertError || !workspace) {
     console.error('Error creating workspace:', insertError);
-    return res.status(insertError?.status ?? 400).json({ error: insertError?.message ?? 'Error creating workspace' });
+    return res.status(insertError?.status ?? 400).json({ message: insertError?.message ?? 'Error creating workspace' });
   }
   console.log('Created workspace:', workspace);
 
@@ -74,7 +74,7 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
     const { error: memberError } = await supabase.from('workspace_invited').insert(memberData);
     if (memberError) {
       console.error('Error adding members:', memberError);
-      return res.status(memberError.status ?? 400).json({ error: memberError.message ?? 'Error adding members' });
+      return res.status(memberError.status ?? 400).json({ message: memberError.message ?? 'Error adding members' });
     }
 
     for (const member of membersArr) {
@@ -118,14 +118,14 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
       if (updateError || !updatedWorkspace) {
         console.error('Error updating workspace image:', updateError, 'Workspace ID:', workspace.id);
         return res.status(updateError?.status ?? 400).json({
-          error: updateError?.message ?? 'Error updating workspace image',
+          message: updateError?.message ?? 'Error updating workspace image',
         });
       }
       console.log('Updated workspace:', updatedWorkspace);
       return res.status(200).json({ success: true, workspace: updatedWorkspace });
     } catch (e) {
       console.error('Error uploading image:', e);
-      return res.status(400).json({ error: e.message ?? 'Error uploading image' });
+      return res.status(400).json({ message: e.message ?? 'Error uploading image' });
     }
   }
 
@@ -137,7 +137,7 @@ router.get("/", async (req, res) => {
   const supabase = req.supabase
   const user = req.user
   const { data, error } = await supabase.from('workspace').select().eq("owner", user.id).limit(3)
-  if (error) return res.status(error?.status ?? 400).json(error?.message ?? "Error when try to fetch workspace")
+  if (error) return res.status(error?.status ?? 400).json({ message: error?.message ?? "Error when try to fetch workspace" })
   return res.status(200).json({ success: true, data: data })
 })
 
@@ -147,8 +147,8 @@ router.delete("/:id", async (req, res) => {
   const user = req.user
   const id = req.params.id
   const { data, error } = await supabase.from('workspace').delete().eq('id', id).select().single()
-  if(data.image) await deleteFromCloudinary(data.image);
-  if (error) return res.status(error?.status ?? 400).json(error?.message ?? "Error when try to delete workspace")
+  if (data.image) await deleteFromCloudinary(data.image);
+  if (error) return res.status(error?.status ?? 400).json({ message: error?.message ?? "Error when try to delete workspace" })
   return res.status(200).json({ success: true, data })
 
 })
@@ -159,26 +159,26 @@ router.post("/accepted", async (req, res) => {
   const { token } = req.body
   try {
     const decode = jwt.verify(token, process.env.AUTH_SECRET_KEY)
-    if (decode.type !== "invite") return res.status(400).json("Token type not correct")
+    if (decode.type !== "invite") return res.status(400).json({ message: "Token type not correct" })
     const { workspace, user, salary } = decode
 
     const { data: oInvite, error: oError } = await supabase.from("workspace_invited").select().eq("workspace", workspace).eq("users", user).eq("accepted", true)
-    if (oError) return res.status(oError.status || 400).json(oError.message || "Error when try to check history")
-    if (oInvite.length > 0) return res.status(400).json("You have been accepted this invited")
+    if (oError) return res.status(oError.status || 400).json({ message: oError.message || "Error when try to check history" })
+    if (oInvite.length > 0) return res.status(400).json({ message: "You have been accepted this invited" })
 
     const { error: iError } = await supabase.from("workspace_members")
       .insert({ user, workspace, avg_salary: salary }).select()
-    if (iError) return res.status(iError.status ?? 400).json(iError.message ?? "Error when try to add new members")
+    if (iError) return res.status(iError.status ?? 400).json({ message: iError.message ?? "Error when try to add new members" })
 
     const { error: uError } = await supabase.from("workspace_invited").update({ accepted: true }).eq("workspace", workspace).eq("users", user)
-    if (uError) return res.status(uError.status || 400).json(uError.message || "Update Invite Status Error")
+    if (uError) return res.status(uError.status || 400).json({ message: uError.message || "Update Invite Status Error" })
 
     const { data, error } = await supabase.from("workspace").select().eq("id", workspace).single()
-    if (error) return res.status(error.status || 400).json(error.message || "Error when try to get workspace")
+    if (error) return res.status(error.status || 400).json({ message: error.message || "Error when try to get workspace" })
 
     return res.status(200).json({ success: true, data })
   } catch (e) {
-    return res.status(400).json("Expired token!")
+    return res.status(400).json({ message: "Expired token!" })
   }
 })
 
@@ -187,13 +187,13 @@ router.get("/:id", async (req, res) => {
   const supabase = req.supabase
   const id = req.params.id
   const { data, error } = await supabase.from("workspace").select("*, workspace_members(* , users (id , full_name, email))").eq("id", id).single()
-  if (error) return res.status(error.status || 400).json(error.message || "Error when try to get data")
+  if (error) return res.status(error.status || 400).json({ message: error.message || "Error when try to get data" })
   return res.status(200).json(data)
 })
 
 router.put("/:id", upload.single("thumbnail"), async (req, res) => {
   // Kiểm tra phương thức
-  if (req.method !== "PUT") return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== "PUT") return res.status(405).json({ message: "Method not allowed" });
 
   const supabase = req.supabase;
   const user = req.user;
@@ -201,8 +201,8 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
   const { name, description, thumbnail: image, members } = req.body;
 
   // Kiểm tra đầu vào
-  if (!id) return res.status(400).json({ error: "Workspace ID is required" });
-  if (!name) return res.status(400).json({ error: "Name and description are required" });
+  if (!id) return res.status(400).json({ message: "Workspace ID is required" });
+  if (!name) return res.status(400).json({ message: "Name and description are required" });
 
   let membersArr = [];
   try {
@@ -214,7 +214,7 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
       }
     }
   } catch (e) {
-    return res.status(400).json({ error: `Invalid members format: ${e.message}` });
+    return res.status(400).json({ message: `Invalid members format: ${e.message}` });
   }
 
   // Kiểm tra workspace tồn tại và quyền
@@ -227,7 +227,7 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
   if (oError || !oldWorkspace) {
     console.error("Error fetching workspace:", oError);
     return res.status(oError?.status ?? 404).json({
-      error: oError?.message ?? "Workspace not found or you lack permission",
+      message: oError?.message ?? "Workspace not found or you lack permission",
     });
   }
 
@@ -245,7 +245,7 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
       }
     } catch (e) {
       console.error("Error uploading image:", e);
-      return res.status(400).json({ error: e.message ?? "Error uploading image" });
+      return res.status(400).json({ message: e.message ?? "Error uploading image" });
     }
   } else if (!image) {
     updateData.image = ""
@@ -269,7 +269,7 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
   if (updateError || !workspace) {
     console.error("Error updating workspace:", updateError, "Workspace ID:", id);
     return res.status(updateError?.status ?? 400).json({
-      error: updateError?.message ?? "Error updating workspace",
+      message: updateError?.message ?? "Error updating workspace",
     });
   }
   console.log("Updated workspace:", workspace);
@@ -325,7 +325,7 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
     if (iError) {
       console.error("Error adding new members:", iError);
       return res.status(iError.status ?? 400).json({
-        error: iError.message ?? "Error adding new members",
+        message: iError.message ?? "Error adding new members",
       });
     }
 

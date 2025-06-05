@@ -9,5 +9,5 @@ export const getAuthWSocial = async (type: SocialConnectionType) => {
 }
 export const postGetPKCEToken = async (serverCode: string) => {
     const param = requestPKCEAccessTokenParam(serverCode)
-    return await AxiosClient.post(API_ENDPOINT.pkceGetToken, param, { withCredentials: true })
+    return await AxiosClient.post(API_ENDPOINT.pkceGetToken, { credentials: 'include', json: param })
 }

@@ -8,24 +8,25 @@ import {
     putWorkspaceByIDAPI
 } from "@workspace/flow/workspace/workspace.api"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
-import type { AxiosError } from "axios"
 import type { Workspace } from "@workspace/models/response.model"
 import type { AppDispatch, AppState } from "@/stores"
 import { useDispatch, useSelector } from "react-redux"
 import { setWorkspace } from "@workspace/store"
+import type { HTTPError } from "ky"
 export const useCreateWorkspaceSvc = () => {
     const client = useQueryClient()
     return useMutation({
         mutationFn: async (data: FormData) => {
             const res = await postWorkspaceAPI(data)
-            return res.data
+            return await res.json()
         },
         onSuccess: () => {
             SuccessHandle("Workspace created!")
             client.invalidateQueries({ queryKey: ["workspaces"] })
         },
-        onError: (error: AxiosError) => {
-            ErrorHandler(error.response?.data || error.message)
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>();
+            ErrorHandler(body.message)
         },
     })
 }
@@ -37,17 +38,18 @@ export const useGetWorkspaceSvc = () => {
         queryFn: async () => {
             try {
                 const res = await getWorkspaceAPI()
-
-                if (res.status > 200) throw new Error(res.data.message ?? "Error")
-                const data = res.data.data as Workspace[]
-                if (!data.some((el: Workspace) => el.id == currentWorkspace?.id)) {
-                    dispatch(setWorkspace(data[0]))
+                const json = await res.json<{ data: Workspace[], message: string }>()
+                if (res.status > 200) throw new Error(json.message ?? "Error")
+                const workspaces = json.data as Workspace[]
+                if (!workspaces.some((el: Workspace) => el.id == currentWorkspace?.id)) {
+                    dispatch(setWorkspace(workspaces[0]))
                 }
 
-                return data
+                return workspaces
             } catch (error) {
-                const err = error as unknown as AxiosError
-                ErrorHandler(err.message || err.response?.data || "Error when try to fetch")
+                const err = error as unknown as HTTPError
+                const body = await err.response.json<{ message: string }>();
+                ErrorHandler(body.message)
             }
         },
         staleTime: 5 * 1000 * 60, //the time your data expired, and need to refetch
@@ -62,9 +64,12 @@ export const useDeleteWorkspaceSvc = () => {
     return useMutation({
         mutationFn: async (id: string) => {
             const res = await deleteWorkspaceAPI(id)
-            return res.data
+            return await res.json()
         },
-        onError: (error: AxiosError) => ErrorHandler(error.response?.data || "Error"),
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>();
+            ErrorHandler(body.message)
+        },
         onSuccess: () => {
             SuccessHandle(`Delete success, all data deleted, but you can rollback in history`)
             client.invalidateQueries({ queryKey: ["workspaces"] })
@@ -75,10 +80,11 @@ export const useAccepInvite = () => {
     return useMutation({
         mutationFn: async (token: string) => {
             const res = await acceptedInviteAPI(token)
-            return res.data
+            return await res.json()
         },
-        onError: (e: AxiosError) => {
-            ErrorHandler(e.response?.data || "Error")
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>();
+            ErrorHandler(body.message)
         },
         onSuccess: () => SuccessHandle(`You joined to workspace!`),
         retry: false
@@ -88,8 +94,9 @@ export const useAccepInvite = () => {
 export const getWorkspaceByIDQueryFn = async (id: string) => {
     if (!id) return []
     const res = await getWorkspaceByIDAPI(id)
-    if (res.status > 200) throw new Error(res.data || "Error when try to get workspace")
-    return res.data
+    const json = await res.json()
+    if (res.status > 200) throw new Error(String(json) || "Error when try to get workspace")
+    return json
 }
 export const useGetWorkspaceByID = (id: string) => {
     return useQuery({
@@ -108,11 +115,12 @@ export const useUpdateWorkspace = () => {
     return useMutation({
         mutationFn: async ({ id, data }: { id: string, data: FormData }) => {
             const res = await putWorkspaceByIDAPI(id, data)
-            return res.data
+            return await res.json<Workspace>()
         },
         retry: false,
-        onError: (e: AxiosError) => {
-            ErrorHandler(e.response?.data || "Error")
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>();
+            ErrorHandler(body.message)
         },
         onSuccess: (data: Workspace) => {
             SuccessHandle("Workspace Updated!")

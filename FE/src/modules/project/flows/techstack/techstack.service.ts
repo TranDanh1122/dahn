@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { getTechstacks } from "./techstack.api"
 import { ErrorHandler } from "@/common/ults/NotifyHandler"
-import type { AxiosError } from "axios"
+import type { HTTPError } from "ky"
 
 export const useGetTechstacksSvc = () => {
     return useQuery({
@@ -10,16 +10,12 @@ export const useGetTechstacksSvc = () => {
             try {
                 const res = await getTechstacks()
                 if (res.status > 200) throw new Error("Error when try to get techstacks")
-                return res.data
-            } catch (error: unknown) {
-                const axiosError = error as AxiosError;
-                ErrorHandler(
-                    (axiosError.response?.data as string) ||
-                    axiosError.message ||
-                    "Error"
-                );
+                return await res.json()
+            } catch (error) {
+                const axiosError = error as unknown as HTTPError;
+                const body = await axiosError.response.json<{ message: string }>();
+                ErrorHandler(body.message)
             }
-
         }
     })
 }
