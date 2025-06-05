@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
-import { AuthStore } from "@auth"
-import { WorkspaceStore } from "@workspace"
+import AuthStore from "@auth/stores"
+import WorkspaceStore from "@workspace/store"
 import { persistStore, persistReducer } from 'redux-persist'
 // defaults to localStorage for web, that suck, fk suck in security, beware what you save in redux store
 import storage from 'redux-persist/lib/storage'
@@ -15,7 +15,7 @@ const persistConfig = {
         },
     }],
 }
-const combine = combineReducers({ auth: AuthStore, workspace : WorkspaceStore })
+const combine = combineReducers({ auth: AuthStore, workspace: WorkspaceStore })
 const persistedReducer = persistReducer(persistConfig, combine)
 
 export const store = configureStore({

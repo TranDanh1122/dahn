@@ -1,59 +1,79 @@
-import React from "react"
-import { Navigate, type LoaderFunctionArgs } from "react-router-dom"
-import getParamLoader from "@/loaders/getParam.loader"
-
-const RegisterView = React.lazy(() => import("@auth/view/Register.view"));
-const LoginView = React.lazy(() => import("@auth/view/Login.view"));
-const AuthCallback = React.lazy(() => import("@auth/view/callback/AuthCallback.view"))
-const ForgotPassword = React.lazy(() => import("@auth/view/ForgotPassword.view"))
-const ResetPassword = React.lazy(() => import("@auth/view/ResetPassword.view"))
-const AuthLayout = React.lazy(() => import("@auth/layout/AuthLayout"))
-const OTPModal = React.lazy(() => import("@auth/view/OTPModal.view"))
+import { Navigate, type LoaderFunctionArgs } from "react-router-dom";
 
 export const AuthRouter = [
     {
         path: "auth",
-        element: <AuthLayout />,
+        lazy: async () => ({
+            Component: (await import("@auth/layout/AuthLayout")).default,
+        }),
         children: [
             {
                 index: true,
-                element: <Navigate to="login" replace />
+                lazy: async () => ({
+                    Component: () => <Navigate to="/auth/login" replace />,
+                })
             },
             {
                 path: "register",
-                element: <RegisterView />,
+                lazy: async () => ({
+                    Component: (await import("@auth/view/Register.view")).default,
+                }),
                 children: [
                     {
                         path: "2fa",
-                        element: <OTPModal />
-                    }
-                ]
+                        lazy: async () => ({
+                            Component: (await import("@auth/view/OTPModal.view")).default,
+                        }),
+                    },
+                ],
             },
             {
                 path: "login",
-                element: <LoginView />,
+                lazy: async () => ({
+                    Component: (await import("@auth/view/Login.view")).default,
+                }),
+
                 children: [
                     {
                         path: "2fa",
-                        element: <OTPModal />,
-                    }
-                ]
-
+                        lazy: async () => ({
+                            Component: (await import("@auth/view/OTPModal.view")).default,
+                        }),
+                    },
+                ],
             },
             {
                 path: "forgot-password",
-                element: <ForgotPassword />
+                lazy: async () => ({
+                    Component: (await import("@auth/view/ForgotPassword.view")).default,
+                }),
             },
             {
                 path: "reset-password",
-                element: <ResetPassword />,
-                loader: (arg: LoaderFunctionArgs) => getParamLoader(arg, "code")
-            }
-        ]
+                lazy: async () => {
+                    const [component, loader] = await Promise.all([
+                        import("@auth/view/ResetPassword.view"),
+                        import("@/loaders/getParam.loader"),
+                    ]);
+                    return {
+                        Component: component.default,
+                        loader: async (args: LoaderFunctionArgs) => loader.default(args, "code"),
+                    };
+                },
+            },
+        ],
     },
     {
         path: "/auth/callback",
-        element: <AuthCallback />,
-        loader: (arg: LoaderFunctionArgs) => getParamLoader(arg, "code")
-    }
-]
+        lazy: async () => {
+            const [component, loader] = await Promise.all([
+                import("@auth/view/callback/AuthCallback.view"),
+                import("@/loaders/getParam.loader"),
+            ]);
+            return {
+                Component: component.default,
+                loader: (args: LoaderFunctionArgs) => loader.default(args, "code"),
+            };
+        },
+    },
+];

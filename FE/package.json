@@ -37,7 +37,9 @@
     "tailwindcss": "^4.1.6",
     "uuid": "^11.1.0",
     "zod": "^3.24.4",
-    "tailwind-scrollbar": "^4.0.2"
+    "tailwind-scrollbar": "^4.0.2",
+    "react-datepicker": "^8.4.0",
+    "nprogress": "0.2.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.27.1",

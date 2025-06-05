@@ -1,11 +1,10 @@
 import React from "react";
-import Step1 from "@workspace/view/form/Step1.view";
-import Step2 from "@workspace/view/form/Step2.view";
 import { FormProvider } from "react-hook-form";
 import { X } from "lucide-react";
 import { Link } from "react-router-dom";
 import useWorkspaceForm from "../hook/useWorkspaceForm";
 import ChangeStep from "@components/ChangeStep.component";
+import LoadingComponent from "@/components/Loading.component";
 /**
  * @returns ok we have a form step here, but, again and again, this just FE code and it not use to lauch any rocket to the moon
  * So, please simple :  one form! We have 3 step, but just one form
@@ -13,6 +12,8 @@ import ChangeStep from "@components/ChangeStep.component";
  * When change step, just change the state and render the view, trigger the form validation
  * Note in your mind, people dont want to know how good your code was, they just want to finish this fk form as fast as it can
  */
+const Step1 = React.lazy(() => import("@workspace/view/form/Step1.view"))
+const Step2 = React.lazy(() => import("@workspace/view/form/Step2.view"))
 
 export default function WorkspaceForm(): React.JSX.Element {
     const {
@@ -51,8 +52,11 @@ export default function WorkspaceForm(): React.JSX.Element {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="space-y-8 md:w-1/3 lg:w-1/4 w-full px-2"
                         encType="multipart/form-data">
-                        {step == 1 && <Step1 />}
-                        {step == 2 && <Step2 />}
+                        <React.Suspense fallback={<LoadingComponent className="border-s border-s-neutral-400" />}>
+                            {step == 1 && <Step1 />}
+                            {step == 2 && <Step2 />}
+                        </React.Suspense>
+
                         {step == 3 && (
                             <>
                                 Hmm, this is plan select view, but now i decided public assets

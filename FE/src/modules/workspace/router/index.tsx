@@ -1,38 +1,70 @@
-import getParamLoader from "@/loaders/getParam.loader"
-import React from "react"
-import type { LoaderFunctionArgs } from "react-router-dom"
-import { loadWorkspaceById } from "@workspace/loader"
-// import SidebarLayout from "@/layouts/SidebarLayout/SidebarLayout"
-const WorkspaceForm = React.lazy(() => import("@workspace/view/WorkspaceForm.view"))
-const InvitedCallback = React.lazy(() => import("@workspace/view/InvitedCallback.view"))
-const WorkspaceDetail = React.lazy(() => import("@workspace/view/WorkspaceDetail.view"))
 
+import type { LoaderFunctionArgs } from "react-router-dom"
+
+
+
+/**
+ * we have new feature of router dom v7 here
+ * no need deferloading all router => use lazy instead
+ */
 const WorkspaceRouter = [
     {
-
         path: "workspace/*",
         children: [
             {
-                element: <InvitedCallback />,
                 path: "invite-accepted",
-                loader: (arg: LoaderFunctionArgs) => getParamLoader(arg, "token")
+                lazy: async () => {
+                    const [component, loader] = await Promise.all([
+                        import("@workspace/view/InvitedCallback.view"),
+                        import("@/loaders/getParam.loader")
+                    ])
+                    return {
+                        Component: component.default,
+                        loader: async (arg: LoaderFunctionArgs) => loader.default(arg, "token")
+                    }
+                }
             },
+
             {
-                element: <WorkspaceForm />,
-                path: "create"
-            },
-            {
-                element: <WorkspaceForm />,
-                path: ":workspaceId/edit",
-                loader: loadWorkspaceById
-            },
-            {
-                element: <WorkspaceDetail />,
                 path: ":workspaceId/projects",
-                handle: { title: "Workspace's Project" }
+                handle: { title: "Workspace's Project" },
+                lazy: async () => {
+                    const component = await import("@workspace/view/WorkspaceDetail.view")
+                    return { Component: component.default, }
+                }
             }
         ]
     },
 
 ]
-export default WorkspaceRouter
+const NoSidebarWorkspaceRouter = [
+    {
+        path: "workspace/*",
+        children: [
+            {
+                path: "create",
+                lazy: async () => {
+                    const [component] = await Promise.all([
+                        import("@workspace/view/WorkspaceForm.view"),
+                        import("@workspace/view/form/Step1.view")
+                    ])
+                    return { Component: component.default }
+                }
+            },
+            {
+                path: ":workspaceId/edit",
+                lazy: async () => {
+                    const [component, loader] = await Promise.all([
+                        import("@workspace/view/WorkspaceForm.view"),
+                        import("@workspace/loader")
+                    ])
+                    return {
+                        Component: component.default,
+                        loader: loader.loadWorkspaceById
+                    }
+                }
+            }
+        ]
+    }
+]
+export { WorkspaceRouter, NoSidebarWorkspaceRouter } 

@@ -1,5 +1,4 @@
 import React from "react";
-const Dashboard = React.lazy(() => import("@dashboard/view/Dashboard.view"))
 const HRightContent = React.lazy(() => import("@dashboard/layout/HRightContent"))
 const DashboardRouter = [
 
@@ -8,7 +7,9 @@ const DashboardRouter = [
         children: [
             {
                 index: true,
-                element: <Dashboard />,
+                lazy: async () => ({
+                    Component: (await import("@dashboard/view/Dashboard.view")).default,
+                }),
                 handle: { title: "Dashboard", rightHeadContent: <HRightContent /> }
             }
         ]

@@ -1,29 +1,38 @@
 import { createBrowserRouter } from "react-router-dom"
 import { AuthRouter } from "@auth"
-import Layout from "@/layouts/Layout.view"
-import { WorkspaceRouter } from "@workspace"
-import { DashboardRouter } from "@dashboard"
-import { ProjectRouter } from "@project"
-import React from "react"
-const SidebarLayout = React.lazy(() => import("@/layouts/SidebarLayout/SidebarLayout"))
+import { WorkspaceRouter, NoSidebarWorkspaceRouter } from "@workspace/router"
+import DashboardRouter from "@dashboard/router"
+import { ProjectRouter, NoSidebarProjectRouter } from "@project/router"
+import LoadingFallback from "@/components/LoadingFallback.component"
+import { v4 } from "uuid"
+
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Layout />,
+        lazy: async () => ({ Component: (await import("@/layouts/Layout.view")).default }),
         children: [
             ...AuthRouter,
             {
                 path: "/*",
-                element: <SidebarLayout />,
+                lazy: async () => ({ Component: (await import("@/layouts/SidebarLayout/SidebarLayout")).default }),
                 children: [
                     ...WorkspaceRouter,
                     ...DashboardRouter,
                     ...ProjectRouter
                 ]
+            },
+            {
+                path: "/*",
+                children: [
+                    ...NoSidebarProjectRouter,
+                    ...NoSidebarWorkspaceRouter
+                ]
             }
 
-        ]
-    }
+        ],
+        hydrateFallbackElement: <LoadingFallback key={v4()} />
+    },
+
 ])
 export default router

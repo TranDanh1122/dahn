@@ -5,6 +5,7 @@ import Input from "@components/Input.component";
 import { X } from "lucide-react";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
+const DatePicker = React.lazy(() => import("@components/DatePicker.component"))
 export default React.memo(function MileStone(): React.JSX.Element {
     const [open, setOpen] = React.useState<boolean>(false);
     const form = useFormContext();
@@ -41,6 +42,7 @@ const Modal = ({
     handleClose: () => void;
 }): React.JSX.Element => {
     const ref = useOutsideClick<HTMLDivElement>(handleClose);
+
     return (
         <>
             <div className="
@@ -67,16 +69,11 @@ const Modal = ({
                 <TextArea
                     labelClass="font-light!"
                     label="Description"
-
                     rows={3}
                     name="description"
                 />
-                <Input
-                    name="name"
-                />
-                <Input
-                    name="name"
-                />
+                <DatePicker />
+
             </div>
         </>
     );

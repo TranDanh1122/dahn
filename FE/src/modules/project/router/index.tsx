@@ -1,16 +1,27 @@
-import React from "react"
-const ProjectForm = React.lazy(() => import("@project/view/ProjectForm.view"))
 const ProjectRouter =
     [
         {
             path: "project/*",
             children: [
-                {
-                    element: <ProjectForm />,
-                    path: "create"
-                }
+
             ]
         }
     ]
-
-export default ProjectRouter
+const NoSidebarProjectRouter = [
+    {
+        path: "project/*",
+        children: [
+            {
+                path: "create",
+                lazy: async () => {
+                    const [component] = await Promise.all([
+                        import("@project/view/ProjectForm.view"),
+                        import("@project/view/form/Step1.view")
+                    ])
+                    return { Component: component.default }
+                }
+            }
+        ]
+    }
+]
+export { ProjectRouter, NoSidebarProjectRouter }
