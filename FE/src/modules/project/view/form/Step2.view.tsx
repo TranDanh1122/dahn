@@ -21,7 +21,7 @@ export default function Step2(): React.JSX.Element {
     const handleDelItem = (id: number) => remove(id)
     return <div className="space-y-4" >
         <Picker
-            dataSet={(isLoading || isError) ? [] : techstacks}
+            dataSet={(isLoading || isError) ? [] : techstacks || []}
             data={form.getValues("techstack")?.split(",") ?? []}
             onItemClick={(val) => form.setValue("techstack", val)}
         />

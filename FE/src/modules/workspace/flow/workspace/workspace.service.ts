@@ -80,7 +80,7 @@ export const useAccepInvite = () => {
     return useMutation({
         mutationFn: async (token: string) => {
             const res = await acceptedInviteAPI(token)
-            return await res.json()
+            return await res.json<{ success: boolean; data: Workspace }>()
         },
         onError: async (e: HTTPError) => {
             const body = await e.response.json<{ message: string }>();

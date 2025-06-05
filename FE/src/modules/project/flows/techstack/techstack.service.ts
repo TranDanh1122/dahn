@@ -10,7 +10,7 @@ export const useGetTechstacksSvc = () => {
             try {
                 const res = await getTechstacks()
                 if (res.status > 200) throw new Error("Error when try to get techstacks")
-                return await res.json()
+                return await res.json<string[]>()
             } catch (error) {
                 const axiosError = error as unknown as HTTPError;
                 const body = await axiosError.response.json<{ message: string }>();
