@@ -1,5 +1,5 @@
 import React from "react";
-import { ChevronDown } from 'lucide-react'
+import ChevronDown from "lucide-react/dist/esm/icons/chevron-down"
 import useDropdown from "./useDropdown.hook";
 interface DropdownProps extends React.ComponentProps<"div"> {
     children?: React.ReactNode,
