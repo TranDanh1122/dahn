@@ -1,18 +1,21 @@
 import React from "react";
-import { default as DatePickerClass } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 /**
  * Date Picker is class component, so you need to create instance and render it to React Node or React Element
  */
 
 export default React.memo(function DatePicker(): React.JSX.Element {
-    const [date, setDate] = React.useState(new Date());
+    const [selected, setSelected] = React.useState<Date>();
 
-    const dateInp = new DatePickerClass({
-        selected: date,
-        onChange: (date: Date | null) => setDate(date || new Date()),
-        showTimeSelect: true,
-        dateFormat: "Pp",
-    }).renderInputContainer();
-    return dateInp;
+    return (
+        <DayPicker
+            mode="single"
+            selected={selected}
+            onSelect={setSelected}
+            footer={
+                selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
+            }
+        />
+    );
 });
