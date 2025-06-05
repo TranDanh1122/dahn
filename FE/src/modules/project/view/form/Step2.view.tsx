@@ -12,7 +12,7 @@ import X from "lucide-react/dist/esm/icons/x";
 import { v4 } from "uuid";
 export default function Step2(): React.JSX.Element {
     const form = useFormContext<z.infer<typeof ProjectSchema>>()
-    const { data: techstacks, isLoading } = useGetTechstacksSvc()
+    const { data: techstacks, isLoading, isError } = useGetTechstacksSvc()
     const { fields: environments, append, remove } = useFieldArray({
         control: form.control,
         name: "environment"
@@ -21,7 +21,7 @@ export default function Step2(): React.JSX.Element {
     const handleDelItem = (id: number) => remove(id)
     return <div className="space-y-4" >
         <Picker
-            dataSet={isLoading ? [] : techstacks}
+            dataSet={(isLoading || isError) ? [] : techstacks}
             data={form.getValues("techstack")?.split(",") ?? []}
             onItemClick={(val) => form.setValue("techstack", val)}
         />
