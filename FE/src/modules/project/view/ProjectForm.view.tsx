@@ -37,7 +37,7 @@ export default function ProjectForm(): React.JSX.Element {
 
             <FormProvider {...form}>
                 <form
-                    onSubmit={form.handleSubmit((e) => alert(1))}
+                    onSubmit={form.handleSubmit(() => alert(1))}
                     className="space-y-8 md:w-1/3 lg:w-1/4 w-full px-2"
                     encType="multipart/form-data">
                     <React.Suspense

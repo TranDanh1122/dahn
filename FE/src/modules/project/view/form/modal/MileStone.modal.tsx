@@ -31,6 +31,7 @@ export default React.memo(function MileStone(): React.JSX.Element {
                         +
                     </Button>
                 </div>
+                {milestones && <></>}
             </fieldset>
             {open && <Modal handleClose={handleClose} />}
         </>
