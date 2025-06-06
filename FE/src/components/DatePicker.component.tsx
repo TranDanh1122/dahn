@@ -3,7 +3,7 @@ import { DayPicker, NextMonthButton, type DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
 import { Dropdown } from "@components/Dropdown";
 import Input from "./Input.component";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 /**
  * Date Picker is class component, so you need to create instance and render it to React Node or React Element
  */
@@ -23,11 +23,29 @@ export default React.memo(function DatePicker({ className, ...props }: DatePicke
             className={className}
             dropContent={
                 <DayPicker
-                    components={{
-                        NextMonthButton: (props) => {
-                            return <ChevronRight {...props} onClick={(e: React.MouseEvent) => { e.stopPropagation(); props.onClick() }} />
-                        },
-                    }}
+                    components={
+                        {
+                            NextMonthButton: (props) =>
+                                <ChevronRight
+                                    {...props}
+                                    className="size-5.5"
+                                    onClick={
+                                        (e: React.MouseEvent) => {
+                                            e.stopPropagation();
+                                            props.onClick()
+                                        }
+                                    } />,
+                            PreviousMonthButton: (props) => <ChevronLeft
+                                {...props}
+                                className="size-5.5"
+                                onClick={
+                                    (e: React.MouseEvent) => {
+                                        e.stopPropagation();
+                                        props.onClick()
+                                    }
+                                } />,
+                        }
+                    }
                     className="flex justify-center"
                     mode="range"
                     selected={selected}
