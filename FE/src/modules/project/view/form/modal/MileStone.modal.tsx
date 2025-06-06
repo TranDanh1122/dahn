@@ -1,11 +1,10 @@
-import { useOutsideClick } from "@/common/hooks/useOutsideClick";
 import TextArea from "@components/TextArea.component";
 import Button from "@components/Button.component";
 import Input from "@components/Input.component";
 import X from "lucide-react/dist/esm/icons/x";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-const DatePicker = React.lazy(() => import("@components/DatePicker.component"))
+import DatePicker from "@/components/DatePicker.component";
 export default React.memo(function MileStone(): React.JSX.Element {
     const [open, setOpen] = React.useState<boolean>(false);
     const form = useFormContext();
@@ -31,7 +30,11 @@ export default React.memo(function MileStone(): React.JSX.Element {
                         +
                     </Button>
                 </div>
-                {milestones && <></>}
+                {
+                    milestones && <div>
+
+                    </div>
+                }
             </fieldset>
             {open && <Modal handleClose={handleClose} />}
         </>
@@ -42,8 +45,6 @@ const Modal = ({
 }: {
     handleClose: () => void;
 }): React.JSX.Element => {
-    const ref = useOutsideClick<HTMLDivElement>(handleClose);
-
     return (
         <>
             <div className="
@@ -51,8 +52,9 @@ const Modal = ({
                     bg-black/20 z-1 
                     w-screen h-screen">
             </div>
-            <div ref={ref}
-                className="rounded-2xl
+            <div className="
+                    space-y-4
+                    rounded-2xl
                     fixed top-1/2 left-1/2 
                     w-1/3 -translate-1/2 
                     bg-white z-10 p-12">
@@ -60,21 +62,24 @@ const Modal = ({
                     className="absolute top-4 right-4 cursor-pointer text-neutral-600"
                     onClick={handleClose}
                 />
+                <div className="flex items-end gap-4">
+                    <Input
+                        labelClass="font-light!"
+                        name="name"
+                        placeholder="eg: Milestone 1 - Setup Database"
+                        label="Milestone Name"
+                        fieldsetClass="w-full"
+                    />
+                    <DatePicker className="w-full" />
+                </div>
 
-                <Input
-                    labelClass="font-light!"
-                    name="name"
-                    placeholder="eg: Milestone 1 - Setup Database"
-                    label="Milestone Name"
-                />
                 <TextArea
+                    placeholder="eg: Setup Database"
                     labelClass="font-light!"
                     label="Description"
                     rows={3}
                     name="description"
                 />
-                <DatePicker />
-
             </div>
         </>
     );
