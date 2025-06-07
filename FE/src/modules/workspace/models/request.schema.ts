@@ -1,4 +1,4 @@
-import { FLOAT_REGEX } from "@/common/ults/Regex.const"
+import { FLOAT_REGEX } from "@/common/ults/Common.const"
 import { z } from "zod"
 
 export const WorkspaceFormSchema = z.object({

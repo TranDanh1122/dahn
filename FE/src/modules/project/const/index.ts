@@ -12,3 +12,4 @@ export const EnvironmentStatus: EnumSelectType = [
     { value: "inactive", text: "Inactive" },
     { value: "maintance", text: "Maintance" },
 ]
+

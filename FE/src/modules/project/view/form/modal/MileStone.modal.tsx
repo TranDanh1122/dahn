@@ -1,11 +1,11 @@
 import TextArea from "@components/TextArea.component";
-import Button from "@components/Button.component";
 import Input from "@components/Input.component";
 import X from "lucide-react/dist/esm/icons/x";
 import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import DatePicker from "@/components/DatePicker.component";
-export default React.memo(function MileStone(): React.JSX.Element {
+import {DatePicker} from "@/components/DatePicker";
+import Button from "@/components/Button.component"
+export default React.memo(function MileStone(){
     const [open, setOpen] = React.useState<boolean>(false);
     const form = useFormContext();
     const { fields: milestones } = useFieldArray({

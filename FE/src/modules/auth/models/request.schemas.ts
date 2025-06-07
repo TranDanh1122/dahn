@@ -1,4 +1,4 @@
-import { LATIN_CHECK_RGX, PASSWORD_REGEX } from '@/common/ults/Regex.const'
+import { LATIN_CHECK_RGX, PASSWORD_REGEX } from '@/common/ults/Common.const'
 import { z } from 'zod'
 /**
  * Register zod schema
