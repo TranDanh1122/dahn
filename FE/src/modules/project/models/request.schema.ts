@@ -58,3 +58,12 @@ export const initData: z.infer<typeof ProjectSchema> = {
     members: [],
     isCompleted: false
 }
+export const milestoneSchema = z.object({
+    name: z.coerce.string().min(3).max(30),
+    description: z.coerce.string(),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    duration: z.coerce.number(),
+    process: z.coerce.number().min(0).max(100),
+    status: z.enum(["not_started", "in_progress", "blocked", "done"])
+})
