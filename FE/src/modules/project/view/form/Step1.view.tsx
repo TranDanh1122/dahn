@@ -8,7 +8,6 @@ import { z } from "zod"
 import { TypeDataSet, type EnumSelectType } from "@project/const"
 export default function Step1(): React.JSX.Element {
     const form = useFormContext<z.infer<typeof ProjectSchema>>()
-    React.useEffect(() => { import("./Step2.view") }, [])
     return <div className="space-y-4">
         <Input label="Project Name (*)"
             placeholder="eg: Fookbace App"

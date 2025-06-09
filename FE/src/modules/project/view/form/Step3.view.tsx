@@ -1,42 +1,24 @@
 import React from "react";
-import { useFormContext, useFieldArray } from "react-hook-form";
 import MileStoneModal from "./modal/MileStone.modal";
 import Button from "@components/Button.component"
-import { MilestoneStatusColor } from "@project/const"
+import { MilestoneStatus, MilestoneStatusColor } from "@project/const"
+import { useStep3 } from "./hooks/useStep3.hook";
 export default function Step3(): React.JSX.Element {
-    const [open, setOpen] = React.useState<boolean>(false);
-    const form = useFormContext();
-    const { fields: milestones, append, remove } = useFieldArray({
-        control: form.control,
-        name: "milestones",
-    });
-
-    const handleClose = React.useCallback((index?: number) => {
-        setOpen(false)
-        if (index) remove(index)
-    }, [])
-    const handleOpen = React.useCallback(() => {
-        setOpen(true)
-        append(
-            {
-                name: "",
-                description: "",
-                startDate: "",
-                endDate: "",
-                duration: "",
-                process: 0,
-                status: "not_started"
-            }
-        )
-
-    }, [])
+    const {
+        form,
+        handleClose,
+        handleOpen,
+        milestones,
+        modalState,
+        upsertMilestone
+    } = useStep3()
     return (
         <>
             <fieldset >
                 <div className="flex items-center gap-2 te">
                     <legend className="text-neutral-600">Milestones</legend>
                     <Button
-                        onClick={handleOpen}
+                        onClick={() => handleOpen()}
                         className="
                             font-light! text-neutral-600
                             border border-neutral-400 
@@ -58,17 +40,22 @@ export default function Step3(): React.JSX.Element {
                                 <p>{form.getValues(`milestones.${index}.process`)}</p>
                                 <p className={`text-${color}-400`}>
                                     <span className={`size-3 rounded-full bg-${color}-400`}></span>
-                                    {form.getValues(`milestones.${index}.status`)}
+                                    {
+                                        MilestoneStatus.find(el =>
+                                            el.value == form.getValues(`milestones.${index}.status`)
+                                        )?.text
+                                    }
                                 </p>
                             </div>
                         })
                 }
             </fieldset>
             {
-                open &&
+                modalState.open &&
                 <MileStoneModal
+                    onSubmit={upsertMilestone}
                     handleClose={handleClose}
-                    index={Math.max(milestones.length - 1, 0)}
+                    index={modalState.index}
                 />
             }
         </>

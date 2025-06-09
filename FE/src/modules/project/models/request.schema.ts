@@ -23,7 +23,7 @@ export const ProjectSchema = z.object({
         endDate: z.coerce.date(),
         duration: z.coerce.number(),
         process: z.coerce.number().min(0).max(100),
-        status: z.enum(["not_started", "in_progress", "blocked", "done"])
+        status: z.coerce.string()
     })).optional(),
     role: z.array(z.object({
         id: z.coerce.string().optional(),
@@ -65,5 +65,5 @@ export const milestoneSchema = z.object({
     endDate: z.coerce.date(),
     duration: z.coerce.number(),
     process: z.coerce.number().min(0).max(100),
-    status: z.enum(["not_started", "in_progress", "blocked", "done"])
+    status: z.coerce.string()
 })

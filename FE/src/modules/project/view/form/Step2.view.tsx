@@ -1,24 +1,22 @@
 import Picker from "@components/Picker.component";
 import React from "react";
-import { useGetTechstacksSvc } from "@project/flows/techstack/techstack.service";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import type { z } from "zod";
-import type { ProjectSchema } from "@project/models/request.schema";
-import Input from "@/components/Input.component";
-import { Select } from "@/components/Select";
+import Input from "@components/Input.component";
+import { Select } from "@components/Select";
 import { type EnumSelectType, EnvironmentStatus } from "@project/const";
 import Button from "@components/Button.component";
 import X from "lucide-react/dist/esm/icons/x";
 import { v4 } from "uuid";
+import { useStep2Hook } from "./hooks/useStep2.hook";
 export default function Step2(): React.JSX.Element {
-    const form = useFormContext<z.infer<typeof ProjectSchema>>()
-    const { data: techstacks, isLoading, isError } = useGetTechstacksSvc()
-    const { fields: environments, append, remove } = useFieldArray({
-        control: form.control,
-        name: "environment"
-    })
-    const handleApdItem = () => append({ name: "", demoUrl: "", status: "active" })
-    const handleDelItem = (id: number) => remove(id)
+    const {
+        environments,
+        isLoading,
+        isError,
+        techstacks,
+        form,
+        handleApdItem,
+        handleDelItem
+    } = useStep2Hook()
     return <div className="space-y-4" >
         <Picker
             dataSet={(isLoading || isError) ? [] : techstacks || []}
