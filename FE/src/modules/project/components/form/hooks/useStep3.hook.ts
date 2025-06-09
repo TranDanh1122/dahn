@@ -1,7 +1,7 @@
-import React from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { z } from "zod"
+import { z } from "zod";
 import { milestoneSchema } from "@project/models/request.schema";
+import { useModal } from "@/common/hooks/useModal";
 
 /**
  * A simple hook, handle open/close sub-form modal (milestone form) and save data form it to field in field Array
@@ -12,26 +12,34 @@ import { milestoneSchema } from "@project/models/request.schema";
  * @return upsertMilestone : modal submit action
  * @return milestones : list of milestonrs
  */
+
 export const useStep3 = () => {
 
-    const [modalState, setModalState] = React.useState<{ open: boolean, index?: number }>({ open: false });
-
+    const { modalState, close, open } = useModal<{ index?: number, open: boolean }>()
     const form = useFormContext();
 
-    const { fields: milestones, append, update, remove } = useFieldArray({
+    const {
+        fields: milestones,
+        append,
+        update,
+        remove,
+    } = useFieldArray({
         control: form.control,
         name: "milestones",
     });
 
-    const handleClose = () => setModalState({ open: false })
+    const handleClose = () => close({ open: false });
 
-    const handleOpen = (index?: number) => setModalState({ open: true, index })
+    const handleOpen = (index?: number) => open({ open: true, index });
 
-    const upsertMilestone = (data: z.infer<typeof milestoneSchema>, index?: number) => {
-        setModalState({ open: false })
-        if (typeof index == "number") return update(index, data)
-        return append(data)
-    }
+    const upsertMilestone = (
+        data: z.infer<typeof milestoneSchema>,
+        index?: number
+    ) => {
+        close({ open: false });
+        if (typeof index == "number") return update(index, data);
+        return append(data);
+    };
     return {
         form,
         modalState,
@@ -39,6 +47,6 @@ export const useStep3 = () => {
         handleOpen,
         upsertMilestone,
         milestones,
-        remove
-    }
-}
+        remove,
+    };
+};

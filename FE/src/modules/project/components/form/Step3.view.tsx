@@ -1,5 +1,5 @@
 import React from "react";
-import MileStoneModal from "./components/modal/MileStone.modal";
+import MileStoneModal from "./components/modal/Milestone/MileStone.modal";
 import Button from "@components/Button.component"
 import { useStep3 } from "./hooks/useStep3.hook";
 import MilestoneItem from "./components/MilestoneItem.component";

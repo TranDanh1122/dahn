@@ -67,3 +67,12 @@ export const milestoneSchema = z.object({
     process: z.coerce.number().min(0).max(100),
     status: z.coerce.string()
 })
+
+export const memberSchema = z.object({
+    userId: z.coerce.string(),
+    name: z.coerce.string(),
+    role: z.coerce.string(),
+    roleId: z.coerce.string().optional(),
+    hourlyRate: z.coerce.number().nonnegative(),
+    hours: z.coerce.number()
+})
