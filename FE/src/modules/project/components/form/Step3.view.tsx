@@ -1,8 +1,8 @@
 import React from "react";
-import MileStoneModal from "./modal/MileStone.modal";
+import MileStoneModal from "./components/modal/MileStone.modal";
 import Button from "@components/Button.component"
-import { MilestoneStatus, MilestoneStatusColor } from "@project/const"
 import { useStep3 } from "./hooks/useStep3.hook";
+import MilestoneItem from "./components/MilestoneItem.component";
 export default function Step3(): React.JSX.Element {
     const {
         form,
@@ -10,11 +10,12 @@ export default function Step3(): React.JSX.Element {
         handleOpen,
         milestones,
         modalState,
-        upsertMilestone
+        upsertMilestone,
+        remove
     } = useStep3()
     return (
         <>
-            <fieldset >
+            <fieldset className="space-y-2" >
                 <div className="flex items-center gap-2 te">
                     <legend className="text-neutral-600">Milestones</legend>
                     <Button
@@ -29,27 +30,29 @@ export default function Step3(): React.JSX.Element {
                         +
                     </Button>
                 </div>
+
+                {
+                    milestones && <div className="grid grid-cols-5 border-b border-b-neutral-200 py-2">
+                        <div className="text-left">Name</div>
+                        <div className="text-center">Duration (days)</div>
+                        <div className="text-center">Process (%)</div>
+                        <div className="text-right">Status</div>
+                        <div className="text-center">Action</div>
+                    </div>
+                }
                 {
                     milestones &&
                     milestones.map(
-                        (el, index) => {
-                            const color: string = MilestoneStatusColor[form.getValues(`milestones.${index}.status`)]
-                            return <div className="flex items-center justify-between" key={el.id}>
-                                <p>{form.getValues(`milestones.${index}.name`)}</p>
-                                <p>{form.getValues(`milestones.${index}.duration`)}</p>
-                                <p>{form.getValues(`milestones.${index}.process`)}</p>
-                                <p className={`text-${color}-400`}>
-                                    <span className={`size-3 rounded-full bg-${color}-400`}></span>
-                                    {
-                                        MilestoneStatus.find(el =>
-                                            el.value == form.getValues(`milestones.${index}.status`)
-                                        )?.text
-                                    }
-                                </p>
-                            </div>
-                        })
-                }
-            </fieldset>
+                        (el, index) => (
+                            <MilestoneItem
+                                key={el.id}
+                                removeItem={() => remove(index)}
+                                handleOpen={() => handleOpen(index)}
+                                milestone={form.getValues(`milestones.${index}`)}
+                            />
+                        )
+                    )}
+            </fieldset >
             {
                 modalState.open &&
                 <MileStoneModal

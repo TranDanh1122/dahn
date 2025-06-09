@@ -2,28 +2,31 @@ import X from "lucide-react/dist/esm/icons/x";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router-dom";
-import type { z } from "zod";
+import { z } from "zod";
 import { initData, ProjectSchema } from "@project/models/request.schema";
 import useFormStep from "@/common/hooks/useFormStep";
 import ChangeStep from "@components/ChangeStep.component";
-import LoadingComponent from "@/components/Loading.component";
+import LoadingComponent from "@components/Loading.component";
 
 const stepFields: Record<number, (keyof z.infer<typeof ProjectSchema>)[]> = {
     1: ["name", "overview", "description", "type"],
+    2: ["techstack", "environment"],
+    3: ["milestones"]
 };
 
-const Step1 = React.lazy(() => import("./form/Step1.view"));
-const Step2 = React.lazy(() => import("./form/Step2.view"));
-const Step3 = React.lazy(() => import("./form/Step3.view"));
+const Step1 = React.lazy(() => import("@project/components/form/Step1.view"));
+const Step2 = React.lazy(() => import("@project/components/form/Step2.view"));
+const Step3 = React.lazy(() => import("@project/components/form/Step3.view"));
+const Step4 = React.lazy(() => import("@project/components/form/Step4.view"));
 
 export default function ProjectForm(): React.JSX.Element {
-    const { form, step, handleBack, handleNext } = useFormStep<
-        z.infer<typeof ProjectSchema>
-    >({ initData, stepFields, schema: ProjectSchema });
-    const isActive = React.useCallback(
-        (st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"),
-        [step]
-    );
+    const {
+        form,
+        step,
+        handleBack,
+        handleNext
+    } = useFormStep<z.infer<typeof ProjectSchema>>({ initData, stepFields, schema: ProjectSchema });
+    const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
 
     return (
         <div
@@ -38,7 +41,7 @@ export default function ProjectForm(): React.JSX.Element {
             <FormProvider {...form}>
                 <form
                     onSubmit={form.handleSubmit(() => alert(1))}
-                    className="space-y-8 md:w-1/3 lg:w-1/4 w-full px-2"
+                    className="space-y-8 md:w-1/3 lg:w-2/7 w-full px-2"
                     encType="multipart/form-data">
                     <React.Suspense
                         fallback={<LoadingComponent className="border-s-neutral-400 border-2 size-10!" />} key={step}>
@@ -47,6 +50,8 @@ export default function ProjectForm(): React.JSX.Element {
                         {step == 2 && <Step2 />}
 
                         {step == 3 && <Step3 />}
+
+                        {step == 4 && <Step4 />}
                     </React.Suspense>
 
                     <ChangeStep

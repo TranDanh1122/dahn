@@ -13,10 +13,16 @@ export const EnvironmentStatus: EnumSelectType = [
     { value: "maintance", text: "Maintance" },
 ]
 export const MilestoneStatusColor: Record<string, string> = {
-    "not_started": "orange",
-    "in_progress": "blue",
-    "blocked": "red",
-    "done": "green"
+    "not_started": "text-orange-400",
+    "in_progress": "text-blue-400",
+    "blocked": "text-red-400",
+    "done": "text-green-400"
+}
+export const MilestoneStatusBgColor: Record<string, string> = {
+    "not_started": "bg-orange-400",
+    "in_progress": "bg-blue-400",
+    "blocked": "bg-red-400",
+    "done": "bg-green-400"
 }
 export const MilestoneStatus: EnumSelectType = [
     { value: "not_started", text: "Not started" },

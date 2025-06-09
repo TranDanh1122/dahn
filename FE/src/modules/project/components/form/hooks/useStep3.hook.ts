@@ -18,7 +18,7 @@ export const useStep3 = () => {
 
     const form = useFormContext();
 
-    const { fields: milestones, append, update } = useFieldArray({
+    const { fields: milestones, append, update, remove } = useFieldArray({
         control: form.control,
         name: "milestones",
     });
@@ -29,9 +29,7 @@ export const useStep3 = () => {
 
     const upsertMilestone = (data: z.infer<typeof milestoneSchema>, index?: number) => {
         setModalState({ open: false })
-
-        if (index) return update(index, data)
-
+        if (typeof index == "number") return update(index, data)
         return append(data)
     }
     return {
@@ -40,6 +38,7 @@ export const useStep3 = () => {
         handleClose,
         handleOpen,
         upsertMilestone,
-        milestones
+        milestones,
+        remove
     }
 }

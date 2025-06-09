@@ -7,11 +7,18 @@ import { FormProvider } from "react-hook-form";
 import Button from "@components/Button.component";
 import { Select } from "@components/Select";
 import { MilestoneStatus, type EnumSelectType } from "@project/const";
-import { useMilestoneModal, type MileStoneModalProps } from "../hooks/useMilestoneModal.hook";
+import { useMilestoneModal, type MileStoneModalProps } from "./useMilestoneModal.hook";
 
 export default React.memo(
     function MileStoneModal({ handleClose, index, onSubmit }: MileStoneModalProps) {
-        const { mileStoneForm, handleSubmit, form } = useMilestoneModal({ index, onSubmit })
+        const {
+            mileStoneForm,
+            handleSubmit,
+            defaultStatusValue,
+            iniDate,
+            handlePickerDate
+        } = useMilestoneModal({ index, onSubmit })
+
         return <>
             <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>
             <FormProvider {...mileStoneForm}>
@@ -29,10 +36,9 @@ export default React.memo(
                             error={mileStoneForm.formState.errors.name?.message}
                         />
                         <DatePicker
+                            onDateChange={handlePickerDate}
                             className="w-full"
-                            startDate={{ ...mileStoneForm.register(`startDate`) }}
-                            endDate={{ ...mileStoneForm.register(`endDate`) }}
-                            duration={{ ...mileStoneForm.register(`duration`) }}
+                            initData={iniDate}
                             error={
                                 mileStoneForm.formState.errors.startDate?.message ||
                                 mileStoneForm.formState.errors.endDate?.message ||
@@ -51,7 +57,7 @@ export default React.memo(
                         />
                         <Select<EnumSelectType[number]>
                             dataSets={MilestoneStatus}
-                            defaultValue={MilestoneStatus[0]}
+                            defaultValue={defaultStatusValue}
                             changeValue="value"
                             textKey="text"
                             valueKey="value"
@@ -60,7 +66,7 @@ export default React.memo(
                         />
                     </div>
                     <TextArea
-                        {...form.register(`milestones.${index}.description`)}
+                        {...mileStoneForm.register("description")}
                         placeholder="eg: Setup Database"
                         labelClass="font-light!"
                         label="Description"

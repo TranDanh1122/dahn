@@ -69,7 +69,7 @@ export default function Step2(): React.JSX.Element {
                         {
                             environments.length > 1 &&
                             <X
-                                className="text-neutral-600 font-light"
+                                className="text-neutral-600 font-light hover:text-red-500 cursor-pointer"
                                 onClick={() => handleDelItem(index)}
                             />
                         }

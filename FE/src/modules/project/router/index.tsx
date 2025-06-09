@@ -15,8 +15,7 @@ const NoSidebarProjectRouter = [
                 path: "create",
                 lazy: async () => {
                     const [component] = await Promise.all([
-                        import("@project/view/ProjectForm.view"),
-                        import("@project/view/form/Step1.view")
+                        import("@project/view/ProjectForm.view")
                     ])
                     return { Component: component.default }
                 }

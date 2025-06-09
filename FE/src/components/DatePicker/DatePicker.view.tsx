@@ -4,23 +4,30 @@ import { Dropdown } from "@components/Dropdown";
 import Input from "../Input.component";
 import DatePickerComponent from "./DatePicker.component";
 import { useDatePicker } from "./useDatePicker.hook";
+import type { DateRange } from "react-day-picker";
 interface DatePickerProps extends React.ComponentProps<"input"> {
     className?: string
-    startDate?: React.ComponentProps<"input">
-    endDate?: React.ComponentProps<"input">,
-    duration?: React.ComponentProps<"input">,
-    error?: string
+    initData?: DateRange,
+    error?: string,
+    onDateChange?: (startDate: string, endDate: string, duration: string) => void
 }
 export default React.memo(
     function DatePicker(
-        { className,
-            startDate,
-            endDate,
-            duration,
+        {
+            className,
             error,
+            initData,
+            onDateChange,
             ...props
         }: DatePickerProps): React.JSX.Element {
-        const { setSelected, selected, duration: durationVal, selectedDate } = useDatePicker()
+
+        const {
+            setSelected,
+            selected,
+            selectedDate,
+            duration
+        } = useDatePicker(onDateChange, initData)
+
         return (
             <Dropdown
                 className={className}
@@ -38,38 +45,10 @@ export default React.memo(
                     labelClass="font-light!"
                     error={error}
                     value={selectedDate}>
-                    <span
-                        className="
-                        absolute 
-                        top-1/2 
-                        -translate-y-1/2 
-                        right-2">
-                        {durationVal}
+                    <span className="absolute top-1/2 -translate-y-1/2 right-2">
+                        {duration} days
                     </span>
                 </Input>
-                <Input
-                    hidden
-                    {...duration}
-                    value={durationVal || 0}
-                />
-                <Input
-                    hidden
-                    {...startDate}
-                    value={
-                        selected?.from?.toDateString()
-                        ||
-                        (new Date()).toDateString()
-                    }
-                />
-                <Input
-                    hidden
-                    {...endDate}
-                    value={
-                        selected?.to?.toDateString()
-                        ||
-                        (new Date()).toDateString()
-                    }
-                />
             </Dropdown>
         );
     });
