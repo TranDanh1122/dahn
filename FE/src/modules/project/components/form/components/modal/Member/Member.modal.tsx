@@ -47,7 +47,7 @@ export default function Member({ handleClose, index, onSubmit }: MemberModalProp
         <>
             <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>
             <FormProvider {...memberForm}>
-                <div className="space-y-4 rounded-2xl fixed top-1/2 left-1/2 w-1/3 -translate-1/2 bg-white z-10 p-12">
+                <div className="space-y-4 rounded-2xl fixed top-1/2 left-1/2 w-1/3 -translate-1/2 bg-white z-10 p-8">
                     <X onClick={handleClose}
                         className="absolute top-4 right-4 cursor-pointer text-neutral-600"
                     />
@@ -60,20 +60,27 @@ export default function Member({ handleClose, index, onSubmit }: MemberModalProp
                             childrenFn={childrenFn}
                             label="User"
                             labelClass="font-light!"
+                            fieldsetClass="w-full!"
                             value={memberForm.watch("name")}
                         />
-                        <Select<EnumSelectType[number]>
-                            dataSets={roles}
-                            defaultValue={roles[0]}
-                            changeValue="value"
-                            textKey="text"
-                            valueKey="value"
-                            className="w-full border border-neutral-300 hover:border-fuchsia-300 rounded-lg"
-                            onChange={(value) => {
-                                memberForm.setValue("role", String(value))
-                                memberForm.setValue("roleId", String(value))
-                            }}
-                        />
+                        <fieldset className="w-full flex flex-col gap-2">
+                            <label className="font-light text-neutral-600 cursor-pointer" >
+                                Role
+                            </label>
+                            <Select<EnumSelectType[number]>
+                                dataSets={roles}
+                                defaultValue={roles[0]}
+                                changeValue="value"
+                                textKey="text"
+                                valueKey="value"
+                                className="w-full border border-neutral-300 hover:border-fuchsia-300 rounded-lg"
+                                onChange={(value) => {
+                                    memberForm.setValue("role", String(value))
+                                    memberForm.setValue("roleId", String(value))
+                                }}
+                            />
+                        </fieldset>
+
                     </div>
                 </div>
             </FormProvider>

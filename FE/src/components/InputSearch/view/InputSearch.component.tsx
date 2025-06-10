@@ -8,13 +8,14 @@ const InputSearch = <T, K>({
     childrenFn,
     searchServiceFn,
     resultItemClick,
+    fieldsetClass,
     ...props
 }: InputSearchProps<T, K>): React.JSX.Element => {
     const { searching, setSearching, ref, itemClick } = useInputSearch<T, K>({
         resultItemClick,
     });
     return (
-        <div ref={ref} className="relative w-2/3">
+        <div ref={ref} className={`relative w-2/3 ${fieldsetClass}`}>
             <Input
                 {...props}
                 onClick={() => setSearching((prev) => !prev)}

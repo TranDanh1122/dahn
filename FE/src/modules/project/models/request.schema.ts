@@ -27,7 +27,8 @@ export const ProjectSchema = z.object({
     })).optional(),
     role: z.array(z.object({
         id: z.coerce.string().optional(),
-        name: z.coerce.string()
+        name: z.coerce.string(),
+        permission: z.coerce.string()
     })),
     members: z.array(z.object({
         userId: z.coerce.string(),
@@ -76,3 +77,16 @@ export const memberSchema = z.object({
     hourlyRate: z.coerce.number().nonnegative(),
     hours: z.coerce.number()
 })
+export const roleSchema = z.object({
+    id: z.coerce.string().optional(),
+    name: z.coerce.string(),
+    permission: z.coerce.string()
+})
+export const roleSchemaInitData: z.infer<typeof roleSchema> = {
+    name: "",
+    permission: `{
+        projects : 'admin',
+        milestones : 'admin',
+        statuses: 'admin', 
+    }`
+}
