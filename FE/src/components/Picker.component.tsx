@@ -52,7 +52,7 @@ export default React.memo(function Picker({
                         w-full min-h-10 max-h-20 
                         overflow-y-scroll scrollbar-thin
                         border border-neutral-300
-                        hover:border-fuchsia-300 
+                        hover:border-blue-300 
                         rounded-lg p-2
                         flex flex-wrap items-center gap-2">
                     {values &&

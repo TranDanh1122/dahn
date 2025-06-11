@@ -37,7 +37,7 @@ export default function Step1(): React.JSX.Element {
             <Select<EnumSelectType[number]>
                 id="type"
                 className="border border-neutral-300 
-                hover:border-fuchsia-300 rounded-lg"
+                hover:border-blue-300 rounded-lg"
                 changeValue="value"
                 valueKey="value"
                 textKey="text"

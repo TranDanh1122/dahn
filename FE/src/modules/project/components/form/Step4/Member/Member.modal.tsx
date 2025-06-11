@@ -73,7 +73,7 @@ export default function Member({ handleClose, index, onSubmit }: MemberModalProp
                                 changeValue="value"
                                 textKey="text"
                                 valueKey="value"
-                                className="w-full border border-neutral-300 hover:border-fuchsia-300 rounded-lg"
+                                className="w-full border border-neutral-300 hover:border-blue-300 rounded-lg"
                                 onChange={(value) => {
                                     memberForm.setValue("role", String(value))
                                     memberForm.setValue("roleId", String(value))

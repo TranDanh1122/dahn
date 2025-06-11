@@ -57,7 +57,7 @@ export default function Step2(): React.JSX.Element {
                             id="environment" hasIcon
                             className="
                                 flex-grow-0
-                                border border-neutral-300 hover:border-fuchsia-300 
+                                border border-neutral-300 hover:border-blue-300 
                                 rounded-lg w-1/6 min-w-1/6 max-w-1/6"
                             changeValue="value"
                             valueKey="value"

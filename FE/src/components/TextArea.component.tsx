@@ -13,7 +13,7 @@ export default React.memo(function TextArea({ labelClass, error, label, children
             {label}
         </label>
         <div className="relative w-full">
-            <textarea {...props} className={` ${className} w-full cursor-pointer border border-neutral-200 font-medium px-3 py-2 focus-visible:outline-0 focus-visible:border-fuchsia-300 rounded-xl`} />
+            <textarea {...props} className={` ${className} w-full cursor-pointer border border-neutral-200 font-medium px-3 py-2 focus-visible:outline-0 focus-visible:border-blue-300 rounded-xl`} />
             {children && children}
         </div>
         {error && <p className="text-red-600 text-sm font-semibold w-full text-left" aria-label={error} aria-live="assertive">{error}</p>}
