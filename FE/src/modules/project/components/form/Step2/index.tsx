@@ -22,7 +22,7 @@ export default function Step2(): React.JSX.Element {
             name="environment"
             headerEl={<EnvTableHeader />}
             itemEl={<EnvTableItem />}
-            modelFormSchema={envSchema}
+            modalFormSchema={envSchema}
             modalFormContent={<EnvironmentModal />}
         />
 

@@ -30,3 +30,7 @@ export const MilestoneStatus: EnumSelectType = [
     { value: "blocked", text: "Blocked" },
     { value: "done", text: "Done" }
 ]
+export const DocumentStatus: EnumSelectType = [
+    { value: "uptodate", text: "Up To Date" },
+    { value: "deprecated", text: "Deprecated" },
+]

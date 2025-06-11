@@ -18,7 +18,7 @@ const Step1 = React.lazy(() => import("@project/components/form/Step1"));
 const Step2 = React.lazy(() => import("@project/components/form/Step2"));
 const Step3 = React.lazy(() => import("@project/components/form/Step3"));
 const Step4 = React.lazy(() => import("@project/components/form/Step4"));
-
+const Step5 = React.lazy(() => import("@project/components/form/Step5"));
 export default function ProjectForm(): React.JSX.Element {
     const {
         form,
@@ -41,7 +41,7 @@ export default function ProjectForm(): React.JSX.Element {
             <FormProvider {...form}>
                 <form
                     onSubmit={form.handleSubmit(() => alert(1))}
-                    className="space-y-8 md:w-1/3 lg:w-2/7 w-full px-2"
+                    className="space-y-8 md:w-1/3 lg:w-4/7 xl:w-3/7 2xl:w-2/7 w-full px-2"
                     encType="multipart/form-data">
                     <React.Suspense
                         fallback={<LoadingComponent className="border-s-neutral-400 border-2 size-10!" />} key={step}>
@@ -52,14 +52,17 @@ export default function ProjectForm(): React.JSX.Element {
                         {step == 3 && <Step3 />}
 
                         {step == 4 && <Step4 />}
+
+                        {step == 5 && <Step5 />}
+                        <ChangeStep
+                            step={step}
+                            maxStep={5}
+                            handleBack={handleBack}
+                            handleNext={handleNext}
+                        />
                     </React.Suspense>
 
-                    <ChangeStep
-                        step={step}
-                        maxStep={5}
-                        handleBack={handleBack}
-                        handleNext={handleNext}
-                    />
+
                 </form>
             </FormProvider>
             <div

@@ -12,6 +12,7 @@ export const ProjectSchema = z.object({
     client: z.coerce.string().optional(),
     techstack: z.coerce.string(),
     environment: z.array(z.object({
+        id: z.coerce.string().optional(),
         name: z.coerce.string().min(1),
         demoUrl: z.coerce.string().min(1),
         status: z.coerce.string().min(1),
@@ -19,6 +20,7 @@ export const ProjectSchema = z.object({
         note: z.coerce.string()
     })).optional(),
     milestones: z.array(z.object({
+        id: z.coerce.string().optional(),
         name: z.coerce.string().min(3).max(30),
         description: z.coerce.string(),
         startDate: z.coerce.date(),
@@ -33,6 +35,7 @@ export const ProjectSchema = z.object({
         permission: z.coerce.string()
     })),
     members: z.array(z.object({
+        id: z.coerce.string().optional(),
         user: z.object({
             id: z.coerce.string().min(1),
             full_name: z.coerce.string(),
@@ -46,10 +49,19 @@ export const ProjectSchema = z.object({
         note: z.coerce.string().optional()
     })),
     document: z.array(z.object({
+        id: z.coerce.string().optional(),
         name: z.coerce.string(),
-        link: z.coerce.string()
+        link: z.coerce.string(),
+        note: z.coerce.string(),
+        user: z.object({
+            id: z.coerce.string().min(1),
+            full_name: z.coerce.string(),
+            email: z.coerce.string(),
+            avatar_url: z.coerce.string()
+        }),
     })).optional(),
     communitation: z.array(z.object({
+        id: z.coerce.string().optional(),
         channel: z.coerce.string(),
         link: z.coerce.string(),
         meeting: z.enum(["daily", "weekly", "monthly", "custom"]),
@@ -67,6 +79,7 @@ export const initData: z.infer<typeof ProjectSchema> = {
     isCompleted: false
 }
 export const envSchema = z.object({
+    id: z.coerce.string().optional(),
     name: z.coerce.string().min(1),
     demoUrl: z.coerce.string().min(1),
     status: z.coerce.string().min(1),
@@ -74,6 +87,7 @@ export const envSchema = z.object({
     note: z.coerce.string()
 })
 export const milestoneSchema = z.object({
+    id: z.coerce.string().optional(),
     name: z.coerce.string().min(3).max(30),
     description: z.coerce.string(),
     startDate: z.coerce.string(),
@@ -103,6 +117,20 @@ export const roleSchema = z.object({
     project: z.coerce.string(),
     milestone: z.coerce.string(),
     folder: z.coerce.string()
+})
+
+export const documentSchema = z.object({
+    id: z.coerce.string().optional(),
+    name: z.coerce.string(),
+    link: z.coerce.string(),
+    status: z.coerce.string(),
+    user: z.object({
+        id: z.coerce.string().min(1),
+        full_name: z.coerce.string(),
+        email: z.coerce.string(),
+        avatar_url: z.coerce.string()
+    }),
+    note: z.coerce.string(),
 })
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",

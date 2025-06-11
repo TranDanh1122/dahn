@@ -11,7 +11,7 @@ import ArrayFormComponent from "../components/ArrayForm.component";
  * @param {React.ReactElement} [itemEl] - React element for each item
  * @param {React.ReactNode} [children] - React children nodes
  * @param {React.ReactElement} [modalFormContent] - React element for modal form content
- * @param {import('zod').ZodObject<import('react-hook-form').FieldValues>} [modelFormSchema] - ZodObject<FieldValues> for form schema
+ * @param {import('zod').ZodObject<import('react-hook-form').FieldValues>} [modalFormSchema] - ZodObject<FieldValues> for form schema
  * @returns {JSX.Element}
  */
 

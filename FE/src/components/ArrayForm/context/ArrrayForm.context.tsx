@@ -16,7 +16,7 @@ export interface ArrayFormContextProps {
     itemEl?: React.ReactElement,
     children?: React.ReactNode,
     modalFormContent?: React.ReactElement,
-    modelFormSchema?: ZodObject<FieldValues>
+    modalFormSchema?: ZodObject<FieldValues>
 }
 interface ContextType extends Partial<UseFieldArrayReturn>, ArrayFormContextProps {
     handleClose?: () => void,

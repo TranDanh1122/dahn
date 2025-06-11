@@ -16,7 +16,7 @@ export default function FormModal(): React.JSX.Element {
         name,
         modalState,
         modalFormContent,
-        modelFormSchema,
+        modalFormSchema,
         handleClose,
         upsert
     } = React.useContext(ArrayFormContext)
@@ -29,7 +29,7 @@ export default function FormModal(): React.JSX.Element {
 
     const modalForm = useForm<FieldValues>({
         defaultValues,
-        resolver: zodResolver(modelFormSchema)
+        resolver: zodResolver(modalFormSchema)
     });
     const handleSubmit = modalForm.handleSubmit(async (values: FieldValues) => {
         const valid = await modalForm.trigger()

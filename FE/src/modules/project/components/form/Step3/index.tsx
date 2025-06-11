@@ -13,6 +13,6 @@ export default function Step3(): React.JSX.Element {
         headerEl={<MilestoneTableHead />}
         itemEl={<MilestoneTableItem />}
         modalFormContent={<MilestoneModal />}
-        modelFormSchema={milestoneSchema}
+        modalFormSchema={milestoneSchema}
     />
 }

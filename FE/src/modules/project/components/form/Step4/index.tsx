@@ -12,14 +12,14 @@ export default function Step4(): React.JSX.Element {
             headerEl={<RoleTableHeader />}
             itemEl={<RoleTableItem />}
             modalFormContent={<RoleModal />}
-            modelFormSchema={roleSchema}
+            modalFormSchema={roleSchema}
         />
         <ArrayForm
             name="members"
             label="Members"
             headerEl={<MemberHeaderItem />}
             itemEl={<MemberTableItem />}
-            modelFormSchema={memberSchema}
+            modalFormSchema={memberSchema}
             modalFormContent={<MemberModal />}
         />
     </>
