@@ -14,10 +14,10 @@ const stepFields: Record<number, (keyof z.infer<typeof ProjectSchema>)[]> = {
     3: ["milestones"]
 };
 
-const Step1 = React.lazy(() => import("@project/components/form/Step1.view"));
-const Step2 = React.lazy(() => import("@project/components/form/Step2.view"));
-const Step3 = React.lazy(() => import("@project/components/form/Step3.view"));
-const Step4 = React.lazy(() => import("@project/components/form/Step4.view"));
+const Step1 = React.lazy(() => import("@project/components/form/Step1"));
+const Step2 = React.lazy(() => import("@project/components/form/Step2"));
+const Step3 = React.lazy(() => import("@project/components/form/Step3"));
+const Step4 = React.lazy(() => import("@project/components/form/Step4"));
 
 export default function ProjectForm(): React.JSX.Element {
     const {

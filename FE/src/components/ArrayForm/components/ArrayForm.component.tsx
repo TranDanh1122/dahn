@@ -2,6 +2,7 @@ import Button from "@components/Button.component";
 import React from "react";
 import FormModal from "./FormModal.component";
 import { ArrayFormContext } from "../context/ArrrayForm.context";
+import X from "lucide-react/dist/esm/icons/x";
 
 /**
  * ArrayForm form array field in react hook form
@@ -47,12 +48,23 @@ export default function ArrayForm(): React.JSX.Element {
                     fields &&
                     fields.map(
                         (el, index) => (
-                            React.cloneElement(itemEl || <></>, {
-                                key: el.id,
-                                removeItem: () => remove?.(index),
-                                handleOpen: () => handleOpen?.(index),
-                                data: form?.getValues(`${name}.${index}`)
-                            })
+                            <div onClick={() => handleOpen?.(index)} key={el.id}
+                                className="py-4 border-b border-neutral-200 grid grid-cols-5 items-center cursor-pointer hover:bg-neutral-100 hover:rounded-lg hover:px-2 hover:shadow">
+                                {
+                                    React.cloneElement(itemEl || <></>, {
+                                        data: form?.getValues(`${name}.${index}`)
+                                    })
+                                }
+                                <X onClick={
+                                    (e: React.MouseEvent) => {
+                                        e.stopPropagation()
+                                        remove?.(index);
+                                    }
+                                }
+                                    className="text-neutral-600 font-light hover:text-red-500 cursor-pointer mx-auto"
+                                />
+                            </div>
+
                         )
                     )}
             </fieldset >

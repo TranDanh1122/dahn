@@ -1,18 +1,19 @@
 import React from "react";
-import RoleField from "./components/RoleField.component";
-import Button from "@components/Button.component"
-import { useModal } from "@/common/hooks/useModal";
-import Member from "./components/modal/Member/Member.modal";
-import { useFormContext } from "react-hook-form";
+import { ArrayForm } from "@components/ArrayForm";
+import { RoleTableItem, RoleTableHeader, RoleModal } from "./Role";
+import { roleSchema } from "@project/models/request.schema";
 export default function Step4(): React.JSX.Element {
-    const { modalState, close, open } = useModal<{ index?: number, open: boolean }>()
-    React.useEffect(() => {
-        console.log(modalState)
-    }, [modalState])
-    const form = useFormContext()
+
     return <>
-        <RoleField />
-        <fieldset className="space-y-2" >
+        <ArrayForm
+            name="role"
+            label="Roles"
+            headerEl={<RoleTableHeader />}
+            itemEl={<RoleTableItem />}
+            modalFormContent={<RoleModal />}
+            modelFormSchema={roleSchema}
+        />
+        {/* <fieldset className="space-y-2" >
             <div className="flex items-center gap-2 te">
                 <legend className="text-neutral-600">Members</legend>
                 <Button
@@ -36,6 +37,6 @@ export default function Step4(): React.JSX.Element {
                     handleClose={() => close({ open: false })}
                 />
             }
-        </fieldset >
+        </fieldset > */}
     </>
 }

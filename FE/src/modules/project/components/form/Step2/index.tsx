@@ -6,7 +6,7 @@ import { type EnumSelectType, EnvironmentStatus } from "@project/const";
 import Button from "@components/Button.component";
 import X from "lucide-react/dist/esm/icons/x";
 import { v4 } from "uuid";
-import { useStep2Hook } from "./hooks/useStep2.hook";
+import { useStep2Hook } from "./useStep2.hook";
 export default function Step2(): React.JSX.Element {
     const {
         environments,
