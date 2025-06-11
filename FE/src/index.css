@@ -5,3 +5,22 @@
 * {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+
+
+.radio.active::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #51a2ff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.radio.active {
+    border: 1px #51a2ff solid
+}

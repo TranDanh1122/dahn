@@ -45,6 +45,7 @@ export default function ArrayFormContextProvider({ children, ...props }: ArrayFo
         data: FieldValues,
         index?: number
     ) => {
+
         close({ open: false });
         if (typeof index == "number") {
             arrayField.update(index, data);

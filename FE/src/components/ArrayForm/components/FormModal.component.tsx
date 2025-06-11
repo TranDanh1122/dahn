@@ -31,7 +31,11 @@ export default function FormModal(): React.JSX.Element {
         defaultValues,
         resolver: zodResolver(modelFormSchema)
     });
-    const handleSubmit = modalForm.handleSubmit((values: FieldValues) => upsert?.(values, modalState?.index))
+    const handleSubmit = modalForm.handleSubmit(async (values: FieldValues) => {
+        const valid = await modalForm.trigger()
+        if (valid)
+            upsert?.(values, modalState?.index)
+    })
     return (
         <>
             <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>

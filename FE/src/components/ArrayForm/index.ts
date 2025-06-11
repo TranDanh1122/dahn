@@ -2,8 +2,8 @@ import type { FieldValues, UseFormReturn } from "react-hook-form"
 
 export { default as ArrayForm } from "./views/ArrayForm.view"
 
-export interface ModalProps {
-    modalForm?: UseFormReturn
+export interface ModalProps<T> {
+    modalForm?: UseFormReturn<T>
 }
 export interface TableItemProps {
     data?: FieldValues,

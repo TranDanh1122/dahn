@@ -1,7 +1,8 @@
 import React from "react";
 import { DayPicker, type DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import ChevronLeft from "lucide-react/dist/esm/icons/chevron-left";
+import ChevronRight from "lucide-react/dist/esm/icons/chevron-right";
 
 interface DatePickerComponentProps {
     selected?: DateRange

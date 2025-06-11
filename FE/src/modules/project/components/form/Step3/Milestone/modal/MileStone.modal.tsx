@@ -6,9 +6,11 @@ import { Select } from "@components/Select";
 import { MilestoneStatus, type EnumSelectType } from "@project/const";
 import { useMilestoneModal } from "./useMilestoneModal.hook";
 import type { ModalProps } from "@components/ArrayForm";
+import type { z } from "zod";
+import { milestoneSchema } from "@project/models/request.schema";
 
 export default React.memo(
-    function MileStoneModal({ modalForm }: ModalProps) {
+    function MileStoneModal({ modalForm }: ModalProps<z.infer<typeof milestoneSchema>>) {
 
         const hookReturn = useMilestoneModal({ modalForm })
 
@@ -24,16 +26,16 @@ export default React.memo(
                     placeholder="eg: Milestone 1 - Setup Database"
                     label="Milestone Name"
                     fieldsetClass="w-full"
-                    error={modalForm.formState.errors.name?.message?.toString()}
+                    error={modalForm.formState.errors.name?.message}
                 />
                 <DatePicker
                     onDateChange={handlePickerDate}
                     className="w-full"
                     initData={iniDate}
                     error={
-                        modalForm.formState.errors.startDate?.message?.toString() ||
-                        modalForm.formState.errors.endDate?.message?.toString() ||
-                        modalForm.formState.errors.duration?.message?.toString()
+                        modalForm.formState.errors.startDate?.message ||
+                        modalForm.formState.errors.endDate?.message ||
+                        modalForm.formState.errors.duration?.message
                     }
                 />
             </div>
@@ -44,7 +46,7 @@ export default React.memo(
                     placeholder="eg: 15%"
                     label="Process"
                     fieldsetClass="w-full"
-                    error={modalForm.formState.errors.process?.message?.toString()}
+                    error={modalForm.formState.errors.process?.message}
                 />
                 <Select<EnumSelectType[number]>
                     dataSets={MilestoneStatus}
@@ -62,7 +64,7 @@ export default React.memo(
                 labelClass="font-light!"
                 label="Description"
                 rows={3}
-                error={modalForm.formState.errors.description?.message?.toString()}
+                error={modalForm.formState.errors.description?.message}
             />
 
         </>

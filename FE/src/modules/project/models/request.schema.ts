@@ -79,11 +79,11 @@ export const memberSchema = z.object({
 })
 export const roleSchema = z.object({
     id: z.coerce.string().optional(),
-    name: z.coerce.string(),
-    permission: z.coerce.string(),
+    name: z.coerce.string().min(1),
+    permission: z.coerce.string().optional(),
     project: z.coerce.string(),
     milestone: z.coerce.string(),
-    status: z.coerce.string()
+    folder: z.coerce.string()
 })
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",
@@ -94,5 +94,5 @@ export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     }`,
     project: "admin",
     milestone: "admin",
-    status: "admin"
+    folder: "admin"
 }

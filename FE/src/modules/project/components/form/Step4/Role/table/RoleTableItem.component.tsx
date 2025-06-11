@@ -12,6 +12,6 @@ export default function RoleTableItem({ data }: RoleTableItem): React.JSX.Elemen
         <span className="line-clamp-1">{data.name}</span>
         <span className="text-center">{data.project}</span>
         <span className="text-center">{data.milestone}</span>
-        <span className="text-center">{data.status}</span>
+        <span className="text-center">{data.folder}</span>
     </>
 }
