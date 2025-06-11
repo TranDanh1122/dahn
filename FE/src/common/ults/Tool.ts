@@ -1,3 +1,5 @@
+import { ErrorHandler, SuccessHandle } from "./NotifyHandler"
+
 export const isObjectEqual = (a: any, b: any) => {
     if (!isTruthyObject(a) || !isTruthyObject(b)) return false
     return Object.values(a).every(el => Object.values(b).some(item => item === el))
@@ -36,4 +38,13 @@ export function base64ToFile(base64: string, filename = 'file') {
 
 export function isBase64Image(input: string): boolean {
     return /^data:image\/[a-zA-Z]+;base64,/.test(input);
+}
+export async function copy(text: string) {
+    try {
+        await navigator.clipboard.writeText(text)
+        SuccessHandle("Copied to clipboard")
+    } catch (e) {
+        console.error(e)
+        ErrorHandler("Error when copy to clipboard")
+    }
 }

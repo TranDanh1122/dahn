@@ -12,9 +12,11 @@ export const ProjectSchema = z.object({
     client: z.coerce.string().optional(),
     techstack: z.coerce.string(),
     environment: z.array(z.object({
-        name: z.coerce.string(),
-        demoUrl: z.coerce.string(),
-        status: z.coerce.string()
+        name: z.coerce.string().min(1),
+        demoUrl: z.coerce.string().min(1),
+        status: z.coerce.string().min(1),
+        readme: z.coerce.string().min(1),
+        note: z.coerce.string()
     })).optional(),
     milestones: z.array(z.object({
         name: z.coerce.string().min(3).max(30),
@@ -31,12 +33,17 @@ export const ProjectSchema = z.object({
         permission: z.coerce.string()
     })),
     members: z.array(z.object({
-        userId: z.coerce.string(),
-        name: z.coerce.string(),
-        role: z.coerce.string(),
+        user: z.object({
+            id: z.coerce.string().min(1),
+            full_name: z.coerce.string(),
+            email: z.coerce.string(),
+            avatar_url: z.coerce.string()
+        }),
+        role: z.coerce.string().min(1),
         roleId: z.coerce.string().optional(),
         hourlyRate: z.coerce.number().nonnegative(),
-        hours: z.coerce.number()
+        hours: z.coerce.number().nonnegative(),
+        note: z.coerce.string().optional()
     })),
     document: z.array(z.object({
         name: z.coerce.string(),
@@ -59,6 +66,13 @@ export const initData: z.infer<typeof ProjectSchema> = {
     members: [],
     isCompleted: false
 }
+export const envSchema = z.object({
+    name: z.coerce.string().min(1),
+    demoUrl: z.coerce.string().min(1),
+    status: z.coerce.string().min(1),
+    readme: z.coerce.string().min(1),
+    note: z.coerce.string()
+})
 export const milestoneSchema = z.object({
     name: z.coerce.string().min(3).max(30),
     description: z.coerce.string(),
@@ -70,12 +84,17 @@ export const milestoneSchema = z.object({
 })
 
 export const memberSchema = z.object({
-    userId: z.coerce.string(),
-    name: z.coerce.string(),
-    role: z.coerce.string(),
+    user: z.object({
+        id: z.coerce.string().min(1),
+        full_name: z.coerce.string(),
+        email: z.coerce.string(),
+        avatar_url: z.coerce.string()
+    }),
+    role: z.coerce.string().min(1),
     roleId: z.coerce.string().optional(),
     hourlyRate: z.coerce.number().nonnegative(),
-    hours: z.coerce.number()
+    hours: z.coerce.number().nonnegative(),
+    note: z.coerce.string().optional()
 })
 export const roleSchema = z.object({
     id: z.coerce.string().optional(),

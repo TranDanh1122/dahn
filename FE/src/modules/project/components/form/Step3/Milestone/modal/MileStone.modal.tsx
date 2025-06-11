@@ -13,7 +13,9 @@ export default React.memo(
     function MileStoneModal({ modalForm }: ModalProps<z.infer<typeof milestoneSchema>>) {
 
         const hookReturn = useMilestoneModal({ modalForm })
-
+        React.useEffect(() => {
+            modalForm?.setValue("status", "not_started")
+        }, [])
         if (!modalForm || !hookReturn) return <></>
 
         const { defaultStatusValue, iniDate, handlePickerDate } = hookReturn

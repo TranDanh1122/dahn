@@ -45,7 +45,7 @@ export default function FormModal(): React.JSX.Element {
                         className="absolute top-4 right-4 cursor-pointer text-neutral-600"
                     />
 
-                    {React.cloneElement(modalFormContent || <></>, { modalForm })}
+                    {React.cloneElement(modalFormContent || <></>, { modalForm, form })}
 
                     <div className="flex items-center justify-between">
                         <Button onClick={handleClose}
