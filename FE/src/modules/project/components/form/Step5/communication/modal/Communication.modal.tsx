@@ -1,0 +1,81 @@
+import React from "react";
+import Input from "@/components/Input.component";
+import type { ModalProps } from "@/components/ArrayForm";
+import { z } from "zod";
+import { communitationSchema } from "@project/models/request.schema";
+import { Select } from "@components/Select";
+import { CommunitationMeeting, type EnumSelectType } from "@project/const";
+import TextArea from "@components/TextArea.component";
+export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typeof communitationSchema>>): React.JSX.Element {
+    React.useEffect(() => {
+        if (!modalForm?.getValues("meeting")) modalForm?.setValue("meeting", "no")
+    }, [])
+    if (!modalForm) return <></>
+    return <>
+        <div className="flex items-end gap-4">
+            <Input
+                fieldsetClass="w-full"
+                label="Document Name"
+                labelClass="font-light!"
+                placeholder="eg: Git rule in this project"
+                {...modalForm.register("channel")}
+                error={modalForm.formState.errors.channel?.message}
+            />
+            <Input
+                fieldsetClass="w-full"
+                label="Link"
+                labelClass="font-light!"
+                placeholder="eg: https://discord.com/group/g-meeting.com"
+                {...modalForm.register("link")}
+                error={modalForm.formState.errors.link?.message}
+            />
+
+        </div>
+        <div className="flex items-end gap-4">
+            <fieldset className="w-full flex flex-col gap-2">
+                <label className="font-light text-neutral-600 cursor-pointer" >
+                    Status
+                </label>
+                <Select<EnumSelectType[number]>
+                    dataSets={CommunitationMeeting}
+                    defaultValue={CommunitationMeeting[0]}
+                    changeValue="value"
+                    textKey="text"
+                    valueKey="value"
+                    className="w-full border border-neutral-300 hover:border-blue-300 rounded-lg"
+                    onChange={(value) => {
+                        if (typeof value == "string")
+                            modalForm.setValue("meeting", String(value))
+                    }}
+                />
+            </fieldset>
+            <Input
+                hidden={modalForm.watch("meeting") !== "custom"}
+                fieldsetClass="w-full"
+                label="Meeting"
+                labelClass="font-light!"
+                placeholder="eg: Every night"
+                {...modalForm.register("meetingCustom")}
+                error={modalForm.formState.errors.meetingCustom?.message}
+            />
+            <Input
+                hidden={modalForm.watch("meeting") == "no"}
+                fieldsetClass="w-full"
+                label="Schedule"
+                labelClass="font-light!"
+                placeholder="eg: 3AM"
+                {...modalForm.register("schedule")}
+                error={modalForm.formState.errors.schedule?.message}
+            />
+        </div>
+
+        <TextArea
+            rows={4}
+            label="Note"
+            labelClass="font-light!"
+            {...modalForm.register("note")}
+            placeholder="eg: Branch name need start with cyl__001...v..v"
+            error={modalForm.formState.errors.note?.message} />
+
+    </>
+}

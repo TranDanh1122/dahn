@@ -34,3 +34,10 @@ export const DocumentStatus: EnumSelectType = [
     { value: "uptodate", text: "Up To Date" },
     { value: "deprecated", text: "Deprecated" },
 ]
+export const CommunitationMeeting: EnumSelectType = [
+    { value: "no", text: "No meeting" },
+    { value: "daily", text: "Daily" },
+    { value: "weekly", text: "Weekly" },
+    { value: "monthly", text: "Monthly" },
+    { value: "custom", text: "Custom" }
+]

@@ -13,6 +13,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
 
     const hookData = useMemberModal({ modalForm, form })
 
+
     if (!modalForm || !form) return <></>
 
     const {
@@ -22,7 +23,6 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
         childrenFn,
         pikedUser
     } = hookData
-
     return (
         <>
             <div className="flex items-end gap-4">
@@ -36,6 +36,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                     labelClass="font-light!"
                     fieldsetClass="w-full!"
                     value={pikedUser}
+                    error={modalForm.formState.errors.user?.message}
                 />
                 <fieldset className="w-full flex flex-col gap-2">
                     <label className="font-light text-neutral-600 cursor-pointer" >
@@ -43,7 +44,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                     </label>
                     <Select<EnumSelectType[number]>
                         dataSets={roles}
-                        defaultValue={roles[0]}
+                        defaultValue={roles.find((el: EnumSelectType[number]) => el.text == modalForm.getValues("role")) || roles[0]}
                         changeValue="all"
                         textKey="text"
                         valueKey="value"
@@ -83,7 +84,6 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                 {...modalForm.register("note")}
                 placeholder="eg: This guy is a newbie"
                 error={modalForm.formState.errors.note?.message} />
-
         </>
     );
 }

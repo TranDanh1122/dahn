@@ -7,6 +7,7 @@ import { initData, ProjectSchema } from "@project/models/request.schema";
 import useFormStep from "@/common/hooks/useFormStep";
 import ChangeStep from "@components/ChangeStep.component";
 import LoadingComponent from "@components/Loading.component";
+import useScrollbar from "@/common/hooks/useScrollbar";
 
 const stepFields: Record<number, (keyof z.infer<typeof ProjectSchema>)[]> = {
     1: ["name", "overview", "description", "type"],
@@ -27,7 +28,7 @@ export default function ProjectForm(): React.JSX.Element {
         handleNext
     } = useFormStep<z.infer<typeof ProjectSchema>>({ initData, stepFields, schema: ProjectSchema });
     const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
-
+    const ref = useScrollbar<HTMLFormElement>(window.innerHeight)
     return (
         <div
             className="
@@ -39,9 +40,9 @@ export default function ProjectForm(): React.JSX.Element {
             </Link>
 
             <FormProvider {...form}>
-                <form
+                <form ref={ref}
                     onSubmit={form.handleSubmit(() => alert(1))}
-                    className="space-y-8 md:w-1/3 lg:w-4/7 xl:w-3/7 2xl:w-2/7 w-full px-2"
+                    className="space-y-8 md:w-2/3 lg:w-5/7 xl:w-[35%] w-full px-2 "
                     encType="multipart/form-data">
                     <React.Suspense
                         fallback={<LoadingComponent className="border-s-neutral-400 border-2 size-10!" />} key={step}>

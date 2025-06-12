@@ -7,7 +7,7 @@ import {
     type UseFieldArrayReturn,
     type UseFormReturn
 } from "react-hook-form"
-import type { ZodObject } from "zod";
+import type { ZodEffects, ZodObject } from "zod";
 
 export interface ArrayFormContextProps {
     name: string,
@@ -16,7 +16,7 @@ export interface ArrayFormContextProps {
     itemEl?: React.ReactElement,
     children?: React.ReactNode,
     modalFormContent?: React.ReactElement,
-    modalFormSchema?: ZodObject<FieldValues>
+    modalFormSchema?: ZodEffects<ZodObject<FieldValues>> | ZodObject<FieldValues>
 }
 interface ContextType extends Partial<UseFieldArrayReturn>, ArrayFormContextProps {
     handleClose?: () => void,

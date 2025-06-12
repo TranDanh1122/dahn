@@ -7,11 +7,12 @@ import type { ModalProps } from "@components/ArrayForm";
 export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof memberSchema>>) => {
     const filter = React.useCallback(
         (data: User) => {
+            console.log(form?.getValues("members"), data)
             if (form)
                 return !form
                     .getValues("members")
-                    ?.some((item: z.infer<typeof memberSchema>) => item.user.id === data.id);
-            return true
+                    ?.some((item: z.infer<typeof memberSchema>) => item.user.id == data.id);
+            return false
         },
         [form?.watch("members")]
     );
@@ -29,6 +30,12 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
         })
     }, [form?.watch("role")])
 
+    React.useEffect(() => {
+        console.log(modalForm?.getValues("role"))
+        if (!modalForm?.getValues("role")) {
+            modalForm?.setValue("role", roles[0].text)
+        }
+    }, [])
     const pikedUser = React.useMemo(() => {
         const user = modalForm?.getValues("user")
         if (user)

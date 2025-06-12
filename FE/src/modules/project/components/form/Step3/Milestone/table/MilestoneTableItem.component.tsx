@@ -18,8 +18,8 @@ export default function MilestoneItem({ data }: MilestoneItem): React.JSX.Elemen
     if (!data) return <></>;
 
     return <>
-        <span className="line-clamp-1">{data.name}</span>
-        <span className="text-center">{data.duration}</span>
+        <span title={data.name} className="line-clamp-1">{data.name}</span>
+        <span title={String(data.duration)} className="text-center">{data.duration}</span>
         <span className="text-center">{data.process}</span>
         <div className={`${color} justify-end flex items-center gap-2 w-full`}>
             {

@@ -64,7 +64,8 @@ export const ProjectSchema = z.object({
         id: z.coerce.string().optional(),
         channel: z.coerce.string(),
         link: z.coerce.string(),
-        meeting: z.enum(["daily", "weekly", "monthly", "custom"]),
+        meeting: z.coerce.string(),
+        meetingCustom: z.coerce.string().optional(),
         schedule: z.coerce.string()
     })).optional(),
     isCompleted: z.boolean()
@@ -131,6 +132,21 @@ export const documentSchema = z.object({
         avatar_url: z.coerce.string()
     }),
     note: z.coerce.string(),
+})
+
+export const communitationSchema = z.object({
+    id: z.coerce.string().optional(),
+    channel: z.coerce.string(),
+    link: z.coerce.string(),
+    meeting: z.coerce.string(),
+    meetingCustom: z.coerce.string().optional(),
+    schedule: z.coerce.string().optional(),
+    note: z.coerce.string().optional()
+}).refine((value) => {
+    if (value.meeting == "custom")
+        return !(!value.meetingCustom)
+    if (value.meeting == "no")
+        return !!value.schedule
 })
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",
