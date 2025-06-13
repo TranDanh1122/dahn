@@ -4,6 +4,7 @@ const authRoute = require('./routes/auth');
 const workspaceRoute = require('./routes/workspace');
 const userRoute = require('./routes/user')
 const commonRoute = require('./routes/common')
+const projectRoute = require('./routes/project')
 const cors = require('cors');
 const authMiddleware = require('./middleware/auth')
 
@@ -18,7 +19,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/workspace', authMiddleware, workspaceRoute);
 app.use('/api/user', authMiddleware, userRoute);
 app.use('/api/common', authMiddleware, commonRoute);
-
+app.use('/api/project', authMiddleware, projectRoute);
 app.get('/api/test', (req, res) => {
   res.json({ message: 'BE is running!' });
 });

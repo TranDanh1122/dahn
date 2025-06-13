@@ -22,6 +22,7 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
         []);
     const resultItemClick = (data: User) => {
         modalForm?.setValue("user", data);
+        modalForm?.setValue("userid", data.id)
     }
 
     const roles = React.useMemo(() => {

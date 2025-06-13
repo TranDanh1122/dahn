@@ -2,33 +2,26 @@ import X from "lucide-react/dist/esm/icons/x";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { z } from "zod";
-import { initData, ProjectSchema } from "@project/models/request.schema";
-import useFormStep from "@/common/hooks/useFormStep";
 import ChangeStep from "@components/ChangeStep.component";
 import LoadingComponent from "@components/Loading.component";
-import useScrollbar from "@/common/hooks/useScrollbar";
-
-const stepFields: Record<number, (keyof z.infer<typeof ProjectSchema>)[]> = {
-    1: ["name", "overview", "description", "type"],
-    2: ["techstack", "environment"],
-    3: ["milestones"]
-};
+import useProjectForm from "@project/hooks/useProjectForm.hook";
 
 const Step1 = React.lazy(() => import("@project/components/form/Step1"));
 const Step2 = React.lazy(() => import("@project/components/form/Step2"));
 const Step3 = React.lazy(() => import("@project/components/form/Step3"));
 const Step4 = React.lazy(() => import("@project/components/form/Step4"));
 const Step5 = React.lazy(() => import("@project/components/form/Step5"));
+
 export default function ProjectForm(): React.JSX.Element {
     const {
         form,
         step,
+        isActive,
+        ref,
+        handleSubmit,
         handleBack,
         handleNext
-    } = useFormStep<z.infer<typeof ProjectSchema>>({ initData, stepFields, schema: ProjectSchema });
-    const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
-    const ref = useScrollbar<HTMLFormElement>(window.innerHeight)
+    } = useProjectForm()
     return (
         <div
             className="
@@ -41,7 +34,7 @@ export default function ProjectForm(): React.JSX.Element {
 
             <FormProvider {...form}>
                 <form ref={ref}
-                    onSubmit={form.handleSubmit(() => alert(1))}
+                    onSubmit={form.handleSubmit(handleSubmit)}
                     className="space-y-8 md:w-2/3 lg:w-5/7 xl:w-[35%] w-full px-2 "
                     encType="multipart/form-data">
                     <React.Suspense
@@ -62,8 +55,6 @@ export default function ProjectForm(): React.JSX.Element {
                             handleNext={handleNext}
                         />
                     </React.Suspense>
-
-
                 </form>
             </FormProvider>
             <div

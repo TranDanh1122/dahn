@@ -12,9 +12,11 @@ export default function DocumentModal({ modalForm }: ModalProps<z.infer<typeof d
     const user = useSelector((state: AppState) => state.persist.auth.user)
     React.useEffect(() => {
         if (!modalForm) return
-        if (modalForm.getValues("status")) modalForm.setValue("status", "uptodate")
-        if (!modalForm.getValues("user.id") && user) modalForm.setValue("user" , user)
+        if (!modalForm.getValues("status")) modalForm.setValue("status", "uptodate")
+        if (!modalForm.getValues("user.id") && user) modalForm.setValue("user", user)
+        if (!modalForm.getValues("userid") && user) modalForm.setValue("userid", Number(user.id))
     }, [])
+
     if (!modalForm) return <></>
 
     return <>

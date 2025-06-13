@@ -140,12 +140,13 @@ router.post('/login-otp', async (req, res) => {
   const { data, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
 
   if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
-
+  const { data: user, error: uError } = await supabase.from("users").select().eq("user_id", data.user.id).single()
+  if (uError) return res.status(uError.status ?? 400).json({ message: uError.message ?? 'Error' })
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
     { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 }
   ])
-  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
+  return res.status(200).json({ success: true, user: user })
 });
 
 
@@ -223,13 +224,14 @@ router.post('/refresh-token', async (req, res) => {
   const { session } = data
 
   if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error wwhen refresh token' })
-
+  const { data: user, error: uError } = await supabase.from("users").select().eq("user_id", data.user.id).single()
+  if (uError) return res.status(uError.status ?? 400).json({ message: uError.message ?? 'Error' })
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: session.access_token, expires: session.expires_in },
     { name: 'refresh_token', value: session.refresh_token, expires: 604800 },
   ])
 
-  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
+  return res.status(200).json({ success: true, user: user })
 });
 
 router.get('/userinfo', async (req, res) => {
@@ -280,16 +282,17 @@ router.post('/pkce-token', async (req, res) => {
   }
   const { data, error } = await supabasePKCE.auth.exchangeCodeForSession(code, code_verifier);
 
-  if (error) {
-    return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
-  }
+  if (error) return res.status(error.status ?? 400).json({ message: error.message ?? 'Error' })
+
+  const { data: user, error: uError } = await supabase.from("users").select().eq("user_id", data.user.id).single()
+  if (uError) return res.status(uError.status ?? 400).json({ message: uError.message ?? 'Error' })
 
   setHTTPOnlyCookie(res, [
     { name: 'access_token', value: data.session.access_token, expires: data.session.expires_in },
     { name: 'refresh_token', value: data.session.refresh_token, expires: 604800 },
   ])
 
-  return res.status(200).json({ success: true, user: { id: data.user.id, ...data.user.user_metadata } })
+  return res.status(200).json({ success: true, user: user })
 });
 
 

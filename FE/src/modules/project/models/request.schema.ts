@@ -6,8 +6,8 @@ import { z } from "zod"
  */
 export const ProjectSchema = z.object({
     name: z.coerce.string().min(3).max(50),
-    overview: z.coerce.string().min(1),
-    description: z.coerce.string().optional(),
+    overview: z.coerce.string().min(1).max(150),
+    description: z.coerce.string().max(300).optional(),
     type: z.coerce.string(),
     client: z.coerce.string().optional(),
     techstack: z.coerce.string(),
@@ -36,6 +36,7 @@ export const ProjectSchema = z.object({
     })),
     members: z.array(z.object({
         id: z.coerce.string().optional(),
+        userid: z.coerce.string(),
         user: z.object({
             id: z.coerce.string().min(1),
             full_name: z.coerce.string(),
@@ -53,6 +54,7 @@ export const ProjectSchema = z.object({
         name: z.coerce.string(),
         link: z.coerce.string(),
         note: z.coerce.string(),
+        userid: z.coerce.number(),
         user: z.object({
             id: z.coerce.string().min(1),
             full_name: z.coerce.string(),
@@ -70,7 +72,8 @@ export const ProjectSchema = z.object({
     })).optional(),
     isCompleted: z.boolean()
 })
-export const initData: z.infer<typeof ProjectSchema> = {
+export type ProjectData = z.infer<typeof ProjectSchema>
+export const initData: ProjectData = {
     name: "",
     overview: "",
     techstack: "",
@@ -99,6 +102,8 @@ export const milestoneSchema = z.object({
 })
 
 export const memberSchema = z.object({
+    id: z.coerce.string().optional(),
+    userid: z.coerce.string(),
     user: z.object({
         id: z.coerce.string().min(1),
         full_name: z.coerce.string(),
@@ -125,13 +130,14 @@ export const documentSchema = z.object({
     name: z.coerce.string(),
     link: z.coerce.string(),
     status: z.coerce.string(),
+    userid: z.coerce.number(),
     user: z.object({
         id: z.coerce.string().min(1),
         full_name: z.coerce.string(),
         email: z.coerce.string(),
         avatar_url: z.coerce.string()
     }),
-    note: z.coerce.string(),
+    note: z.coerce.string().optional(),
 })
 
 export const communitationSchema = z.object({
@@ -145,8 +151,7 @@ export const communitationSchema = z.object({
 }).refine((value) => {
     if (value.meeting == "custom")
         return !(!value.meetingCustom)
-    if (value.meeting == "no")
-        return !!value.schedule
+    return true
 })
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",

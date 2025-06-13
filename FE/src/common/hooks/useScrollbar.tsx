@@ -7,10 +7,12 @@ export default function useScrollbar<T extends HTMLElement>(maxHeight: number) {
                 const el = ref.current
                 const elHeight = el.getBoundingClientRect().height || 0
                 if (elHeight >= maxHeight) {
-                    el.classList.add(`overflow-y-scroll scrollbar-thin`)
+                    el.classList.add(`overflow-y-scroll`)
+                    el.classList.add(`scrollbar-thin`)
                     el.style.maxHeight = `${maxHeight}px`;
                 } else {
-                    el.classList.remove(`overflow-y-scroll scrollbar-thin`)
+                    el.classList.remove(`overflow-y-scroll`)
+                    el.classList.remove(`scrollbar-thin`)
                     el.style.maxHeight = `unset`;
                 }
             }

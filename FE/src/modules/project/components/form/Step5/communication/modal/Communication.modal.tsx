@@ -10,14 +10,17 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
     React.useEffect(() => {
         if (!modalForm?.getValues("meeting")) modalForm?.setValue("meeting", "no")
     }, [])
+    React.useEffect(() => {
+        console.log(modalForm?.formState.errors)
+    }, [modalForm?.formState.errors])
     if (!modalForm) return <></>
     return <>
         <div className="flex items-end gap-4">
             <Input
                 fieldsetClass="w-full"
-                label="Document Name"
+                label="Chanel Name"
                 labelClass="font-light!"
-                placeholder="eg: Git rule in this project"
+                placeholder="eg: Discord Daily Meeting"
                 {...modalForm.register("channel")}
                 error={modalForm.formState.errors.channel?.message}
             />
@@ -49,24 +52,30 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
                     }}
                 />
             </fieldset>
-            <Input
-                hidden={modalForm.watch("meeting") !== "custom"}
-                fieldsetClass="w-full"
-                label="Meeting"
-                labelClass="font-light!"
-                placeholder="eg: Every night"
-                {...modalForm.register("meetingCustom")}
-                error={modalForm.formState.errors.meetingCustom?.message}
-            />
-            <Input
-                hidden={modalForm.watch("meeting") == "no"}
-                fieldsetClass="w-full"
-                label="Schedule"
-                labelClass="font-light!"
-                placeholder="eg: 3AM"
-                {...modalForm.register("schedule")}
-                error={modalForm.formState.errors.schedule?.message}
-            />
+            {
+                modalForm.watch("meeting") !== "no" &&
+                <>
+                    {
+                        modalForm.watch("meeting") == "custom" &&
+                        <Input
+                            fieldsetClass="w-full"
+                            label="Meeting"
+                            labelClass="font-light!"
+                            placeholder="eg: Every night"
+                            {...modalForm.register("meetingCustom")}
+                            error={modalForm.formState.errors.meetingCustom?.message}
+                        />
+                    }
+                    < Input
+                        fieldsetClass="w-full"
+                        label="Schedule"
+                        labelClass="font-light!"
+                        placeholder="eg: 3AM"
+                        {...modalForm.register("schedule")}
+                        error={modalForm.formState.errors.schedule?.message}
+                    />
+                </>
+            }
         </div>
 
         <TextArea
@@ -74,7 +83,7 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
             label="Note"
             labelClass="font-light!"
             {...modalForm.register("note")}
-            placeholder="eg: Branch name need start with cyl__001...v..v"
+            placeholder="eg: Where we meeting, chat about project"
             error={modalForm.formState.errors.note?.message} />
 
     </>

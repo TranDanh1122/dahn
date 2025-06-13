@@ -3,11 +3,11 @@ import Input from "@components/Input.component";
 import TextArea from "@components/TextArea.component";
 import { Select } from "@components/Select";
 import { useFormContext } from "react-hook-form";
-import { ProjectSchema } from "@project/models/request.schema";
-import { z } from "zod"
+import type { ProjectData } from "@project/models/request.schema";
+
 import { TypeDataSet, type EnumSelectType } from "@project/const"
 export default function Step1(): React.JSX.Element {
-    const form = useFormContext<z.infer<typeof ProjectSchema>>()
+    const form = useFormContext<ProjectData>()
     return <div className="space-y-4">
         <Input label="Project Name (*)"
             placeholder="eg: Fookbace App"
