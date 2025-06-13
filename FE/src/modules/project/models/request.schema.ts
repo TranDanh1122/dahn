@@ -152,6 +152,8 @@ export const communitationSchema = z.object({
     if (value.meeting == "custom")
         return !(!value.meetingCustom)
     return true
+}, {
+    path: ["meetingCustom"]
 })
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",
