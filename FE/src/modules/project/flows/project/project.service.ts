@@ -4,8 +4,8 @@ import type { ProjectData } from "@project/models/request.schema"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
 
-const useProjectService = () => {
-    const createProject = useMutation({
+export const useCreateProjectMutation = () => {
+    return useMutation({
         mutationFn: async (data: ProjectData) => {
             const res = await createProjectAPI(data)
             return await res.json()
@@ -18,9 +18,4 @@ const useProjectService = () => {
             ErrorHandler(body.message || e.message)
         }
     })
-
-    return { createProject }
 }
-
-
-export default useProjectService

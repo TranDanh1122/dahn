@@ -3,7 +3,7 @@ import React from "react";
 import { initData, ProjectSchema, type ProjectData } from "@project/models/request.schema";
 import useScrollbar from "@/common/hooks/useScrollbar";
 import { useNavigate } from "react-router-dom";
-import useProjectService from "@project/flows/project/project.service";
+import { useCreateProjectMutation } from "@project/flows/project";
 const stepFields: Record<number, (keyof ProjectData)[]> = {
     1: ["name", "overview", "description", "type"],
     2: ["techstack", "environment"],
@@ -19,7 +19,7 @@ export default function useProjectForm() {
         handleNext
     } = useFormStep<ProjectData>({ initData, stepFields, schema: ProjectSchema });
     const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
-    const { createProject } = useProjectService()
+    const createProject = useCreateProjectMutation()
     const navigate = useNavigate()
     const handleSubmit = (values: ProjectData) => {
         console.log(values)
