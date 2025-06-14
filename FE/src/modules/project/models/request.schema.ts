@@ -44,7 +44,6 @@ export const ProjectSchema = z.object({
             avatar_url: z.coerce.string()
         }),
         role: z.coerce.string().min(1),
-        roleId: z.coerce.string().optional(),
         hourlyRate: z.coerce.number().nonnegative(),
         hours: z.coerce.number().nonnegative(),
         note: z.coerce.string().optional()
@@ -111,7 +110,6 @@ export const memberSchema = z.object({
         avatar_url: z.coerce.string()
     }),
     role: z.coerce.string().min(1),
-    roleId: z.coerce.string().optional(),
     hourlyRate: z.coerce.number().nonnegative(),
     hours: z.coerce.number().nonnegative(),
     note: z.coerce.string().optional()

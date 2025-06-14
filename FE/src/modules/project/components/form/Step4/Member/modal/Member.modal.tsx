@@ -52,7 +52,6 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                         onChange={(value) => {
                             if (typeof value == "object") {
                                 modalForm.setValue("role", String(value.text))
-                                modalForm.setValue("roleId", String(value.value))
                             }
                         }}
                     />
