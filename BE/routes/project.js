@@ -80,20 +80,20 @@ router.post('', async (req, res) => {
             if (data.members && data.members.length > 0) {
                 roles.forEach(async (savedRole) => {
                     const membersData = data.members
-                    .filter(el => el.role == savedRole.name)
-                    .map(member => ({
-                        userid: member.userid,
-                        hourlyRate: member.hourlyRate,
-                        hours: member.hours,
-                        note: member.note,
-                        project_id: projectId,
-                        role_id: savedRole.id,
-                    }));
-            
+                        .filter(el => el.role == savedRole.name)
+                        .map(member => ({
+                            userid: member.userid,
+                            hourlyRate: member.hourlyRate,
+                            hours: member.hours,
+                            note: member.note,
+                            project_id: projectId,
+                            role_id: savedRole.id,
+                        }));
+
                     const { error: memberError } = await supabase
                         .from('project_member')
                         .insert(membersData);
-            
+
                     if (memberError) {
                         throw new Error(`Error creating members: ${memberError.message}`);
                     }
@@ -102,56 +102,74 @@ router.post('', async (req, res) => {
         }
 
         if (data.document && data.document.length > 0) {
-        const documentsData = data.document.map(doc => ({
-            name: doc.name,
-            link: doc.link,
-            note: doc.note,
-            userid: doc.userid,
-            project_id: projectId
-        }));
+            const documentsData = data.document.map(doc => ({
+                name: doc.name,
+                link: doc.link,
+                note: doc.note,
+                userid: doc.userid,
+                project_id: projectId
+            }));
 
-        const { error: docError } = await supabase
-            .from('project_document')
-            .insert(documentsData);
+            const { error: docError } = await supabase
+                .from('project_document')
+                .insert(documentsData);
 
-        if (docError) {
-            throw new Error(`Error creating documents: ${docError.message}`);
+            if (docError) {
+                throw new Error(`Error creating documents: ${docError.message}`);
+            }
         }
+
+        if (data.communitation && data.communitation.length > 0) {
+            const [id, ...com] = data.communitation
+            const communicationsData = com.map(comm => ({
+                ...comm,
+                project_id: projectId
+            }));
+
+            const { error: commError } = await supabase
+                .from('project_communitation')
+                .insert(communicationsData);
+
+            if (commError) {
+                throw new Error(`Error creating communications: ${commError.message}`);
+            }
+        }
+
+        res.status(201).json({
+            success: true,
+            message: 'Project created successfully',
+            data: {
+                project_id: projectId,
+                project: project
+            }
+        });
+
+    } catch (error) {
+        console.error('Error creating project:', error);
+
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Internal server error'
+        });
     }
-
-    if (data.communitation && data.communitation.length > 0) {
-        const [id, ...com] = data.communitation
-        const communicationsData = com.map(comm => ({
-            ...comm,
-            project_id: projectId
-        }));
-
-        const { error: commError } = await supabase
-            .from('project_communitation')
-            .insert(communicationsData);
-
-        if (commError) {
-            throw new Error(`Error creating communications: ${commError.message}`);
-        }
-    }
-
-    res.status(201).json({
-        success: true,
-        message: 'Project created successfully',
-        data: {
-            project_id: projectId,
-            project: project
-        }
-    });
-
-} catch (error) {
-    console.error('Error creating project:', error);
-
-    res.status(500).json({
-        success: false,
-        message: error.message || 'Internal server error'
-    });
-}
 });
 
+router.get('', async (req, res) => {
+    try {
+        const supabase = req.supabase;
+        const { workspaceID } = res.body
+        const { data: projects, pError } = await supabase.from("project").select().eq("workspace", workspaceID)
+        if (pError) throw new Error(pError.message)
+        return res.status(200).json({
+            data: projects
+        })
+    } catch (error) {
+        console.error('Error creating project:', error);
+
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Internal server error'
+        });
+    }
+})
 module.exports = router
