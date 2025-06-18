@@ -4,6 +4,7 @@ import {
     deleteWorkspaceAPI,
     getWorkspaceAPI,
     getWorkspaceByIDAPI,
+    getWorkspaceProjectsByIDAPI,
     postWorkspaceAPI,
     putWorkspaceByIDAPI
 } from "@workspace/flow/workspace/workspace.api"
@@ -13,6 +14,7 @@ import type { AppDispatch, AppState } from "@/stores"
 import { useDispatch, useSelector } from "react-redux"
 import { setWorkspace } from "@workspace/store"
 import type { HTTPError } from "ky"
+import type { ProjectData } from "@project/models/request.schema"
 export const useCreateWorkspaceSvc = () => {
     const client = useQueryClient()
     return useMutation({
@@ -130,3 +132,21 @@ export const useUpdateWorkspace = () => {
         }
     })
 }
+
+
+export const getProjectByWorkspaceID = async (workspaceID: string) => {
+    const res = await getWorkspaceProjectsByIDAPI(workspaceID)
+    const data = await res.json<{ data: ProjectData[] }>()
+    if (res.status > 200) throw new Error("Error when try to fetch Data")
+    return data.data
+}
+
+export const useGetWorkspaceProjects = (workspaceID: string) => {
+    return useQuery({
+        queryKey: ["projects", workspaceID],
+        queryFn: async () => await getProjectByWorkspaceID(workspaceID),
+        staleTime: 3 * 1000 * 60,
+        gcTime: 10 * 1000 * 60,
+        retry: 0
+    })
+} 

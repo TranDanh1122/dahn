@@ -375,4 +375,27 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
 
   return res.status(200).json({ success: true, workspace });
 });
+
+
+
+router.get('/:workspaceID/projects', async (req, res) => {
+  if (req.method !== "GET") return res.status(405).json({ message: "Method not allowed" });
+
+  try {
+    const supabase = req.supabase;
+    const workspaceID = req.params.workspaceID
+    const { data: projects, pError } = await supabase.from("project").select().eq("workspaceID", workspaceID)
+    if (pError) throw new Error(pError.message)
+    return res.status(200).json({
+      data: projects
+    })
+  } catch (error) {
+    console.error('Error creating project:', error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Internal server error'
+    });
+  }
+})
 module.exports = router;

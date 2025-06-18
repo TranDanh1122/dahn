@@ -4,6 +4,8 @@ import { initData, ProjectSchema, type ProjectData } from "@project/models/reque
 import useScrollbar from "@/common/hooks/useScrollbar";
 import { useNavigate } from "react-router-dom";
 import { useCreateProjectMutation } from "@project/flows/project";
+import { useSelector } from "react-redux";
+import type { AppState } from "@/stores";
 const stepFields: Record<number, (keyof ProjectData)[]> = {
     1: ["name", "overview", "description", "type"],
     2: ["techstack", "environment"],
@@ -12,12 +14,14 @@ const stepFields: Record<number, (keyof ProjectData)[]> = {
     5: ["document", "communitation"]
 };
 export default function useProjectForm() {
+    const workspace = useSelector((state: AppState) => state.persist.workspace.currentWorkspace)
+    const initialData = { ...initData, workspaceID: workspace?.id || "" }
     const {
         form,
         step,
         handleBack,
         handleNext
-    } = useFormStep<ProjectData>({ initData, stepFields, schema: ProjectSchema });
+    } = useFormStep<ProjectData>({ initData: initialData, stepFields, schema: ProjectSchema });
     const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
     const createProject = useCreateProjectMutation()
     const navigate = useNavigate()
@@ -39,6 +43,7 @@ export default function useProjectForm() {
         ref,
         handleSubmit,
         handleBack,
-        handleNext
+        handleNext,
+        loading: createProject.isPending
     }
 }

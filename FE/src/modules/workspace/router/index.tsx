@@ -29,8 +29,14 @@ const WorkspaceRouter = [
                 path: ":workspaceId/projects",
                 handle: { title: "Workspace's Project" },
                 lazy: async () => {
-                    const component = await import("@workspace/view/WorkspaceDetail.view")
-                    return { Component: component.default, }
+                    const [component, loader] = await Promise.all([
+                        import("@workspace/view/WorkspaceDetail.view"),
+                        import("@workspace/loader")
+                    ])
+                    return {
+                        Component: component.default,
+                        loader: async (args: LoaderFunctionArgs) => loader.loadProjectsInWorkspace(args)
+                    }
                 }
             }
         ]

@@ -3,7 +3,7 @@ import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Link } from "react-router-dom";
 import ChangeStep from "@components/ChangeStep.component";
-import LoadingComponent from "@components/Loading.component";
+import Loading from "@components/Loading.component";
 import useProjectForm from "@project/hooks/useProjectForm.hook";
 
 const Step1 = React.lazy(() => import("@project/components/form/Step1"));
@@ -20,7 +20,8 @@ export default function ProjectForm(): React.JSX.Element {
         ref,
         handleSubmit,
         handleBack,
-        handleNext
+        handleNext,
+        loading
     } = useProjectForm()
     return (
         <div
@@ -38,7 +39,7 @@ export default function ProjectForm(): React.JSX.Element {
                     className="space-y-8 md:w-2/3 lg:w-5/7 xl:w-[35%] w-full px-2 "
                     encType="multipart/form-data">
                     <React.Suspense
-                        fallback={<LoadingComponent className="border-s-neutral-400 border-2 size-10!" />} key={step}>
+                        fallback={<Loading className="border-s-neutral-400 border-2 size-10!" />} key={step}>
                         {step == 1 && <Step1 />}
 
                         {step == 2 && <Step2 />}
@@ -49,6 +50,7 @@ export default function ProjectForm(): React.JSX.Element {
 
                         {step == 5 && <Step5 />}
                         <ChangeStep
+                            loading={loading}
                             step={step}
                             maxStep={5}
                             handleBack={handleBack}

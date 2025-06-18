@@ -9,6 +9,7 @@ router.post('', async (req, res) => {
         const { data: project, error: projectError } = await supabase
             .from('project')
             .insert({
+                workspaceID: data.workspaceID,
                 name: data.name,
                 overview: data.overview,
                 description: data.description,
@@ -154,22 +155,5 @@ router.post('', async (req, res) => {
     }
 });
 
-router.get('', async (req, res) => {
-    try {
-        const supabase = req.supabase;
-        const { workspaceID } = res.body
-        const { data: projects, pError } = await supabase.from("project").select().eq("workspace", workspaceID)
-        if (pError) throw new Error(pError.message)
-        return res.status(200).json({
-            data: projects
-        })
-    } catch (error) {
-        console.error('Error creating project:', error);
 
-        res.status(500).json({
-            success: false,
-            message: error.message || 'Internal server error'
-        });
-    }
-})
 module.exports = router
