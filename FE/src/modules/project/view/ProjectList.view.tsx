@@ -20,7 +20,7 @@ export default function ProjectList({ workspace }: ProjectListProps): React.JSX.
         }
 
         {!isLoading && projects &&
-            projects.map(project => <ListItem title={project.name} />)
+            projects.map(project => <ListItem title={project.name} onClick={() => navigate(`/project/${project.id}`)} />)
         }
         <ListItemButton
             onClick={() => navigate("/project/create")}

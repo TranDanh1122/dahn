@@ -155,5 +155,52 @@ router.post('', async (req, res) => {
     }
 });
 
+router.get('/:projectId', async (req, res) => {
+    if (req.method !== 'GET') {
+        return res.status(405).json({
+            success: false,
+            message: 'Method not allowed'
+        });
+    }
+    if (!req.params.projectId) {
+        return res.status(400).json({
+            success: false,
+            message: 'Project ID is required'
+        });
+    }
+    try {
+        const projectId = req.params.projectId;
+        const supabase = req.supabase
+        const { data: project, error: projectError } = await supabase
+            .from("project")
+            .select(`
+                *,
+                project_env(*),
+                project_member(*),
+                project_role(*),
+                project_document(*),
+                project_communitation(*)
+            `)
+            .eq('id', projectId)
+            .single();
+        if (projectError) throw new Error(`Error fetching project: ${projectError.message}`);
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: 'Project not found'
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: 'Project fetched successfully',
+            data: project
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message || 'Internal server error'
+        });
+    }
+})
 
 module.exports = router

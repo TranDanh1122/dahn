@@ -5,6 +5,7 @@ import { z } from "zod"
  * A ton of excel/doc? No god, please! no! no!
  */
 export const ProjectSchema = z.object({
+    id: z.coerce.string().optional(),
     workspaceID: z.coerce.string().min(1),
     name: z.coerce.string().min(3).max(50),
     overview: z.coerce.string().min(1).max(150),

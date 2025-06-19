@@ -1,9 +1,24 @@
+import type { LoaderFunctionArgs } from "react-router-dom"
+
 const ProjectRouter =
     [
         {
             path: "project/*",
             children: [
-
+                {
+                    path: ":projectId",
+                    lazy: async () => {
+                        const [component, loader] = await Promise.all([
+                            import("@project/view/ProjectDetail.view"),
+                            import("@project/loader")
+                        ])
+                        return {
+                            Component: component.default,
+                            loader: async (args: LoaderFunctionArgs) => await loader.singleProjectLoader(args)
+                        }
+                    },
+                    handle: { title: "Project Detail" }
+                }
             ]
         }
     ]
