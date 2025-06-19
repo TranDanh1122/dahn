@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ChangeStep from "@components/ChangeStep.component";
 import Loading from "@components/Loading.component";
 import useProjectForm from "@project/hooks/useProjectForm.hook";
+import { STEPS } from "@project/const";
 
 const Step1 = React.lazy(() => import("@project/components/form/Step1"));
 const Step2 = React.lazy(() => import("@project/components/form/Step2"));
@@ -63,15 +64,15 @@ export default function ProjectForm(): React.JSX.Element {
                 className="
                     flex flex-col justify-stretch gap-10 
                     text-left font-semibold pl-10
-                    border-l border-l-neutral-200 
-                    [&__p]:cursor-pointer 
-                    [&__p]:hover:underline
-                    [&__p]:hover:underline-offset-2">
-                <p className={isActive(1)}>1. Overview</p>
-                <p className={isActive(2)}>2. Technical</p>
-                <p className={isActive(3)}>3. Milestones</p>
-                <p className={isActive(4)}>4. Roles & Members</p>
-                <p className={isActive(5)}>5. Documents & More Infomation</p>
+                    border-l border-l-neutral-200">
+                {
+                    STEPS.map(el =>
+                        <p className={`${isActive(Number(el.id))} cursor-pointer hover:underline hover:underline-offset-2`}>
+                            {`${el.id}. ${el.name}`}
+                        </p>
+                    )
+                }
+
             </div>
         </div>
     );

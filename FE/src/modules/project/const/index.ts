@@ -41,3 +41,11 @@ export const CommunitationMeeting: EnumSelectType = [
     { value: "monthly", text: "Monthly" },
     { value: "custom", text: "Custom" }
 ]
+
+export const STEPS = [
+    { id: "01", name: "Overview" },
+    { id: "02", name: "Technical" },
+    { id: "03", name: "Milestones" },
+    { id: "04", name: "Roles & Members" },
+    { id: "05", name: "Documents & More Infomation" },
+]
