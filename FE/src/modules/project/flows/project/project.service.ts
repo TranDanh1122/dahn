@@ -21,7 +21,8 @@ export const useCreateProjectMutation = () => {
 }
 export const getProjectAPIQuery = async (projectId: string) => {
     const res = await getProjectAPI(projectId)
-    return res.json<{ message: string, success: boolean, data: ProjectData }>()
+    const json = await res.json<{ message: string, success: boolean, data: ProjectData }>()
+    return json.data
 }
 
 export const useGetProjectQuery = (projectId: string) => {

@@ -27,7 +27,7 @@ export default function ProjectForm(): React.JSX.Element {
         <div
             className="
                     fixed z-1 top-0 left-0
-                    bg-white w-screen h-screen
+                    w-screen h-screen
                     flex items-center justify-center gap-12">
             <Link to="/">
                 <X className="absolute top-2 right-2 size-6 text-neutral-500" />

@@ -19,7 +19,7 @@ export default React.memo(function Sidebar(): React.JSX.Element {
         console.log("Sidebar mounted");
         return () => console.log("Sidebar unmounted");
     }, []);
-    return <div className="h-full border-r border-neutral-300 ">
+    return <div className="h-full border-r border-neutral-300 shadow-lg shadow-neutral-300 rounded-e-2xl">
         <div className="flex items-center justify-between p-2">
             {/* <Dropdown className="w-full"
                 contentPosition="top-full -right-10"

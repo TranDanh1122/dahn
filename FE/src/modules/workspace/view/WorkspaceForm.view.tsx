@@ -31,7 +31,7 @@ export default function WorkspaceForm(): React.JSX.Element {
         <>
             <div className="
                 fixed z-1 top-0 left-0 
-                w-screen h-screen bg-white  
+                w-screen h-screen  
                 flex flex-col items-center justify-center gap-12">
                 <Link to="/">
                     <X className="absolute top-2 right-2 size-6 text-neutral-500" />
