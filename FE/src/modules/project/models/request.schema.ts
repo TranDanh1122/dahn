@@ -73,8 +73,8 @@ export const ProjectSchema = z.object({
     })).optional(),
     isCompleted: z.boolean()
 })
-export type ProjectData = z.infer<typeof ProjectSchema>
-export const initData: ProjectData = {
+export type Project = z.infer<typeof ProjectSchema>
+export const initData: Project = {
     workspaceID: "",
     name: "",
     overview: "",

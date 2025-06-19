@@ -1,12 +1,12 @@
 import useFormStep from "@/common/hooks/useFormStep";
 import React from "react";
-import { initData, ProjectSchema, type ProjectData } from "@project/models/request.schema";
+import { initData, ProjectSchema, type Project } from "@project/models/request.schema";
 import useScrollbar from "@/common/hooks/useScrollbar";
 import { useNavigate } from "react-router-dom";
 import { useCreateProjectMutation } from "@project/flows/project";
 import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
-const stepFields: Record<number, (keyof ProjectData)[]> = {
+const stepFields: Record<number, (keyof Project)[]> = {
     1: ["name", "overview", "description", "type"],
     2: ["techstack", "environment"],
     3: ["milestones"],
@@ -21,11 +21,11 @@ export default function useProjectForm() {
         step,
         handleBack,
         handleNext
-    } = useFormStep<ProjectData>({ initData: initialData, stepFields, schema: ProjectSchema });
+    } = useFormStep<Project>({ initData: initialData, stepFields, schema: ProjectSchema });
     const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
     const createProject = useCreateProjectMutation()
     const navigate = useNavigate()
-    const handleSubmit = (values: ProjectData) => {
+    const handleSubmit = (values: Project) => {
         console.log(values)
         createProject.mutate(values, {
             onSuccess: () => {

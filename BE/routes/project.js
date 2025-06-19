@@ -179,7 +179,8 @@ router.get('/:projectId', async (req, res) => {
                 project_member(*),
                 project_role(*),
                 project_document(*),
-                project_communitation(*)
+                project_communitation(*),
+                workspace(* , owner:users!workspace_owner_fkey(*))
             `)
             .eq('id', projectId)
             .single();

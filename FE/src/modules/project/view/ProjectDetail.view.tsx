@@ -20,10 +20,10 @@ export default function ProjectDetail(): React.JSX.Element {
 
                         </div>
                         <div className="w-2/7 flex flex-col gap-6 justify-center">
-                            <h1 className="font-semibold uppercase text-7xl tracking-wide text-slate-700">
+                            <h1 className="font-semibold uppercase text-7xl tracking-wide text-slate-600">
                                 {project?.name}
                             </h1>
-                            <p className="line-clamp-4 leading-6 text-slate-800">
+                            <p className="line-clamp-4 leading-6 text-slate-700">
                                 {project?.overview}
 
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -37,14 +37,29 @@ export default function ProjectDetail(): React.JSX.Element {
                             </p>
                             <p className="flex items-center gap-2">
                                 <span className="text-slate-600 text-sm">General Infomation Edit:</span>
-                                <SquarePen className="size-5 text-slate-700 cursor-pointer" />
+                                <SquarePen className="size-5 text-slate-500 cursor-pointer" />
                             </p>
-                            <div className="flex flex-col justify-stretch gap-6 text-left font-semibold text-slate-700">
-                                <DetailStep active>1. Overview </DetailStep>
-                                <DetailStep>2. Technical </DetailStep>
-                                <DetailStep>3. Milestones </DetailStep>
-                                <DetailStep>4. Roles & Members </DetailStep>
-                                <DetailStep>5. Documents & More Infomation </DetailStep>
+                            <div className="flex flex-col justify-stretch gap-6 text-left text-slate-700">
+                                <DetailStep active>
+                                    <span className="text-slate-500 font-light">01</span>
+                                    Overview
+                                </DetailStep>
+                                <DetailStep>
+                                    <span className="text-slate-500 font-light">02</span>
+                                    Technical
+                                </DetailStep>
+                                <DetailStep>
+                                    <span className="text-slate-500 font-light">03</span>
+                                    Milestones
+                                </DetailStep>
+                                <DetailStep>
+                                    <span className="text-slate-500 font-light">04</span>
+                                    Roles & Members
+                                </DetailStep>
+                                <DetailStep>
+                                    <span className="text-slate-500 font-light">05</span>
+                                    Documents & More Infomation
+                                </DetailStep>
                             </div>
                         </div>
                     </div>

@@ -5,7 +5,8 @@ export interface Workspace {
     name: string,
     description: string,
     image: string
-    workspace_members?: WorkspaceMember[]
+    workspace_members?: WorkspaceMember[],
+    owner?: User
 }
 export interface WorkspaceMember {
     avg_salary: string,
