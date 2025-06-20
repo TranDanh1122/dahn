@@ -50,7 +50,7 @@ export default function Role({ modalForm }: ModalProps<z.infer<typeof roleSchema
                 name="folder"
                 value={modalForm.watch("folder")}
                 onChange={(value) => modalForm.setValue("folder", value)} />
-            <small className="text-sm text-neutral-400 italic">*You can custom role for each user/assets when add user to project</small>
+            <small className="text-sm text-slate-400 italic">*You can custom role for each user/assets when add user to project</small>
 
         </>
     )

@@ -16,11 +16,11 @@ const OTPModal = React.memo((): React.JSX.Element => {
             <form
                 role="form"
                 onSubmit={form.handleSubmit(onSubmit, (e) => console.log(e))}
-                className="bg-white w-full md:w-1/2 lg:w-1/3 mx-2 sm:mx-0 rounded-2xl p-3 shadow-lg shadow-neutral-700">
-                <h1 className="font-bold text-neutral-900 text-center text-2xl">
+                className="bg-white w-full md:w-1/2 lg:w-1/3 mx-2 sm:mx-0 rounded-2xl p-3 shadow-lg shadow-slate-700">
+                <h1 className="font-bold text-slate-900 text-center text-2xl">
                     OTP VERIFY
                 </h1>
-                <h2 className="text-neutral-800 text-center">
+                <h2 className="text-slate-800 text-center">
                     Plese verify you email, my gf cheated me, so i dont trust people any
                     more
                 </h2>
@@ -40,7 +40,7 @@ const OTPModal = React.memo((): React.JSX.Element => {
                         type="button"
                         className="underline font-light cursor-pointer">
                         {resendPending && (
-                            <Loading className="size-5 border-s-neutral-500!" />
+                            <Loading className="size-5 border-s-slate-500!" />
                         )}
                         {!resendPending && (
                             <> Resend OTP {wait != 0 && `(available in: ${wait} )`} </>

@@ -11,7 +11,7 @@ export default React.memo(function SocialAuth(): React.JSX.Element {
         <div className=" space-y-3">
             <Button
                 onClick={handleGoogleAuth}
-                className="border border-neutral-200  w-full relative line-clamp-1">
+                className="border border-slate-200  w-full relative line-clamp-1">
                 <img
                     src="/images/google.svg"
                     alt="google logo"
@@ -21,7 +21,7 @@ export default React.memo(function SocialAuth(): React.JSX.Element {
             </Button>
             <Button
                 onClick={handleGitAuth}
-                className="border border-neutral-200  w-full relative line-clamp-1">
+                className="border border-slate-200  w-full relative line-clamp-1">
                 <img
                     src="/images/github.svg"
                     alt="github logo"

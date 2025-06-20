@@ -42,14 +42,14 @@ export default function FormModal(): React.JSX.Element {
             <FormProvider {...modalForm}>
                 <div className="space-y-4 rounded-2xl fixed top-1/2 left-1/2 w-1/3 -translate-1/2 bg-white z-10 p-10">
                     <X onClick={handleClose}
-                        className="absolute top-4 right-4 cursor-pointer text-neutral-600"
+                        className="absolute top-4 right-4 cursor-pointer text-slate-600"
                     />
 
                     {React.cloneElement(modalFormContent || <></>, { modalForm, form })}
 
                     <div className="flex items-center justify-between">
                         <Button onClick={handleClose}
-                            className="bg-transparent border border-neutral-400 text-neutral-600 font-light!">
+                            className="bg-transparent border border-slate-400 text-slate-600 font-light!">
                             Cancel
                         </Button>
                         <Button onClick={handleSubmit}

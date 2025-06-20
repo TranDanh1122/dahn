@@ -3,7 +3,7 @@ import FolderInput from "lucide-react/dist/esm/icons/folder-input";
 import Plus from "lucide-react/dist/esm/icons/plus";
 import Button from "@components/Button.component";
 export default React.memo(function HRightContent(): React.JSX.Element {
-    const commonStyle = "bg-neutral-100 rounded-full font-light! text-sm flex items-center gap-1 hover:bg-neutral-50 border border-neutral-100";
+    const commonStyle = "bg-slate-100 rounded-full font-light! text-sm flex items-center gap-1 hover:bg-slate-50 border border-slate-100";
     return (
         <div className="flex items-center gap-3">
             <Button title="New Workspace" className={commonStyle}>
@@ -16,9 +16,9 @@ export default React.memo(function HRightContent(): React.JSX.Element {
                 <Plus className="size-3" /> Contact
             </Button>
             <div
-                className="p-2 bg-neutral-100 rounded-full hover:bg-neutral-50"
+                className="p-2 bg-slate-100 rounded-full hover:bg-slate-50"
                 title="import" >
-                <FolderInput className="size-5 text-neutral-700" />
+                <FolderInput className="size-5 text-slate-700" />
             </div>
         </div>
     );

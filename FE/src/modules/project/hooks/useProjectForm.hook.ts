@@ -22,7 +22,7 @@ export default function useProjectForm() {
         handleBack,
         handleNext
     } = useFormStep<Project>({ initData: initialData, stepFields, schema: ProjectSchema });
-    const isActive = React.useCallback((st: number) => (st == step ? "text-neutral-800" : "text-neutral-400"), [step]);
+    const isActive = React.useCallback((st: number) => (st == step ? "text-slate-800" : "text-slate-400"), [step]);
     const createProject = useCreateProjectMutation()
     const navigate = useNavigate()
     const handleSubmit = (values: Project) => {

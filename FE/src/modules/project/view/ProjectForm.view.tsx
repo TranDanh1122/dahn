@@ -31,7 +31,7 @@ export default function ProjectForm(): React.JSX.Element {
                     w-screen h-screen
                     flex items-center justify-center gap-12">
             <Link to="/">
-                <X className="absolute top-2 right-2 size-6 text-neutral-500" />
+                <X className="absolute top-2 right-2 size-6 text-slate-500" />
             </Link>
 
             <FormProvider {...form}>
@@ -40,7 +40,7 @@ export default function ProjectForm(): React.JSX.Element {
                     className="space-y-8 md:w-2/3 lg:w-5/7 xl:w-[35%] w-full px-2 "
                     encType="multipart/form-data">
                     <React.Suspense
-                        fallback={<Loading className="border-s-neutral-400 border-2 size-10!" />} key={step}>
+                        fallback={<Loading className="border-s-slate-400 border-2 size-10!" />} key={step}>
                         {step == 1 && <Step1 />}
 
                         {step == 2 && <Step2 />}
@@ -64,7 +64,7 @@ export default function ProjectForm(): React.JSX.Element {
                 className="
                     flex flex-col justify-stretch gap-10 
                     text-left font-semibold pl-10
-                    border-l border-l-neutral-200">
+                    border-l border-l-slate-200">
                 {
                     STEPS.map(el =>
                         <p className={`${isActive(Number(el.id))} cursor-pointer hover:underline hover:underline-offset-2`}>

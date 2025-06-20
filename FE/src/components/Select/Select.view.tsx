@@ -46,7 +46,7 @@ export default function Select<T>({
             aria-expanded={open}
             aria-haspopup="listbox">
             <div
-                className="p-2 pr-6 w-full cursor-pointer bg-white rounded-md font-light hover:bg-neutral-200 group"
+                className="p-2 pr-6 w-full cursor-pointer bg-white rounded-md font-light hover:bg-slate-200 group"
                 onClick={() => setOpen(!open)}>
                 {!children && getDisplayText(value, textKey)}
                 {children && children}
@@ -55,9 +55,9 @@ export default function Select<T>({
                     <ChevronDown
                         className={`
                         ${open && "rotate-180"}
-                        text-neutral-600
+                        text-slate-600
                         size-4 bg-white 
-                        group-hover:bg-neutral-200
+                        group-hover:bg-slate-200
                         absolute top-1/2 right-2 
                         -translate-y-1/2
                             `}
@@ -68,7 +68,7 @@ export default function Select<T>({
                 <div
                     ref={dropboxRef}
                     role="listbox"
-                    className="absolute z-10 h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-neutral-500 flex flex-col justify-stretch">
+                    className="absolute z-10 h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-slate-500 flex flex-col justify-stretch">
                     {dataSets.map((dataSet: T) => {
                         const content = getDisplayText(dataSet, textKey);
                         return (
@@ -76,7 +76,7 @@ export default function Select<T>({
                                 role="option"
                                 key={v4()}
                                 onClick={() => handleChange(dataSet)}
-                                className={` px-2 py-1 cursor-pointer font-light rounded-md w-full hover:bg-neutral-200`}
+                                className={` px-2 py-1 cursor-pointer font-light rounded-md w-full hover:bg-slate-200`}
                                 dangerouslySetInnerHTML={{ __html: content }}
                             />
                         );

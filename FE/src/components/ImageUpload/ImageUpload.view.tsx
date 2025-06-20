@@ -29,7 +29,7 @@ export default React.memo(
         return <fieldset className="flex items-center gap-10 relative">
             {label &&
                 <label
-                    className={`font-semibold text-neutral-600 cursor-pointer ${labelClass}`}
+                    className={`font-semibold text-slate-600 cursor-pointer ${labelClass}`}
                     aria-label={label}
                     htmlFor={id}>
                     {label}
@@ -39,7 +39,7 @@ export default React.memo(
                 !reactValue &&
                 <ImageUp
                     onClick={() => { document.getElementById(id)?.click() }}
-                    className="size-15 text-neutral-400 cursor-pointer"
+                    className="size-15 text-slate-400 cursor-pointer"
                 />
 
             }

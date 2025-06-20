@@ -31,7 +31,7 @@ export default function DocumentModal({ modalForm }: ModalProps<z.infer<typeof d
             />
 
             <fieldset className="w-full flex flex-col gap-2">
-                <label className="font-light text-neutral-600 cursor-pointer" >
+                <label className="font-light text-slate-600 cursor-pointer" >
                     Status
                 </label>
                 <Select<EnumSelectType[number]>
@@ -40,7 +40,7 @@ export default function DocumentModal({ modalForm }: ModalProps<z.infer<typeof d
                     changeValue="value"
                     textKey="text"
                     valueKey="value"
-                    className="w-full border border-neutral-300 hover:border-blue-300 rounded-lg"
+                    className="w-full border border-slate-300 hover:border-blue-300 rounded-lg"
                     onChange={(value) => {
                         if (typeof value == "string")
                             modalForm.setValue("status", String(value))

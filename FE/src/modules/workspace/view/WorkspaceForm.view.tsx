@@ -25,7 +25,7 @@ export default function WorkspaceForm(): React.JSX.Element {
         isLoading
     } = useWorkspaceForm();
     const isActive = React.useCallback((st: number) => {
-        return step == st ? "text-neutral-800" : "text-neutral-400"
+        return step == st ? "text-slate-800" : "text-slate-400"
     }, [step])
     return (
         <>
@@ -34,7 +34,7 @@ export default function WorkspaceForm(): React.JSX.Element {
                 w-screen h-screen  
                 flex flex-col items-center justify-center gap-12">
                 <Link to="/">
-                    <X className="absolute top-2 right-2 size-6 text-neutral-500" />
+                    <X className="absolute top-2 right-2 size-6 text-slate-500" />
                 </Link>
                 <div className="flex items-center gap-10">
                     <div className={`flex items-center gap-2 ${isActive(1)}`}>
@@ -52,7 +52,7 @@ export default function WorkspaceForm(): React.JSX.Element {
                         onSubmit={form.handleSubmit(onSubmit)}
                         className="space-y-8 md:w-1/3 lg:w-1/4 w-full px-2"
                         encType="multipart/form-data">
-                        <React.Suspense fallback={<LoadingComponent className="border-s border-s-neutral-400" />}>
+                        <React.Suspense fallback={<LoadingComponent className="border-s border-s-slate-400" />}>
                             {step == 1 && <Step1 />}
                             {step == 2 && <Step2 />}
                         </React.Suspense>

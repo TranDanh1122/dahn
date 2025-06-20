@@ -10,7 +10,7 @@ export default function ProjectDetail(): React.JSX.Element {
     return (
         <>
             {isLoading && (
-                <LoadingComponent className="border-s-neutral-400! size-10" />
+                <LoadingComponent className="border-s-slate-400! size-10" />
             )}
             {!isLoading && (
                 <div className="flex flex-col gap-8 p-4 h-full">

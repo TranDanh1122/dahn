@@ -27,12 +27,12 @@ export default function ArrayForm(): React.JSX.Element {
         <>
             <fieldset className="space-y-2" >
                 <div className="flex items-center gap-2 te">
-                    <legend className="text-neutral-600">{label}</legend>
+                    <legend className="text-slate-600">{label}</legend>
                     <Button
                         onClick={() => handleOpen?.()}
                         className="
-                                    font-light! text-neutral-600
-                                    border border-neutral-400 
+                                    font-light! text-slate-600
+                                    border border-slate-400 
                                     rounded-full! 
                                     p-0! size-6
                                     flex items-center justify-center"
@@ -49,7 +49,7 @@ export default function ArrayForm(): React.JSX.Element {
                     fields.map(
                         (el, index) => (
                             <div onClick={() => handleOpen?.(index)} key={el.id}
-                                className="py-4 border-b border-neutral-200 grid grid-cols-5 items-center cursor-pointer hover:bg-neutral-100 hover:rounded-lg hover:px-2 hover:shadow">
+                                className="py-4 border-b border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
                                 {
                                     React.cloneElement(itemEl || <></>, {
                                         data: form?.getValues(`${name}.${index}`)
@@ -61,7 +61,7 @@ export default function ArrayForm(): React.JSX.Element {
                                         remove?.(index);
                                     }
                                 }
-                                    className="text-neutral-600 font-light hover:text-red-500 cursor-pointer mx-auto"
+                                    className="text-slate-600 font-light hover:text-red-500 cursor-pointer mx-auto"
                                 />
                             </div>
 

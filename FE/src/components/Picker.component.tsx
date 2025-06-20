@@ -32,7 +32,7 @@ export default React.memo(function Picker({
                         dataSet.map((el) => (
                             <li key={v4()}
                                 className="w-full 
-                                hover:bg-neutral-100 
+                                hover:bg-slate-100 
                                 p-2 rounded-md cursor-pointer"
                                 onClick={() => handleItemClick(el)}>
                                 {el}
@@ -42,7 +42,7 @@ export default React.memo(function Picker({
             }>
             <fieldset className="flex flex-col gap-2">
                 <label
-                    className="font-light text-neutral-600"
+                    className="font-light text-slate-600"
                     htmlFor="id">
                     Tech stacks
                 </label>
@@ -51,7 +51,7 @@ export default React.memo(function Picker({
                     className="
                         w-full min-h-10 max-h-20 
                         overflow-y-scroll scrollbar-thin
-                        border border-neutral-300
+                        border border-slate-300
                         hover:border-blue-300 
                         rounded-lg p-2
                         flex flex-wrap items-center gap-2">
@@ -62,9 +62,9 @@ export default React.memo(function Picker({
                                 className="
                                 w-fit cursor-pointer 
                                 px-2 py-1 
-                                bg-neutral-100 
+                                bg-slate-100 
                                 rounded-full 
-                                text-neutral-600">
+                                text-slate-600">
                                 {el}
                             </span>
                         ))}

@@ -16,13 +16,13 @@ export default React.memo(function WorkspaceItemUtl({ id }: WorkspaceItemUtl): R
         e.stopPropagation()
     }} dropContent={
         <React.Suspense
-            fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
+            fallback={<Loading className="size-5 border-s-slate-400 mt-4" />}>
             <ItemUtl id={id} action={() => {
                 document.body.click()
             }} />
         </React.Suspense>
     }>
-        <Ellipsis className="size-5 text-neutral-500 mr-2 -z-10" />
+        <Ellipsis className="size-5 text-slate-500 mr-2 -z-10" />
     </Dropdown>
 })
 /**
@@ -43,11 +43,11 @@ const ItemUtl = ({ id, action }: WorkspaceItemUtl & { action?: () => void }): Re
                     navigate(`/workspace/${id}/edit`)
                 }
             }>
-                <SquarePen className="text-neutral-400 size-4 ml-auto" />
+                <SquarePen className="text-slate-400 size-4 ml-auto" />
             </MenuItem>
         }
         {
-            deleteMutation.isPending && <Loading className="size-5 border-s-neutral-400" />
+            deleteMutation.isPending && <Loading className="size-5 border-s-slate-400" />
         }
         {
             !deleteMutation.isPending && <MenuItem onClick={(e) => {

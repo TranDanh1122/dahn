@@ -10,7 +10,7 @@ export default function AuthForm({
     return (
         <form
             role="form"
-            className={`${className} space-y-3 border-t border-neutral-200 pt-10 w-full`}
+            className={`${className} space-y-3 border-t border-slate-200 pt-10 w-full`}
             {...props} >
             {children}
         </form>

@@ -13,7 +13,7 @@ export default React.memo(function Header(): React.JSX.Element {
                 </React.Suspense>
             }
         </div>
-        <hr className="text-neutral-300 mt-4" />
+        <hr className="text-slate-300 mt-4" />
 
     </header>
 })

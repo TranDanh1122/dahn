@@ -56,7 +56,7 @@ export default React.memo(
                     );
                 })}
                 <Button
-                    className="text-neutral-600 border-neutral-400 border! text-sm font-light!"
+                    className="text-slate-600 border-slate-400 border! text-sm font-light!"
                     onClick={() => append({ email: "", avg_salary: "" })}
                     type="button">
                     Add more member

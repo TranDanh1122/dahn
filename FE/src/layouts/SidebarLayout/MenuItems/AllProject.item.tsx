@@ -12,7 +12,7 @@ export default React.memo(function AllProjectMenuItem(): React.JSX.Element {
     return (
         <MenuItem
             to={`/workspace/${workspace?.id}/projects`}
-            icon={<FolderOpenDot className="text-neutral-500 size-4" />}
+            icon={<FolderOpenDot className="text-slate-500 size-4" />}
             text="All Projects"
         />
     );

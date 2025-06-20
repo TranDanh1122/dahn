@@ -28,7 +28,7 @@ export default function Login(): React.JSX.Element {
                     label={t("label.password")}
                 />
                 <p className="text-sm flex justify-between w-full">
-                    <span className="w-max">{t("label.forgot")}</span>
+                    <span className="w-max text-slate-800">{t("label.forgot")}</span>
                     <Link
                         to="/auth/forgot-password"
                         className="text-blue-600 underline text-base font-semibold w-max">

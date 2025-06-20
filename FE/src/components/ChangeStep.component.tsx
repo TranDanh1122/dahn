@@ -18,7 +18,7 @@ export default React.memo(function ChangeStep({
     return <div className="flex items-center justify-between text-sm py-2">
         {step > 1 && (
             <Button
-                className="border border-neutral-300"
+                className="border border-slate-300"
                 onClick={handleBack}
                 type="button">
                 Back

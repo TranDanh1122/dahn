@@ -25,7 +25,7 @@ export default function ProjectList({ workspace }: ProjectListProps): React.JSX.
         <ListItemButton
             onClick={() => navigate("/project/create")}
             title="Add new workspace">
-            <p className="font-black text-8xl text-neutral-400">+</p>
+            <p className="font-black text-8xl text-slate-400">+</p>
         </ListItemButton>
     </div>
 }

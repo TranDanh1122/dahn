@@ -36,7 +36,7 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
         </div>
         <div className="flex items-end gap-4">
             <fieldset className="w-full flex flex-col gap-2">
-                <label className="font-light text-neutral-600 cursor-pointer" >
+                <label className="font-light text-slate-600 cursor-pointer" >
                     Status
                 </label>
                 <Select<EnumSelectType[number]>
@@ -45,7 +45,7 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
                     changeValue="value"
                     textKey="text"
                     valueKey="value"
-                    className="w-full border border-neutral-300 hover:border-blue-300 rounded-lg"
+                    className="w-full border border-slate-300 hover:border-blue-300 rounded-lg"
                     onChange={(value) => {
                         if (typeof value == "string")
                             modalForm.setValue("meeting", String(value))

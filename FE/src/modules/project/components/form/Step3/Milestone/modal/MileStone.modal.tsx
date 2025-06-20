@@ -54,7 +54,7 @@ export default React.memo(
                     changeValue="value"
                     textKey="text"
                     valueKey="value"
-                    className="w-full border border-neutral-300 hover:border-blue-300 rounded-lg"
+                    className="w-full border border-slate-300 hover:border-blue-300 rounded-lg"
                     onChange={(value) => modalForm.setValue("status", String(value))}
                 />
             </div>

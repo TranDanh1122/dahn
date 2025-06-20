@@ -20,7 +20,7 @@ export default React.memo(function Avatar(): React.JSX.Element {
     //     if (formRef.current) formRef.current.submit()
     // }, [form.watch("avatar")])
     return <FormProvider {...form}>
-        <form ref={formRef} className="mx-auto w-fit relative border border-neutral-200 rounded-full">
+        <form ref={formRef} className="mx-auto w-fit relative border border-slate-200 rounded-full">
             <ImageUpload
                 {...form.register("avatar")}
                 title="Change"

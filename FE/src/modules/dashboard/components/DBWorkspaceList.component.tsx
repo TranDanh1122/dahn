@@ -8,9 +8,9 @@ export default React.memo(function DBWorkspaceList(): React.JSX.Element {
     const navigate = useNavigate();
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
                 <h2 className="font-medium text-lg">My Workspace</h2>
-                <Link to="" className=" underline text-neutral-500">
+                <Link to="" className=" underline text-slate-500">
                     View all
                 </Link>
             </div>
@@ -37,7 +37,7 @@ export default React.memo(function DBWorkspaceList(): React.JSX.Element {
                     <ListItemButton
                         onClick={() => navigate("/workspace/create")}
                         title="Add new workspace">
-                        <p className="font-black text-8xl text-neutral-400">+</p>
+                        <p className="font-black text-8xl text-slate-400">+</p>
                     </ListItemButton>
                 )}
             </div>

@@ -17,12 +17,12 @@ export default function RadioItem({
             aria-checked={checked}
             tabIndex={0}
             className="w-full gap-2 border 
-                border-neutral-300 p-2 
+                border-slate-300 p-2 
                 rounded-md hover:border-blue-300 hover:bg-blue-50/30 ">
             <label htmlFor={`radio-${data.value}`}
                 className="font-light text-sm flex items-center gap-2">
                 <div id={`radio-${data.value}`}
-                    className={`radio relative rounded-full size-5 border border-neutral-400 ${checked ? "active" : ""} `}
+                    className={`radio relative rounded-full size-5 border border-slate-400 ${checked ? "active" : ""} `}
                 ></div>
                 {React.cloneElement(itemEl || <></>, { data })}
                 {!itemEl && <h2>{data.text}</h2>}

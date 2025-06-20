@@ -12,9 +12,9 @@ export default React.memo(function MenuItem({ icon, text, onClick, children, to,
         to={to ?? ""}
         className={
             ({ isActive }: { isActive: boolean }) =>
-                `p-2 rounded-md hover:bg-neutral-100 
-                ${isActive && to ? "bg-neutral-100" : ""} 
-                font-medium  text-neutral-700 
+                `p-2 rounded-md hover:bg-slate-100 
+                ${isActive && to ? "bg-slate-100" : ""} 
+                font-medium  text-slate-700 
                 flex items-center gap-2 
                 cursor-pointer ${props.className}`
         }

@@ -20,7 +20,7 @@ export default React.memo(function WorkspaceItem({ className, disableDropdown }:
     const { currentWorkspace } = useSelector((state: AppState) => state.persist.workspace)
     return <>
         {
-            isLoading && <Skeleton className="bg-neutral-300 w-full h-10" />
+            isLoading && <Skeleton className="bg-slate-300 w-full h-10" />
         }
         {
             !isLoading &&
@@ -29,7 +29,7 @@ export default React.memo(function WorkspaceItem({ className, disableDropdown }:
             <MenuItem
                 onClick={() => navigate("/workspace/create")}
                 className=" hover:bg-blue-100!"
-                icon={<Plus className="size-5 text-neutral-400" />}
+                icon={<Plus className="size-5 text-slate-400" />}
                 text="Create new project"
             />
         }
@@ -42,7 +42,7 @@ export default React.memo(function WorkspaceItem({ className, disableDropdown }:
                 hasIcon={true}
                 dropContent={
                     <React.Suspense
-                        fallback={<Loading className="size-5 border-s-neutral-400 mt-4" />}>
+                        fallback={<Loading className="size-5 border-s-slate-400 mt-4" />}>
                         <WorkspaceList />
                     </React.Suspense>
                 }>

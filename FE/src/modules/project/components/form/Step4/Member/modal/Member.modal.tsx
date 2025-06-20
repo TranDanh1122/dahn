@@ -39,7 +39,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                     error={modalForm.formState.errors.user?.message}
                 />
                 <fieldset className="w-full flex flex-col gap-2">
-                    <label className="font-light text-neutral-600 cursor-pointer" >
+                    <label className="font-light text-slate-600 cursor-pointer" >
                         Role
                     </label>
                     <Select<EnumSelectType[number]>
@@ -48,7 +48,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                         changeValue="all"
                         textKey="text"
                         valueKey="value"
-                        className="w-full border border-neutral-300 hover:border-blue-300 rounded-lg"
+                        className="w-full border border-slate-300 hover:border-blue-300 rounded-lg"
                         onChange={(value) => {
                             if (typeof value == "object") {
                                 modalForm.setValue("role", String(value.text))
