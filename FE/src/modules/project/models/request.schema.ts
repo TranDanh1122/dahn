@@ -8,8 +8,8 @@ export const ProjectSchema = z.object({
     id: z.coerce.string().optional(),
     workspaceID: z.coerce.string().min(1),
     name: z.coerce.string().min(3).max(50),
-    overview: z.coerce.string().min(1).max(150),
-    description: z.coerce.string().max(300).optional(),
+    overview: z.coerce.string().min(1).max(450),
+    description: z.coerce.string().max(1000).optional(),
     type: z.coerce.string(),
     client: z.coerce.string().max(100).optional(),
     techstack: z.coerce.string(),
@@ -19,12 +19,12 @@ export const ProjectSchema = z.object({
         demoUrl: z.coerce.string().min(1),
         status: z.coerce.string().min(1),
         readme: z.coerce.string().min(1),
-        note: z.coerce.string().max(150)
+        note: z.coerce.string().max(450)
     })).optional(),
     milestones: z.array(z.object({
         id: z.coerce.string().optional(),
         name: z.coerce.string().min(3).max(50),
-        description: z.coerce.string().max(150),
+        description: z.coerce.string().max(450),
         startDate: z.coerce.date(),
         endDate: z.coerce.date(),
         duration: z.coerce.number(),
@@ -48,13 +48,13 @@ export const ProjectSchema = z.object({
         role: z.coerce.string().min(1),
         hourlyRate: z.coerce.number().nonnegative(),
         hours: z.coerce.number().nonnegative(),
-        note: z.coerce.string().max(150).optional()
+        note: z.coerce.string().max(450).optional()
     })),
     document: z.array(z.object({
         id: z.coerce.string().optional(),
         name: z.coerce.string().min(1).max(50),
         link: z.coerce.string().min(1).max(50),
-        note: z.coerce.string().min(1).max(150),
+        note: z.coerce.string().min(1).max(450),
         userid: z.coerce.number(),
         user: z.object({
             id: z.coerce.string().min(1),
@@ -87,17 +87,17 @@ export const initData: ProjectData = {
 export const envSchema = z.object({
     id: z.coerce.string().optional(),
     name: z.coerce.string().min(1).max(50),
-    demoUrl: z.coerce.string().min(1).max(150),
+    demoUrl: z.coerce.string().min(1).max(450),
     status: z.coerce.string().min(1),
-    readme: z.coerce.string().min(1).max(150),
-    note: z.coerce.string().max(150)
+    readme: z.coerce.string().min(1).max(450),
+    note: z.coerce.string().max(450)
 })
 
 export type EnvData = z.infer<typeof envSchema>
 export const milestoneSchema = z.object({
     id: z.coerce.string().optional(),
     name: z.coerce.string().min(3).max(30),
-    description: z.coerce.string().max(150),
+    description: z.coerce.string().max(450),
     startDate: z.coerce.string(),
     endDate: z.coerce.string(),
     duration: z.coerce.number(),
@@ -117,7 +117,7 @@ export const memberSchema = z.object({
     role: z.coerce.string().min(1),
     hourlyRate: z.coerce.number().nonnegative(),
     hours: z.coerce.number().nonnegative(),
-    note: z.coerce.string().max(150).optional()
+    note: z.coerce.string().max(450).optional()
 })
 export const roleSchema = z.object({
     id: z.coerce.string().optional(),
@@ -131,7 +131,7 @@ export const roleSchema = z.object({
 export const documentSchema = z.object({
     id: z.coerce.string().optional(),
     name: z.coerce.string().min(1).max(50),
-    link: z.coerce.string().min(1).max(150),
+    link: z.coerce.string().min(1).max(450),
     status: z.coerce.string(),
     userid: z.coerce.number(),
     user: z.object({
@@ -140,17 +140,17 @@ export const documentSchema = z.object({
         email: z.coerce.string(),
         avatar_url: z.coerce.string()
     }),
-    note: z.coerce.string().min(1).max(150).optional(),
+    note: z.coerce.string().min(1).max(450).optional(),
 })
 
 export const communitationSchema = z.object({
     id: z.coerce.string().optional(),
     channel: z.coerce.string().min(1).max(50),
-    link: z.coerce.string().min(1).max(150),
+    link: z.coerce.string().min(1).max(450),
     meeting: z.coerce.string(),
     meetingCustom: z.coerce.string().optional(),
     schedule: z.coerce.string().optional(),
-    note: z.coerce.string().min(1).max(150).optional()
+    note: z.coerce.string().min(1).max(450).optional()
 }).refine((value) => {
     if (value.meeting == "custom")
         return !(!value.meetingCustom)

@@ -8,11 +8,11 @@ export default function DetailProject({ project }: { project: Project }): React.
 
     return <DetailProjectContextProvider project={project}>
         <div className="flex flex-col gap-8 p-4 h-full">
-            <div className="flex gap-8 h-full">
+            <div className="flex gap-20 h-full">
                 <div className="w-5/7">
                     <MainDetail />
                 </div>
-                <div className="w-2/7 flex flex-col gap-5 justify-center">
+                <div className="w-2/7 shrink-0 flex flex-col gap-5 justify-center">
                     <Overview />
                 </div>
             </div>

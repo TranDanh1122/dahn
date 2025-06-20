@@ -10,7 +10,10 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
     const color = React.useMemo(() => EnvironmentColor[env.status] || "", [env.status]);
     const bgColor = React.useMemo(() => EnvironmentBgColor[env.status] || "", [env.status]);
     return (
-        <div className="border border-slate-600 rounded-2xl shrink-0 w-1/4 h-full p-4 space-y-2">
+        <div className="border border-slate-200 
+            shadow-slate-100 shadow 
+            rounded-2xl shrink-0 
+            w-1/4 h-full p-4 space-y-2">
             <div className="flex items-center gap-2">
                 <h2 className="text-slate-600 font-semibold uppercase line-clamp-1">
                     {env.name}
