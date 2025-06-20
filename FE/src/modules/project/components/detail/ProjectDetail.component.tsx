@@ -7,7 +7,7 @@ import ProjectDetailFoot from "./components/footer"
 export default function DetailProject({ project }: { project: Project }): React.JSX.Element {
 
     return <DetailProjectContextProvider project={project}>
-        <div className="flex flex-col gap-8 p-4 h-full">
+        <div className="flex flex-col gap-8 p-4 h-full overflow-hidden">
             <div className="flex gap-20 h-full">
                 <div className="w-5/7">
                     <MainDetail />
