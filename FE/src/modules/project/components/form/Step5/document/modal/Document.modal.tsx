@@ -31,7 +31,7 @@ export default function DocumentModal({ modalForm }: ModalProps<z.infer<typeof d
             />
 
             <fieldset className="w-full flex flex-col gap-2">
-                <label className="font-light text-slate-600 cursor-pointer" >
+                <label className="font-light text-sm text-slate-600 cursor-pointer" >
                     Status
                 </label>
                 <Select<EnumSelectType[number]>

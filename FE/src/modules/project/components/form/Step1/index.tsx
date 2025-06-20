@@ -33,7 +33,7 @@ export default function Step1(): React.JSX.Element {
             rows={5}
         />
         <fieldset className="flex flex-col gap-2">
-            <label htmlFor="type" className="font-light text-slate-600 cursor-pointer ">Project type</label>
+            <label htmlFor="type" className="font-light text-slate-600 text-sm cursor-pointer ">Project type</label>
             <Select<EnumSelectType[number]>
                 id="type"
                 className="border border-slate-300 

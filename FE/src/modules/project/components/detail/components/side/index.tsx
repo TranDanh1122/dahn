@@ -15,10 +15,10 @@ export default React.memo(function Overview(): React.JSX.Element {
     const navigate = useNavigate()
 
     return <>
-        <h1 className="font-semibold uppercase text-7xl tracking-wide text-slate-600">
+        <h1 className="font-semibold uppercase text-5xl tracking-wide text-slate-600">
             {project?.name}
         </h1>
-        <p className="line-clamp-4 leading-6 text-slate-700">
+        <p className="line-clamp-4 leading-6 text-slate-700 text-sm">
             {project?.overview}
 
             Lorem ipsum dolor sit amet consectetur adipisicing elit.

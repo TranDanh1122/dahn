@@ -31,7 +31,7 @@ export default function Login(): React.JSX.Element {
                     <span className="w-max text-slate-800">{t("label.forgot")}</span>
                     <Link
                         to="/auth/forgot-password"
-                        className="text-blue-600 underline text-base font-semibold w-max">
+                        className="text-blue-600 underline font-semibold w-max">
                         {t("label.forgot_link")}
                     </Link>
                 </p>
@@ -48,7 +48,7 @@ export default function Login(): React.JSX.Element {
                         role="link"
                         aria-label="Go to register"
                         to="/auth/register"
-                        className="text-blue-600 w-full block underline text-base font-semibold">
+                        className="text-blue-600 w-full block underline font-semibold">
                         {t("label.register_link")}
                     </Link>
                 </p>

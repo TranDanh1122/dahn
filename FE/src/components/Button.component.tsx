@@ -8,6 +8,7 @@ export default React.memo(function Button({
     return (
         <button
             className={`
+                text-sm
                 font-semibold rounded-lg 
                 px-4 py-2 cursor-pointer 
                 disabled:cursor-not-allowed 

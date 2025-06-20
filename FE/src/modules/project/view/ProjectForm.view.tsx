@@ -61,7 +61,7 @@ export default function ProjectForm(): React.JSX.Element {
                 </form>
             </FormProvider>
             <div
-                className="
+                className="text-sm
                     flex flex-col justify-stretch gap-10 
                     text-left font-semibold pl-10
                     border-l border-l-slate-200">

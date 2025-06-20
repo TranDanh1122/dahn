@@ -27,7 +27,7 @@ export default function ArrayForm(): React.JSX.Element {
         <>
             <fieldset className="space-y-2" >
                 <div className="flex items-center gap-2 te">
-                    <legend className="text-slate-600">{label}</legend>
+                    <legend className="text-slate-600 font-light text-sm">{label}</legend>
                     <CirclePlus
                         onClick={() => handleOpen?.()}
                         className="font-light! text-slate-600 size-5 
@@ -43,7 +43,7 @@ export default function ArrayForm(): React.JSX.Element {
                     fields.map(
                         (el, index) => (
                             <div onClick={() => handleOpen?.(index)} key={el.id}
-                                className="py-4 border-b border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
+                                className="py-4 border-b text-sm border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
                                 {
                                     React.cloneElement(itemEl || <></>, {
                                         data: form?.getValues(`${name}.${index}`)

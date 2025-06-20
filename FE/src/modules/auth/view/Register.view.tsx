@@ -45,7 +45,7 @@ export default function Register(): React.JSX.Element {
                     <Link
                         aria-label="Go to login page"
                         to="/auth/login"
-                        className="text-blue-600 w-full block underline text-base">
+                        className="text-blue-600 w-full block underline">
                         {t("label.login_link")}
                     </Link>
                 </p>

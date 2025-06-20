@@ -41,7 +41,7 @@ export default function Select<T>({
 
     return (
         <div
-            className={`relative ${className}`}
+            className={`relative text-sm ${className}`}
             role="combobox"
             aria-expanded={open}
             aria-haspopup="listbox">

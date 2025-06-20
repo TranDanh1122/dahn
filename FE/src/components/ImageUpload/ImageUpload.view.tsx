@@ -29,7 +29,7 @@ export default React.memo(
         return <fieldset className="flex items-center gap-10 relative">
             {label &&
                 <label
-                    className={`font-semibold text-slate-600 cursor-pointer ${labelClass}`}
+                    className={`font-semibold text-slate-600 text-sm cursor-pointer ${labelClass}`}
                     aria-label={label}
                     htmlFor={id}>
                     {label}

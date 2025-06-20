@@ -42,7 +42,7 @@ export default React.memo(function Picker({
             }>
             <fieldset className="flex flex-col gap-2">
                 <label
-                    className="font-light text-slate-600"
+                    className="font-light text-slate-600 text-sm"
                     htmlFor="id">
                     Tech stacks
                 </label>
@@ -61,7 +61,7 @@ export default React.memo(function Picker({
                                 key={v4()}
                                 className="
                                 w-fit cursor-pointer 
-                                px-2 py-1 
+                                px-2 py-1 text-sm 
                                 bg-slate-100 
                                 rounded-full 
                                 text-slate-600">

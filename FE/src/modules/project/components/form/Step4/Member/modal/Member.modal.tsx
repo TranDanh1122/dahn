@@ -39,7 +39,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                     error={modalForm.formState.errors.user?.message}
                 />
                 <fieldset className="w-full flex flex-col gap-2">
-                    <label className="font-light text-slate-600 cursor-pointer" >
+                    <label className="font-light text-slate-600 text-sm cursor-pointer" >
                         Role
                     </label>
                     <Select<EnumSelectType[number]>

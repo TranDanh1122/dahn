@@ -36,7 +36,7 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
         </div>
         <div className="flex items-end gap-4">
             <fieldset className="w-full flex flex-col gap-2">
-                <label className="font-light text-slate-600 cursor-pointer" >
+                <label className="font-light text-sm text-slate-600 cursor-pointer" >
                     Status
                 </label>
                 <Select<EnumSelectType[number]>

@@ -32,7 +32,7 @@ export default function Environment({ modalForm }: ModalProps<z.infer<typeof env
         </div>
         <div className="flex items-center gap-3">
             <fieldset className="flex w-1/2 flex-col gap-2">
-                <label htmlFor="environment" className="text-slate-600 font-light">Status</label>
+                <label htmlFor="environment" className="text-slate-600 text-sm font-light">Status</label>
                 <Select<EnumSelectType[number]>
                     id="environment" hasIcon
                     className="flex-grow-0 border border-slate-300 hover:border-blue-300 rounded-lg "

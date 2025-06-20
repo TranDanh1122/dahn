@@ -34,7 +34,7 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
     React.useEffect(() => {
         console.log(modalForm?.getValues("role"))
         if (!modalForm?.getValues("role")) {
-            modalForm?.setValue("role", roles[0].text)
+            modalForm?.setValue("role", roles[0]?.text)
         }
     }, [])
     const pikedUser = React.useMemo(() => {

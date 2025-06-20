@@ -12,19 +12,18 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
     return (
         <div className="border border-slate-200 
             shadow-slate-100 shadow 
-            rounded-2xl shrink-0 
-            w-1/4 h-full p-4 space-y-2">
+            rounded-2xl w-1/4 h-full p-4 space-y-2">
             <div className="flex items-center gap-2">
-                <h2 className="text-slate-600 font-semibold uppercase line-clamp-1">
+                <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
                     {env.name}
                 </h2>
-                <span className={`text-sm ${color} ${bgColor} 
+                <span className={`text-xs ${color} ${bgColor} 
                                 rounded-full px-2 py-0.5
-                                border-2 border-${color}`}>
+                                border border-${color}`}>
                     {EnvironmentStatus.find((el) => el.value == env.status)?.text || ""}
                 </span>
             </div>
-            <p className="line-clamp-3 text-slate-500">
+            <p className="line-clamp-3 text-slate-500 text-sm">
                 {env.note}
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
                 optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
@@ -34,14 +33,14 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
                 <a
                     href={env.readme}
                     title={env.readme}
-                    className="flex items-center gap-2">
+                    className="flex items-center gap-2 text-xs">
                     <span>Readme</span>
                     <SquareArrowOutUpRight className=" right-0 top-0 size-4 text-slate-800" />
                 </a>
                 <a
                     href={env.demoUrl}
                     title={env.demoUrl}
-                    className="flex items-center gap-2">
+                    className="flex items-center gap-2 text-xs">
                     <span>Demo</span>
                     <SquareArrowOutUpRight className=" right-0 top-0 size-4 text-slate-800" />
                 </a>

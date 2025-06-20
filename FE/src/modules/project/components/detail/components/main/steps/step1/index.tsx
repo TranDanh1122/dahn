@@ -5,14 +5,14 @@ import { TypeDataSet } from "@project/const";
 import { v4 } from "uuid";
 export default function Step1(): React.JSX.Element {
     const project = React.useContext(ProjectContext)
-    return <div className="flex flex-col gap-10 justify-center h-full">
-        <Infor className="[&__h2]:text-lg" label="Project type: ">
-            <p>{TypeDataSet.find(el => el.value == project?.type)?.text}</p>
+    return <div className="flex flex-col gap-10 justify-center h-full text-sm">
+        <Infor label="Project type: ">
+            <p >{TypeDataSet.find(el => el.value == project?.type)?.text}</p>
         </Infor>
-        <Infor className="[&__h2]:text-lg" label="Client: ">
-            <p>{project?.client}</p>
+        <Infor label="Client: ">
+            <p >{project?.client}</p>
         </Infor>
-        <Infor className="[&__h2]:text-lg flex-col items-start! gap-6" label="Description: ">
+        <Infor className=" flex-col items-start! gap-6" label="Description: ">
             <p className="leading-8 tracking-wide text-slate-700 line-clamp-5">
                 {project?.description}
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Est excepturi officiis a consectetur ut consequuntur ullam qui molestiae architecto iste. Excepturi culpa similique laborum, delectus sapiente nisi reprehenderit consectetur omnis?
@@ -21,13 +21,13 @@ export default function Step1(): React.JSX.Element {
             </p>
         </Infor>
 
-        <Infor className="[&__h2]:text-lg flex-col items-start! gap-6" label="Project Teckstacks: ">
+        <Infor className=" flex-col items-start! gap-6" label="Project Teckstacks: ">
             <div className="flex flex-wrap gap-3">
                 {project?.techstack &&
                     project.techstack.split(",").map((el) => (
                         <span key={v4()}
                             className="w-fit cursor-pointer 
-                                px-3 py-1 bg-slate-100 text-lg
+                                px-3 py-1 bg-slate-100
                                 rounded-full text-slate-700">
                             {el}
                         </span>
