@@ -7,8 +7,8 @@ import {
 import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-up-right";
 import type { EnvData } from "@project/models";
 export default React.memo(function FooterItem({ env }: { env: EnvData }): React.JSX.Element {
-    const color = EnvironmentColor[env.status] || "";
-    const bgColor = EnvironmentBgColor[env.status] || "";
+    const color = React.useMemo(() => EnvironmentColor[env.status] || "", [env.status]);
+    const bgColor = React.useMemo(() => EnvironmentBgColor[env.status] || "", [env.status]);
     return (
         <div className="border border-slate-600 rounded-2xl shrink-0 w-1/4 h-full p-4 space-y-2">
             <div className="flex items-center gap-2">
