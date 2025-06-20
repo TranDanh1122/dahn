@@ -41,7 +41,7 @@ export default function ArrayFormContextProvider({ children, ...props }: ArrayFo
     const handleClose = () => close({ open: false });
 
     const handleOpen = (index?: number) => {
-        if (arrayField.fields.length >= 3) {
+        if (arrayField.fields.length >= 4) {
             ErrorHandler("We need to limit your assets because im using free tier service")
         } else {
             open({ open: true, index });
