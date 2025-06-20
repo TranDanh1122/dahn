@@ -26,8 +26,8 @@ const WorkspaceRouter = [
             },
 
             {
-                path: ":workspaceId/projects",
-                handle: { title: "Workspace's Project" },
+                path: ":workspaceId",
+                handle: { title: "Workspace" },
                 lazy: async () => {
                     const [component, loader] = await Promise.all([
                         import("@workspace/view/WorkspaceDetail.view"),

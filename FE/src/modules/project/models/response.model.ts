@@ -1,8 +1,9 @@
 import type { Workspace } from "@workspace/models/response.model";
-import type { Project } from "./request.schema";
+import type { ProjectData } from "./request.schema";
 
+export type Project = ProjectData & { workspace: Workspace }
 export interface ProjectResDataType {
     message: string,
     success: boolean,
-    data: Project & { workspace: Workspace }
+    data: Project
 }

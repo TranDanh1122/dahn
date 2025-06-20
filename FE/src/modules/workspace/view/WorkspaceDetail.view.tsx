@@ -10,7 +10,7 @@ export default function WorkspaceDetail(): React.JSX.Element {
     const workspace = useSelector((state: AppState) => state.persist.workspace.currentWorkspace)
     const { workspaceId } = useParams()
     React.useEffect(() => {
-        if (workspace && workspaceId != workspace.id) navigate(`/workspace/${workspace.id}/projects`)
+        if (workspace && workspaceId != workspace.id) navigate(`/workspace/${workspace.id}`)
     }, [workspace])
     return <>
         <div className="w-full flex items-center justify-between">

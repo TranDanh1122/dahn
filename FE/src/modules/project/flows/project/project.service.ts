@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { createProjectAPI, getProjectAPI } from "./project.api"
-import type { Project, ProjectResDataType } from "@project/models"
+import type { ProjectData, ProjectResDataType } from "@project/models"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
 
 export const useCreateProjectMutation = () => {
     return useMutation({
-        mutationFn: async (data: Project) => {
+        mutationFn: async (data: ProjectData) => {
             const res = await createProjectAPI(data)
             return await res.json()
         },

@@ -14,7 +14,7 @@ import type { AppDispatch, AppState } from "@/stores"
 import { useDispatch, useSelector } from "react-redux"
 import { setWorkspace } from "@workspace/store"
 import type { HTTPError } from "ky"
-import type { Project } from "@project/models"
+import type { ProjectData } from "@project/models"
 export const useCreateWorkspaceSvc = () => {
     const client = useQueryClient()
     return useMutation({
@@ -136,7 +136,7 @@ export const useUpdateWorkspace = () => {
 
 export const getProjectByWorkspaceID = async (workspaceID: string) => {
     const res = await getWorkspaceProjectsByIDAPI(workspaceID)
-    const data = await res.json<{ data: Project[] }>()
+    const data = await res.json<{ data: ProjectData[] }>()
     if (res.status > 200) throw new Error("Error when try to fetch Data")
     return data.data
 }

@@ -1,4 +1,5 @@
 import { useModal } from "@/common/hooks/useModal";
+import { ErrorHandler } from "@/common/ults/NotifyHandler";
 import React from "react";
 import {
     useFieldArray,
@@ -39,7 +40,13 @@ export default function ArrayFormContextProvider({ children, ...props }: ArrayFo
 
     const handleClose = () => close({ open: false });
 
-    const handleOpen = (index?: number) => open({ open: true, index });
+    const handleOpen = (index?: number) => {
+        if (arrayField.fields.length >= 3) {
+            ErrorHandler("We need to limit your assets because im using free tier service")
+        } else {
+            open({ open: true, index });
+        }
+    }
 
     const upsert = (
         data: FieldValues,

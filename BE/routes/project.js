@@ -175,11 +175,12 @@ router.get('/:projectId', async (req, res) => {
             .from("project")
             .select(`
                 *,
-                project_env(*),
-                project_member(*),
-                project_role(*),
-                project_document(*),
-                project_communitation(*),
+                environment:project_env(*),
+                milestones:milestone(*),
+                members:project_member(*),
+                role:project_role(*),
+                document:project_document(*),
+                communitation:project_communitation(*),
                 workspace(* , owner:users!workspace_owner_fkey(*))
             `)
             .eq('id', projectId)

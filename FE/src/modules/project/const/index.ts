@@ -24,6 +24,17 @@ export const MilestoneStatusBgColor: Record<string, string> = {
     "blocked": "bg-red-400",
     "done": "bg-green-400"
 }
+
+export const EnvironmentColor: Record<string, string> = {
+    "active": "text-green-400",
+    "inactive": "text-red-400",
+    "maintance": "text-orange-400",
+}
+export const EnvironmentBgColor: Record<string, string> = {
+    "active": "bg-green-50",
+    "inactive": "bg-red-50",
+    "maintance": "bg-orange-50",
+}
 export const MilestoneStatus: EnumSelectType = [
     { value: "not_started", text: "Not started" },
     { value: "in_progress", text: "In progress" },
@@ -48,4 +59,10 @@ export const STEPS = [
     { id: "03", name: "Milestones" },
     { id: "04", name: "Roles & Members" },
     { id: "05", name: "Documents & More Infomation" },
+]
+export const STEP_DETAILS = [
+    { id: "01", name: "Overview" },
+    { id: "02", name: "Milestones" },
+    { id: "03", name: "Roles & Members" },
+    { id: "04", name: "Documents & More Infomation" },
 ]

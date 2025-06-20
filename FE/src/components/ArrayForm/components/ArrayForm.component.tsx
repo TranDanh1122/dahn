@@ -3,6 +3,7 @@ import React from "react";
 import FormModal from "./FormModal.component";
 import { ArrayFormContext } from "../context/ArrrayForm.context";
 import X from "lucide-react/dist/esm/icons/x";
+import CirclePlus from "lucide-react/dist/esm/icons/circle-plus";
 
 /**
  * ArrayForm form array field in react hook form
@@ -28,17 +29,11 @@ export default function ArrayForm(): React.JSX.Element {
             <fieldset className="space-y-2" >
                 <div className="flex items-center gap-2 te">
                     <legend className="text-slate-600">{label}</legend>
-                    <Button
+                    <CirclePlus
                         onClick={() => handleOpen?.()}
-                        className="
-                                    font-light! text-slate-600
-                                    border border-slate-400 
-                                    rounded-full! 
-                                    p-0! size-6
+                        className="font-light! text-slate-600 size-5 
                                     flex items-center justify-center"
-                        type="button">
-                        +
-                    </Button>
+                    />
                 </div>
 
                 {

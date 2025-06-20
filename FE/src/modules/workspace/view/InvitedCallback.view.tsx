@@ -10,7 +10,7 @@ export default function InvitedCallback(): React.JSX.Element {
     React.useEffect(() => {
         acceptInvite.mutate(token, {
             onSuccess: (data: { success: boolean; data: Workspace }) => {
-                navigate(`/workspace/${data.data.id}/projects`);
+                navigate(`/workspace/${data.data.id}`);
             },
             onError: () => {
                 navigate("/");
