@@ -49,7 +49,7 @@ export default React.memo(function Overview(): React.JSX.Element {
             <span className="text-slate-600 text-sm">General Infomation Edit:</span>
             <SquarePen className="size-5 text-slate-500 cursor-pointer" />
         </p>
-        <div className="flex flex-col justify-stretch gap-6 text-left text-slate-700">
+        <div className="space-y-6 text-left text-slate-700">
             {
                 STEP_DETAILS.map(el => (
                     <DetailStep

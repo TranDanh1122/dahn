@@ -40,7 +40,7 @@ export default React.memo(function Picker({
                         ))}
                 </ul>
             }>
-            <fieldset className="flex flex-col gap-2">
+            <fieldset className="space-y-2">
                 <label
                     className="font-light text-slate-600 text-sm"
                     htmlFor="id">

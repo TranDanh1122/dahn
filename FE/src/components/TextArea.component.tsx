@@ -8,7 +8,7 @@ interface TextAreaProps extends React.ComponentProps<"textarea"> {
 }
 
 export default React.memo(function TextArea({ labelClass, error, label, children, className, ...props }: TextAreaProps): React.JSX.Element {
-    return <fieldset className="flex flex-col gap-2">
+    return <fieldset className="space-y-2">
         <label className={`font-semibold text-slate-600 cursor-pointer text-sm ${labelClass}`} htmlFor={props.id} aria-label={label} >
             {label}
         </label>

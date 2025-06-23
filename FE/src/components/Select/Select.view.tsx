@@ -68,7 +68,7 @@ export default function Select<T>({
                 <div
                     ref={dropboxRef}
                     role="listbox"
-                    className="absolute z-10 h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-slate-500 flex flex-col justify-stretch">
+                    className="absolute z-10 h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-slate-500">
                     {dataSets.map((dataSet: T) => {
                         const content = getDisplayText(dataSet, textKey);
                         return (

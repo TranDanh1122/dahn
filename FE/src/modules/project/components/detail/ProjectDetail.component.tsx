@@ -13,7 +13,7 @@ export default function DetailProject(): React.JSX.Element {
                 <div className="w-5/7 h-full overflow-y-auto">
                     <MainDetail />
                 </div>
-                <div className="w-2/7 shrink-0 flex flex-col gap-5 justify-center">
+                <div className="w-2/7 shrink-0 space-y-5">
                     <Overview />
                 </div>
             </div>
