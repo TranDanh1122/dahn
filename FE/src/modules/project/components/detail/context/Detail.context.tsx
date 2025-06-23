@@ -9,6 +9,7 @@ interface DetailProjectContextProviderProps {
     children: React.ReactNode,
     project: Project
 }
+
 export default function DetailProjectContextProvider({ children, project }: DetailProjectContextProviderProps): React.JSX.Element {
     const [step, setStep] = React.useState(1)
     return <ProjectContext.Provider value={project}>

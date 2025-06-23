@@ -1,3 +1,8 @@
 export { default as ProjectDetail } from "./ProjectDetail.component"
-export { ProjectContext, StepContext } from "./context/Detail.context"
+export {
+    ProjectContext,
+    StepContext,
+    default as DetailProjectContextProvider
+} from "./context/Detail.context"
 export { default as Infor } from "./components/Infor.component"
+export { default as DropdownInfo } from "./components/DropdownInfo.component"

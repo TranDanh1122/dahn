@@ -6,22 +6,21 @@ import {
 } from "@project/const";
 import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-up-right";
 import type { EnvData } from "@project/models";
+import Badge from "@/components/Badge.component";
 export default React.memo(function FooterItem({ env }: { env: EnvData }): React.JSX.Element {
     const color = React.useMemo(() => EnvironmentColor[env.status] || "", [env.status]);
     const bgColor = React.useMemo(() => EnvironmentBgColor[env.status] || "", [env.status]);
     return (
         <div className="border border-slate-200 
             shadow-slate-100 shadow 
-            rounded-2xl w-1/4 h-full p-4 space-y-2">
+            rounded-2xl w-1/4 h-max p-4 space-y-2">
             <div className="flex items-center gap-2">
                 <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
                     {env.name}
                 </h2>
-                <span className={`text-xs ${color} ${bgColor} 
-                                rounded-full px-2 py-0.5
-                                border border-${color}`}>
+                <Badge color={color} bgColor={bgColor} >
                     {EnvironmentStatus.find((el) => el.value == env.status)?.text || ""}
-                </span>
+                </Badge>
             </div>
             <p className="line-clamp-3 text-slate-500 text-sm">
                 {env.note}

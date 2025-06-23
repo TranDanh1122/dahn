@@ -104,6 +104,10 @@ export const milestoneSchema = z.object({
     process: z.coerce.number().min(0).max(100),
     status: z.coerce.string()
 })
+export interface MilestoneData extends Omit<z.infer<typeof milestoneSchema>, "startDate" | "endDate"> {
+    startDate: Date | string,
+    endDate: Date | string
+}
 
 export const memberSchema = z.object({
     id: z.coerce.string().optional(),

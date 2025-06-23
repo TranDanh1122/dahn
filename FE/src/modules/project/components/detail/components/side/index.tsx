@@ -8,7 +8,6 @@ import MoreInfo from "./components/MoreInfo.component";
 export default React.memo(function Overview(): React.JSX.Element {
     const project = React.useContext(ProjectContext)
     const { step, setStep } = React.useContext(StepContext)
-
     const handleChangeStep = React.useCallback((newStep: number) => {
         setStep?.(newStep)
     }, [])

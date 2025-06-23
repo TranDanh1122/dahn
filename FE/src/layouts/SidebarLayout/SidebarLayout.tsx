@@ -8,7 +8,7 @@ export default React.memo(function SidebarLayout(): React.JSX.Element {
         <div className=" col-span-1 h-screen py-2">
             <Sidebar />
         </div>
-        <div className="col-span-5 flex flex-col h-screen">
+        <div className="col-span-5 h-screen">
             <Header />
             <Content />
         </div>

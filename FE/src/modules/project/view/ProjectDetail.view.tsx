@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { useGetProjectQuery } from "../flows/project/project.service";
 import React from "react";
 import LoadingComponent from "@/components/Loading.component";
-import { ProjectDetail } from "@project/components/detail"
+import { DetailProjectContextProvider, ProjectDetail } from "@project/components/detail"
 export default function ProjectDetailView(): React.JSX.Element {
     const { projectId } = useLoaderData();
     const { data: project, isLoading, isError } = useGetProjectQuery(projectId);
@@ -12,7 +12,12 @@ export default function ProjectDetailView(): React.JSX.Element {
             {isLoading && (
                 <LoadingComponent className="border-s-slate-400! size-10" />
             )}
-            {!isLoading && project && <ProjectDetail project={project} />}
+            {!isLoading && project &&
+                <DetailProjectContextProvider project={project}>
+                    <ProjectDetail />
+                </DetailProjectContextProvider>
+
+            }
         </>
     );
 }
