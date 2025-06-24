@@ -13,7 +13,7 @@ async function loadWorkspaceById(args: LoaderFunctionArgs) {
 
 async function loadProjectsInWorkspace(args: LoaderFunctionArgs) {
     const { workspaceId } = args.params
-    if (!workspaceId) throw new Error("No workspace found")
+    if (!workspaceId || workspaceId == "undefined") throw new Error("No workspace found")
     const queryKey = ["projects", workspaceId]
     const queryFn = async () => getProjectByWorkspaceID(workspaceId)
     await queryClient.ensureQueryData({ queryKey, queryFn })
