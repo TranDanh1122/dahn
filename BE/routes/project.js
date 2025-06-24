@@ -179,7 +179,7 @@ router.get('/:projectId', async (req, res) => {
                 milestones:milestone(*),
                 members:project_member(*),
                 role:project_role(*),
-                document:project_document(*),
+                document:project_document(* , user:users!project_document_userid_fkey(*)),
                 communitation:project_communitation(*),
                 workspace(* , owner:users!workspace_owner_fkey(*))
             `)

@@ -10,7 +10,7 @@ export default function DetailProject(): React.JSX.Element {
     return <>
         <div className="space-y-8 p-4 h-full">
             <div className="flex gap-20 h-[calc(100%-13rem)]">
-                <div className="w-5/7 h-full overflow-y-auto">
+                <div className="w-5/7 h-full overflow-y-auto scrollbar-thin">
                     <MainDetail />
                 </div>
                 <div className="w-2/7 shrink-0 space-y-5">

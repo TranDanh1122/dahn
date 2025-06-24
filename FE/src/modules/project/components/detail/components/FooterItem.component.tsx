@@ -12,7 +12,7 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
     const bgColor = React.useMemo(() => EnvironmentBgColor[env.status] || "", [env.status]);
     return (
         <div className="border border-slate-200 
-            shadow-slate-100 shadow 
+            shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
             rounded-2xl w-1/4 h-max p-4 space-y-2">
             <div className="flex items-center gap-2">
                 <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
@@ -34,14 +34,14 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
                     title={env.readme}
                     className="flex items-center gap-2 text-xs">
                     <span>Readme</span>
-                    <SquareArrowOutUpRight className=" right-0 top-0 size-4 text-slate-800" />
+                    <SquareArrowOutUpRight className="  size-4 text-slate-800 hover-show" />
                 </a>
                 <a
                     href={env.demoUrl}
                     title={env.demoUrl}
                     className="flex items-center gap-2 text-xs">
                     <span>Demo</span>
-                    <SquareArrowOutUpRight className=" right-0 top-0 size-4 text-slate-800" />
+                    <SquareArrowOutUpRight className=" size-4 text-slate-800 hover-show" />
                 </a>
             </div>
         </div>

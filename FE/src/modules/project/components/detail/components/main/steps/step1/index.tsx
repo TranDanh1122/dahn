@@ -27,7 +27,8 @@ export default function Step1(): React.JSX.Element {
                     project.techstack.split(",").map((el) => (
                         <span key={v4()}
                             className="w-fit cursor-pointer 
-                                px-3 py-1 bg-slate-100
+                                px-3 py-1 bg-slate-100 hover:-translate-y-1
+                                transition-transform duration-100 ease-in
                                 rounded-full text-slate-700">
                             {el}
                         </span>

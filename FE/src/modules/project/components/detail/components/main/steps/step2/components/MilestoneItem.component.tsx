@@ -27,7 +27,7 @@ export default React.memo(function MileStoneItem({ milestone }: { milestone: Mil
             <Infor>{milestone.name}</Infor>
             <Infor>{milestone.duration}</Infor>
             <Infor>
-                <div className="size-10 rounded-full relative"
+                <div className="size-10 rounded-full relative" title={`${milestone.process}%`}
                     style={{
                         background: `conic-gradient(${hex} 0% ${milestone.process}%, #e2e8f0 ${milestone.process}% 100%)`,
                     }}>
@@ -39,7 +39,7 @@ export default React.memo(function MileStoneItem({ milestone }: { milestone: Mil
                 </div>
             </Infor>
             <Infor>
-                <Badge color={color} bgColor={bgColor}>
+                <Badge color={color} bgColor={bgColor} title={status}>
                     {status}
                 </Badge>
             </Infor>

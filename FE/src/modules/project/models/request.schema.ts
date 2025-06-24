@@ -56,6 +56,7 @@ export const ProjectSchema = z.object({
         link: z.coerce.string().min(1).max(50),
         note: z.coerce.string().min(1).max(450),
         userid: z.coerce.number(),
+        status: z.coerce.string(),
         user: z.object({
             id: z.coerce.string().min(1),
             full_name: z.coerce.string(),
@@ -147,6 +148,8 @@ export const documentSchema = z.object({
     note: z.coerce.string().min(1).max(450).optional(),
 })
 
+export type DocumentData = z.infer<typeof documentSchema>
+
 export const communitationSchema = z.object({
     id: z.coerce.string().optional(),
     channel: z.coerce.string().min(1).max(50),
@@ -162,6 +165,8 @@ export const communitationSchema = z.object({
 }, {
     path: ["meetingCustom"]
 })
+
+export type CommunitationData = z.infer<typeof communitationSchema>
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",
     permission: `{
