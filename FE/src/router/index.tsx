@@ -3,8 +3,7 @@ import { AuthRouter } from "@auth"
 import { WorkspaceRouter, NoSidebarWorkspaceRouter } from "@workspace/router"
 import DashboardRouter from "@dashboard/router"
 import { ProjectRouter, NoSidebarProjectRouter } from "@project/router"
-import LoadingFallback from "@/components/LoadingFallback.component"
-import { v4 } from "uuid"
+import LoadingFallback from "@components/LoadingFallback.component"
 
 
 const router = createBrowserRouter([
@@ -31,7 +30,7 @@ const router = createBrowserRouter([
             }
 
         ],
-        hydrateFallbackElement: <LoadingFallback key={v4()} />
+        hydrateFallbackElement: <LoadingFallback key={window.location.pathname} />
     },
 
 ])

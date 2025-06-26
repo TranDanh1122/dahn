@@ -1,6 +1,5 @@
 import React from "react";
 import Input from "@components/Input.component"
-import { v4 as uuid } from "uuid"
 import useDropdownSearch from "../hooks/useDropdownSearch.hook";
 import type { InputSearchProps } from "../type";
 interface DropdownSearchProps<T, K> extends InputSearchProps<T, K> {
@@ -14,9 +13,9 @@ const DropdownSearch = <T, K>({ filter, childrenFn, searchServiceFn, resultItemC
             {searchService.isPending && <span className="ml-2 text-xs text-blue-500">Searching...</span>}
             {result && (
                 <ul className="py-2">
-                    {result.map((data: T) => (
+                    {result.map((data: T, idx) => (
                         <li
-                            key={uuid()}
+                            key={idx}
                             className="p-2 hover:bg-slate-100 cursor-pointer rounded-md"
                             onClick={() => { resultItemClick?.(data); }}
                         >

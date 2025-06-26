@@ -3,10 +3,11 @@ import Overview from "./components/side"
 import MainDetail from "./components/main";
 import { ProjectContext } from "./context/Detail.context";
 import FooterItemComponent from "./components/FooterItem.component";
-import { v4 } from "uuid";
 export default function DetailProject(): React.JSX.Element {
     const project = React.useContext(ProjectContext);
-
+    const footer = React.useMemo(() => {
+        return project?.environment?.map((env) => <FooterItemComponent key={env.id} env={env} />)
+    }, [project?.environment])
     return <>
         <div className="space-y-8 p-4 h-full">
             <div className="flex gap-20 h-[calc(100%-13rem)]">
@@ -18,7 +19,7 @@ export default function DetailProject(): React.JSX.Element {
                 </div>
             </div>
             <div className="flex items-center justify-evenly h-44">
-                {project?.environment?.map((env) => <FooterItemComponent key={v4()} env={env} />)}
+                {footer}
             </div>
         </div>
     </>

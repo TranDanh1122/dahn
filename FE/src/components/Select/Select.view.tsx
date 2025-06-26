@@ -2,7 +2,6 @@ import { getDisplayText } from "@/common/ults/Tool";
 import React from "react";
 import type { SelectProps } from "./type";
 import useSelect from "./useSelect.hook";
-import { v4 } from "uuid";
 import ChevronDown from "lucide-react/dist/esm/icons/chevron-down"
 
 /**
@@ -69,12 +68,12 @@ export default function Select<T>({
                     ref={dropboxRef}
                     role="listbox"
                     className="absolute z-10 h-max max-h-screen w-max p-1 top-full left-0 bg-white rounded-md shadow-md shadow-slate-500">
-                    {dataSets.map((dataSet: T) => {
+                    {dataSets.map((dataSet: T, idx) => {
                         const content = getDisplayText(dataSet, textKey);
                         return (
                             <p
                                 role="option"
-                                key={v4()}
+                                key={`${idx}`}
                                 onClick={() => handleChange(dataSet)}
                                 className={` px-2 py-1 cursor-pointer font-light rounded-md w-full hover:bg-slate-200`}
                                 dangerouslySetInnerHTML={{ __html: content }}

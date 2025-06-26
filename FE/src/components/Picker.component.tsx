@@ -1,6 +1,5 @@
 import React from "react";
 import { Dropdown } from "@components/Dropdown";
-import { v4 } from "uuid";
 interface PickerProps {
     dataSet: string[];
     data?: string[],
@@ -29,8 +28,8 @@ export default React.memo(function Picker({
             dropContent={
                 <ul className="overflow-y-scroll max-h-32 scrollbar-thin">
                     {dataSet.length > 0 &&
-                        dataSet.map((el) => (
-                            <li key={v4()}
+                        dataSet.map((el, idx) => (
+                            <li key={`${el}-${idx}`}
                                 className="w-full 
                                 hover:bg-slate-100 
                                 p-2 rounded-md cursor-pointer"
@@ -56,9 +55,9 @@ export default React.memo(function Picker({
                         rounded-lg p-2
                         flex flex-wrap items-center gap-2">
                     {values &&
-                        [...values].map((el) => (
+                        [...values].map((el, idx) => (
                             <span
-                                key={v4()}
+                                key={`span-${el}-${idx}`}
                                 className="
                                 w-fit cursor-pointer 
                                 px-2 py-1 text-sm 
