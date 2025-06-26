@@ -33,7 +33,7 @@ export default React.memo(function Overview(): React.JSX.Element {
         <MoreInfo
             label="Workspace: "
             text={project?.workspace?.name || ""}
-            image={project?.workspace?.image || ""}
+            image={project?.workspace?.tiny || ""}
             onClick={() => navigate(`/workspace/${project?.workspace?.id}`)}
             hasRedirect
             className="cursor-pointer"

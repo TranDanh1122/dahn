@@ -49,7 +49,7 @@ export default React.memo(function WorkspaceItem({ className, disableDropdown }:
                 <CircleLogoWText
                     className={className}
                     text={currentWorkspace?.name || ""}
-                    img={currentWorkspace?.image || ""}
+                    img={currentWorkspace?.tiny || ""}
                 />
             </Dropdown>
         }
@@ -60,7 +60,7 @@ export default React.memo(function WorkspaceItem({ className, disableDropdown }:
             <CircleLogoWText
                 className={className}
                 text={currentWorkspace?.name || ""}
-                img={currentWorkspace?.image || ""}
+                img={currentWorkspace?.tiny || ""}
             />
 
         }

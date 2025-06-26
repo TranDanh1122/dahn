@@ -110,7 +110,7 @@ router.post('/', upload.single("thumbnail"), async (req, res) => {
 
       const { data: updatedWorkspace, error: updateError } = await supabase
         .from('workspace')
-        .update({ image: result.url })
+        .update({ image: result.url, tiny: result.tiny || "", thumbnail: result.thumnail || "" })
         .eq('id', workspace.id)
         .eq('owner', user.id) // Đảm bảo quyền
         .select()
@@ -232,13 +232,16 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
   }
 
   // Xử lý upload ảnh
-  let updateData = { name, description, image };
+  let updateData = { name, description, image, thumbnail: "", tiny: "" };
   if (req.file) {
     try {
       const [result] = await uploadToCloudinary(req.file.path);
       console.log("Cloudinary result:", result);
       if (!result?.url) throw new Error("Invalid Cloudinary URL");
       updateData.image = result.url;
+      updateData.tiny = result.tiny
+      updateData.thumbnail = result.thumnail
+
       if (oldWorkspace.image) {
         console.log(1)
         await deleteFromCloudinary(oldWorkspace.image);
@@ -249,6 +252,8 @@ router.put("/:id", upload.single("thumbnail"), async (req, res) => {
     }
   } else if (!image) {
     updateData.image = ""
+    updateData.thumbnail = ""
+    updateData.tiny = ""
     if (oldWorkspace.image) {
       try {
         await deleteFromCloudinary(oldWorkspace.image);

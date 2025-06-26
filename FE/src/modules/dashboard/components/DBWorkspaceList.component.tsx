@@ -26,7 +26,7 @@ export default React.memo(function DBWorkspaceList(): React.JSX.Element {
                         return (
                             <SquareItem
                                 key={el.id}
-                                img={el.image}
+                                img={el.thumbnail}
                                 title={el.name}
                                 lastUpdate={el.created_at}
                             />

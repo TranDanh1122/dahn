@@ -6,7 +6,9 @@ export interface Workspace {
     description: string,
     image: string
     workspace_members?: WorkspaceMember[],
-    owner?: User
+    owner?: User,
+    thumbnail?: string,
+    tiny?: string
 }
 export interface WorkspaceMember {
     avg_salary: string,
