@@ -10,18 +10,13 @@ import React from "react";
 import Badge from "@/components/Badge.component";
 
 export default React.memo(function MileStoneItem({ milestone }: { milestone: MilestoneData }): React.JSX.Element {
-    const color = React.useMemo(() => {
-        return MilestoneStatusColor[milestone.status] || "";
-    }, [milestone.status]);
-    const bgColor = React.useMemo(() => {
-        return MilestoneStatusBgColor[milestone.status] || "";
-    }, [milestone.status]);
-    const status = React.useMemo(() => {
-        return MilestoneStatus.find((el) => el.value == milestone.status)?.text;
-    }, [milestone.status]);
-    const hex = React.useMemo(() => {
-        return MilestoneStatusHex[milestone.status] || "";
-    }, [milestone.status]);
+    const [color, bgColor, status, hex] = React.useMemo(() => {
+        const color = MilestoneStatusColor[milestone.status] || "";
+        const bgColor = MilestoneStatusBgColor[milestone.status] || "";
+        const status = MilestoneStatus.find((el) => el.value == milestone.status)?.text;
+        const hex = MilestoneStatusHex[milestone.status] || "";
+        return [color, bgColor, status, hex]
+    }, [milestone.status])
     return (
         <div className="grid grid-cols-4">
             <Infor>{milestone.name}</Infor>

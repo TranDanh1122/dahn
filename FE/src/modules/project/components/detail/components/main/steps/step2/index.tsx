@@ -3,8 +3,8 @@ import {
     DropdownInfo,
     ProjectContext,
 } from "@project/components/detail";
-import MilestoneItem from "./components/MilestoneItem.component";
-const MilestoneDropContent = React.lazy(() => import("./components/MileStoneItemDrop.component"))
+import MilestoneItem from "./Milestone/MilestoneItem.component";
+const MilestoneDropContent = React.lazy(() => import("./Milestone/MileStoneItemDrop.component"))
 export default function Step2(): React.JSX.Element {
     const project = React.useContext(ProjectContext);
     return (

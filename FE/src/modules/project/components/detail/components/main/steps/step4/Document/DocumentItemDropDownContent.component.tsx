@@ -1,5 +1,5 @@
 import { Infor } from "@project/components/detail";
-import type { DocumentData } from "@project/models/request.schema";
+import type { DocumentData } from "@project/models";
 import React from "react";
 import Copy from "lucide-react/dist/esm/icons/copy";
 import { copy } from "@/common/ults/Tool";

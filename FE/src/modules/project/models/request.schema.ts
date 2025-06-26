@@ -34,7 +34,9 @@ export const ProjectSchema = z.object({
     role: z.array(z.object({
         id: z.coerce.string().optional(),
         name: z.coerce.string().max(50),
-        permission: z.coerce.string()
+        project: z.coerce.string(),
+        milestone: z.coerce.string(),
+        folder: z.coerce.string()
     })),
     members: z.array(z.object({
         id: z.coerce.string().optional(),
@@ -127,12 +129,11 @@ export const memberSchema = z.object({
 export const roleSchema = z.object({
     id: z.coerce.string().optional(),
     name: z.coerce.string().min(1).max(50),
-    permission: z.coerce.string().optional(),
     project: z.coerce.string(),
     milestone: z.coerce.string(),
     folder: z.coerce.string()
 })
-
+export type RoleData = z.infer<typeof roleSchema>
 export const documentSchema = z.object({
     id: z.coerce.string().optional(),
     name: z.coerce.string().min(1).max(50),
@@ -169,11 +170,6 @@ export const communitationSchema = z.object({
 export type CommunitationData = z.infer<typeof communitationSchema>
 export const roleSchemaInitData: z.infer<typeof roleSchema> = {
     name: "",
-    permission: `{
-        projects : 'admin',
-        milestones : 'admin',
-        statuses: 'admin', 
-    }`,
     project: "admin",
     milestone: "admin",
     folder: "admin"

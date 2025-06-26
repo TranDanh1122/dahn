@@ -63,11 +63,9 @@ router.post('', async (req, res) => {
 
             const rolesData = data.role.map(role => ({
                 name: role.name,
-                permission: {
-                    project: role.project,
-                    milestone: role.milestone,
-                    folder: role.folder
-                },
+                project: role.project,
+                milestone: role.milestone,
+                folder: role.folder,
                 project_id: projectId
             }));
 

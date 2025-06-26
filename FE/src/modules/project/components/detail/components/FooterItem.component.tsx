@@ -8,8 +8,13 @@ import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-
 import type { EnvData } from "@project/models";
 import Badge from "@/components/Badge.component";
 export default React.memo(function FooterItem({ env }: { env: EnvData }): React.JSX.Element {
-    const color = React.useMemo(() => EnvironmentColor[env.status] || "", [env.status]);
-    const bgColor = React.useMemo(() => EnvironmentBgColor[env.status] || "", [env.status]);
+
+    const [color, bgColor, status] = React.useMemo(() => {
+        const status = EnvironmentStatus.find((el) => el.value == env.status)?.text || ""
+        const color = EnvironmentColor[env.status] || ""
+        const bgColor = EnvironmentBgColor[env.status] || ""
+        return [color, bgColor, status]
+    }, [env.status])
     return (
         <div className="border border-slate-200 
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
@@ -19,7 +24,7 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
                     {env.name}
                 </h2>
                 <Badge color={color} bgColor={bgColor} >
-                    {EnvironmentStatus.find((el) => el.value == env.status)?.text || ""}
+                    {status}
                 </Badge>
             </div>
             <p className="line-clamp-3 text-slate-500 text-sm">

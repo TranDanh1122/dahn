@@ -2,15 +2,12 @@
 import React from "react";
 import Input from "@/components/Input.component";
 import type { ModalProps } from "@components/ArrayForm";
-import RadioGroup, { type ItemData } from "@components/RadioGroup";
+import RadioGroup from "@components/RadioGroup";
 import PermissionItem from "./PermissionItem.component";
 import { z } from "zod";
 import { roleSchema } from "@project/models/request.schema";
-const roleDataSets: ItemData[] = [
-    { value: "admin", text: "Admin" },
-    { value: "read", text: "Read" },
-    { value: "write", text: "Write" },
-];
+import { RoleDataSets } from "@project/const";
+
 export default function Role({ modalForm }: ModalProps<z.infer<typeof roleSchema>>): React.JSX.Element {
 
     if (!modalForm) return <></>
@@ -31,21 +28,21 @@ export default function Role({ modalForm }: ModalProps<z.infer<typeof roleSchema
             />
             <RadioGroup
                 itemEl={<PermissionItem />}
-                dataSets={roleDataSets}
+                dataSets={RoleDataSets}
                 label="Project"
                 name="project"
                 value={modalForm.watch("project")}
                 onChange={(value) => modalForm.setValue("project", value)} />
             <RadioGroup
                 itemEl={<PermissionItem />}
-                dataSets={roleDataSets}
+                dataSets={RoleDataSets}
                 label="Milestone"
                 name="milestone"
                 value={modalForm.watch("milestone")}
                 onChange={(value) => modalForm.setValue("milestone", value)} />
             <RadioGroup
                 itemEl={<PermissionItem />}
-                dataSets={roleDataSets}
+                dataSets={RoleDataSets}
                 label="Folder"
                 name="folder"
                 value={modalForm.watch("folder")}

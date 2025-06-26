@@ -1,4 +1,4 @@
-import type { DocumentData } from "@project/models/request.schema";
+import type { DocumentData } from "@project/models";
 import { Infor, MoreInfo } from "@project/components/detail";
 import React from "react";
 import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-up-right"

@@ -3,6 +3,7 @@ import type { memberSchema, roleSchema } from "@project/models/request.schema";
 import React from "react";
 import { z } from "zod";
 import type { ModalProps } from "@components/ArrayForm";
+import type { EnumSelectType } from "@project/const";
 
 export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof memberSchema>>) => {
     const filter = React.useCallback(
@@ -31,6 +32,10 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
         })
     }, [form?.watch("role")])
 
+    const defaultValue = React.useMemo(() => {
+        return roles.find((el: EnumSelectType[number]) => el.text == modalForm?.getValues("role")) || roles[0]
+    }, [roles, modalForm])
+
     React.useEffect(() => {
         console.log(modalForm?.getValues("role"))
         if (!modalForm?.getValues("role")) {
@@ -49,7 +54,8 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
         resultItemClick,
         childrenFn,
         filter,
-        pikedUser
+        pikedUser,
+        defaultValue
     }
 }
 

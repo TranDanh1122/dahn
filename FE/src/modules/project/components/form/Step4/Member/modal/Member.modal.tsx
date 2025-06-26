@@ -21,7 +21,8 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
         roles,
         filter,
         childrenFn,
-        pikedUser
+        pikedUser,
+        defaultValue
     } = hookData
     return (
         <>
@@ -44,7 +45,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                     </label>
                     <Select<EnumSelectType[number]>
                         dataSets={roles}
-                        defaultValue={roles.find((el: EnumSelectType[number]) => el.text == modalForm.getValues("role")) || roles[0]}
+                        defaultValue={defaultValue}
                         changeValue="all"
                         textKey="text"
                         valueKey="value"

@@ -3,15 +3,15 @@ import {
     ProjectContext,
     DropdownInfo
 } from "@project/components/detail";
-import DocumentItemComponent from "./components/DocumentItem.component";
-import DocumentItemDropDownContent from "./components/DocumentItemDropDownContent.component";
-import MeetingItemComponent from "./components/MeetingItem.component";
+import DocumentItemComponent from "./Document/DocumentItem.component"
+import DocumentItemDropDownContent from "./Document/DocumentItemDropDownContent.component"
+import MeetingItemComponent from "./Meeting/MeetingItem.component";
 export default function Step4(): React.JSX.Element {
     const project = React.useContext(ProjectContext)
     return <div className="space-y-10">
         <div className="space-y-3">
             <h2 className="font-medium text-lg">Meetings</h2>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-evenly">
 
                 {
                     project &&

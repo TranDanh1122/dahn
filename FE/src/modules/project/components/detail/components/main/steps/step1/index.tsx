@@ -2,12 +2,26 @@ import React from "react";
 import { ProjectContext } from "@project/components/detail";
 import { Infor } from "@project/components/detail"
 import { TypeDataSet } from "@project/const";
-import { v4 } from "uuid";
 export default function Step1(): React.JSX.Element {
     const project = React.useContext(ProjectContext)
+    const type = React.useMemo(() => {
+        return TypeDataSet.find(el => el.value == project?.type)?.text
+    }, [project?.type])
+    const techstack = React.useMemo(() => {
+        if (!project || !project.techstack) return ""
+        return project.techstack.split(",").map((el) => (
+            <span key={el}
+                className="w-fit cursor-pointer 
+                                px-3 py-1 bg-slate-100 hover:-translate-y-1
+                                transition-transform duration-100 ease-in
+                                rounded-full text-slate-700">
+                {el}
+            </span>
+        ))
+    }, [project])
     return <div className="flex flex-col gap-10 justify-center h-full text-sm">
         <Infor label="Project type: ">
-            <p >{TypeDataSet.find(el => el.value == project?.type)?.text}</p>
+            <p >{type}</p>
         </Infor>
         <Infor label="Client: ">
             <p >{project?.client}</p>
@@ -23,16 +37,7 @@ export default function Step1(): React.JSX.Element {
 
         <Infor className=" flex-col items-start! gap-6" label="Project Teckstacks: ">
             <div className="flex flex-wrap gap-3">
-                {project?.techstack &&
-                    project.techstack.split(",").map((el) => (
-                        <span key={v4()}
-                            className="w-fit cursor-pointer 
-                                px-3 py-1 bg-slate-100 hover:-translate-y-1
-                                transition-transform duration-100 ease-in
-                                rounded-full text-slate-700">
-                            {el}
-                        </span>
-                    ))}
+                {techstack}
             </div>
         </Infor>
     </div>

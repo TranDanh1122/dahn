@@ -8,12 +8,13 @@ interface MilestoneItem extends TableItemProps {
 }
 export default function MilestoneItem({ data }: MilestoneItem): React.JSX.Element {
 
-    const [color, bgColor] = React.useMemo(() => {
-        if (!data) return ["", ""];
+    const [color, bgColor, status] = React.useMemo(() => {
+        if (!data) return ["", "", ""];
         const color: string = MilestoneStatusColor[data.status];
         const bgColor: string = MilestoneStatusBgColor[data.status];
-        return [color, bgColor];
-    }, [data?.status]);
+        const status = MilestoneStatus.find(el => el.value == data.status)?.text
+        return [color, bgColor, status];
+    }, [data]);
 
     if (!data) return <></>;
 
@@ -22,11 +23,7 @@ export default function MilestoneItem({ data }: MilestoneItem): React.JSX.Elemen
         <span title={String(data.duration)} className="text-center">{data.duration}</span>
         <span className="text-center">{data.process}</span>
         <div className={`${color} justify-end flex items-center gap-2 w-full`}>
-            {
-                MilestoneStatus.find(el =>
-                    el.value == data.status
-                )?.text
-            }
+            {status}
             <div className={`size-2 rounded-full ${bgColor}`}></div>
         </div>
 

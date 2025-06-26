@@ -59,6 +59,12 @@ export const CommunitationMeeting: EnumSelectType = [
     { value: "custom", text: "Custom" }
 ]
 
+export const RoleDataSets: EnumSelectType = [
+    { value: "admin", text: "Admin" },
+    { value: "read", text: "Read" },
+    { value: "write", text: "Write" },
+];
+
 export const STEPS = [
     { id: "01", name: "Overview" },
     { id: "02", name: "Technical" },
