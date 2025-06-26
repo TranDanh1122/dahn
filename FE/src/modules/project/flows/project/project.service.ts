@@ -20,6 +20,7 @@ export const useCreateProjectMutation = () => {
     })
 }
 export const getProjectAPIQuery = async (projectId: string) => {
+    alert(1)
     const res = await getProjectAPI(projectId)
     const json = await res.json<ProjectResDataType>()
     return json.data
@@ -29,6 +30,7 @@ export const useGetProjectQuery = (projectId: string) => {
     return useQuery({
         queryKey: ["project", projectId],
         queryFn: async () => await getProjectAPIQuery(projectId),
+        staleTime: 5 * 60 * 1000,
         retry: false
     })
 } 
