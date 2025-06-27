@@ -5,6 +5,7 @@ import { STEP_DETAILS } from "@project/const";
 import { ProjectContext, StepContext } from "@project/components/detail";
 import { useNavigate } from "react-router-dom";
 import MoreInfo from "./components/MoreInfo.component";
+import Text from "@components/Text.component";
 export default React.memo(function Overview(): React.JSX.Element {
     const project = React.useContext(ProjectContext)
     const { step, setStep } = React.useContext(StepContext)
@@ -27,7 +28,7 @@ export default React.memo(function Overview(): React.JSX.Element {
         <h1 className="font-semibold uppercase text-4xl tracking-wide text-slate-600">
             {project?.name}
         </h1>
-        <p className="line-clamp-4 leading-6 text-slate-700 text-sm">
+        <Text lineChamp="line-clamp-4 " className="leading-6 text-slate-700 text-sm">
             {project?.overview}
 
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -38,7 +39,7 @@ export default React.memo(function Overview(): React.JSX.Element {
             elit. Fugiat aspernatur vero neque quia ipsam repellendus est
             inventore quam tempore temporibus dolore magnam alias totam aut,
             omnis consectetur, soluta hic reprehenderit!
-        </p>
+        </Text>
 
         <MoreInfo
             label="Workspace: "

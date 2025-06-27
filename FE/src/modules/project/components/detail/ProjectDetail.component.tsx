@@ -33,7 +33,7 @@ export default function DetailProject(): React.JSX.Element {
                 <div className="w-5/7 h-full overflow-y-auto scrollbar-thin">
                     <MainDetail />
                 </div>
-                <div className="w-2/7 shrink-0 space-y-5">
+                <div className="w-2/7 shrink-0 space-y-5 overflow-y-auto scrollbar-thin pb-4">
                     <Overview />
                 </div>
             </div>
