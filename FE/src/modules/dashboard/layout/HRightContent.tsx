@@ -15,7 +15,7 @@ export default React.memo(function HRightContent(): React.JSX.Element {
             </Button>
 
             <div
-                className="p-2 bg-slate-100 rounded-full hover:bg-slate-50"
+                className="p-2 bg-slate-100 border border-slate-200 rounded-full hover:bg-slate-50"
                 title="import"
             >
                 <FolderInput className="size-5 text-slate-700" />

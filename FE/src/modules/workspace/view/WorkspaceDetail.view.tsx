@@ -36,7 +36,7 @@ export default function WorkspaceDetail(): React.JSX.Element {
             <WorkspaceItem
                 className="[&__img]:size-12! [&__img]:rounded-md [&__p]:text-lg! [&__p]:tracking-widest [&__p]:font-bold! [&__p]:ml-2! w-1/2 hover:bg-white"
                 disableDropdown />
-            <Button className="bg-blue-500 font-light! text-white text-sm">+ Project</Button>
+            <Button className="bg-slate-100 hover:bg-slate-50 border border-slate-200 font-light! text-sm">Project +</Button>
         </div>
 
         <ProjectList />
