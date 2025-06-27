@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { createProjectAPI, getProjectAPI } from "./project.api"
+import { createProjectAPI, deleteProjectAPI, getProjectAPI } from "./project.api"
 import type { ProjectData, ProjectResDataType } from "@project/models"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
@@ -34,4 +34,24 @@ export const useGetProjectQuery = (projectId: string) => {
         staleTime: 5 * 60 * 1000,
         retry: false
     })
-} 
+}
+
+export const useDeleteProjectMutation = () => {
+    return useMutation({
+        mutationFn: async (projectId: string) => {
+            const res = await deleteProjectAPI(projectId)
+            const json = await res.json<ProjectResDataType>()
+            console.log(json)
+            return json.data
+        },
+        onSuccess: (data) => {
+            SuccessHandle(`Project ${data.name} deleted`)
+            queryClient.invalidateQueries({ queryKey: ["projects", data.workspaceID] })
+        },
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>()
+            ErrorHandler(body.message || e.message)
+        },
+        retry: 0
+    })
+}

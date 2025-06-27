@@ -1,4 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router-dom"
+import HRightContent from "@project/layout/HRightContent"
 
 const ProjectRouter =
     [
@@ -17,7 +18,7 @@ const ProjectRouter =
                             loader: async (args: LoaderFunctionArgs) => await loader.singleProjectLoader(args)
                         }
                     },
-                    handle: { title: "Project Detail" }
+                    handle: { title: "Project Detail", rightHeadContent: <HRightContent /> }
                 }
             ]
         }

@@ -209,4 +209,25 @@ router.get('/:projectId', async (req, res) => {
     }
 })
 
+router.delete("/:projectId", async (req, res) => {
+    if (req.method != "DELETE") return res.status(405).json({ success: false, message: "Method not allowed" })
+    if (!req.params.projectId) return res.status(400).json({ success: false, message: 'Project ID is required' })
+    try {
+        const projectId = req.params.projectId;
+        const supabase = req.supabase
+        const { data: project, error } = await supabase
+            .from('project')
+            .delete()
+            .eq('id', projectId)
+            .select()
+            .single()
+        if (error) throw new Error(error.message)
+        return res.status(200).json({ success: true, message: "Project deleted", data: project })
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: e.message || "Internal server error"
+        })
+    }
+})
 module.exports = router
