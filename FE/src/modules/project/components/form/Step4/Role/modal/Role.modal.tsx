@@ -7,9 +7,13 @@ import PermissionItem from "./PermissionItem.component";
 import { z } from "zod";
 import { roleSchema } from "@project/models/request.schema";
 import { RoleDataSets } from "@project/const";
+import { v4 } from "uuid";
 
 export default function Role({ modalForm }: ModalProps<z.infer<typeof roleSchema>>): React.JSX.Element {
-
+    React.useEffect(() => {
+        if (!modalForm) return
+        if (!modalForm.getValues("id")) modalForm.setValue("id", v4())
+    }, [modalForm])
     if (!modalForm) return <></>
 
     return (

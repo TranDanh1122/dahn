@@ -33,13 +33,12 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
     }, [form?.watch("role")])
 
     const defaultValue = React.useMemo(() => {
-        return roles.find((el: EnumSelectType[number]) => el.text == modalForm?.getValues("role")) || roles[0]
+        return roles.find((el: EnumSelectType[number]) => el.value == modalForm?.getValues("roleId")) || roles[0]
     }, [roles, modalForm])
 
     React.useEffect(() => {
-        console.log(modalForm?.getValues("role"))
-        if (!modalForm?.getValues("role")) {
-            modalForm?.setValue("role", roles[0]?.text)
+        if (!modalForm?.getValues("roleId")) {
+            modalForm?.setValue("roleId", roles[0]?.value)
         }
     }, [])
     const pikedUser = React.useMemo(() => {

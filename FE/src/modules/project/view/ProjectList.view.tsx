@@ -16,11 +16,11 @@ export default function ProjectList({ workspace }: ProjectListProps): React.JSX.
     return <div className="grid grid-cols-5 gap-x-12 gap-y-8 auto-rows-[230px] mt-8">
 
         {isLoading &&
-            Array.from({ length: 3 }).map(() => <ListItem skeletonMode />)
+            Array.from({ length: 3 }).map((_, idx) => <ListItem key={idx} skeletonMode />)
         }
 
         {!isLoading && projects &&
-            projects.map(project => <ListItem title={project.name} onClick={() => navigate(`/project/${project.id}`)} />)
+            projects.map(project => <ListItem key={project.id} title={project.name} onClick={() => navigate(`/project/${project.id}`)} />)
         }
         <ListItemButton
             onClick={() => navigate("/project/create")}

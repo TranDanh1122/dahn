@@ -52,7 +52,7 @@ export default function Member({ modalForm, form }: ModalProps<z.infer<typeof me
                         className="w-full border border-slate-300 hover:border-blue-300 rounded-lg"
                         onChange={(value) => {
                             if (typeof value == "object") {
-                                modalForm.setValue("role", String(value.text))
+                                modalForm.setValue("roleId", value.value)
                             }
                         }}
                     />

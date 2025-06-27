@@ -35,7 +35,7 @@ export default function FormModal(): React.JSX.Element {
         const valid = await modalForm.trigger()
         if (valid)
             upsert?.(values, modalState?.index)
-    })
+    }, (e) => console.log(e))
     return (
         <>
             <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>

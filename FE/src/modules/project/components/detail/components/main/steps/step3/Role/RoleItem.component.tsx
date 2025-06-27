@@ -6,20 +6,9 @@ export default function RoleItem({ role }: { role: RoleData }): React.JSX.Elemen
     const [project, milestone, folder] = React.useMemo(() => {
         let project, milestone, folder
         RoleDataSets.forEach(el => {
-            switch (el.value) {
-                case role.project: {
-                    project = el.text
-                    break
-                }
-                case role.milestone: {
-                    milestone = el.text
-                    break
-                }
-                case role.folder: {
-                    folder = el.text
-                    break
-                }
-            }
+            if (el.value == role.project) project = el.text
+            if (el.value == role.milestone) milestone = el.text
+            if (el.value == role.folder) folder = el.text
         })
         return [project, milestone, folder]
     }, [role])
@@ -27,9 +16,9 @@ export default function RoleItem({ role }: { role: RoleData }): React.JSX.Elemen
     return <>
         <div className="grid grid-cols-4 group ">
             <Infor>{role.name}</Infor>
-            <Infor label="Project: " className="[&__h2]:w-max">{project} admin</Infor>
-            <Infor label="Milestone:" className="[&__h2]:w-max">{milestone} admin</Infor>
-            <Infor label="Folder:" className="[&__h2]:w-max">{folder} admin</Infor>
+            <Infor label="Project: " className="[&__h2]:w-max">{project}</Infor>
+            <Infor label="Milestone:" className="[&__h2]:w-max">{milestone}</Infor>
+            <Infor label="Folder:" className="[&__h2]:w-max">{folder}</Infor>
         </div>
     </>
 }

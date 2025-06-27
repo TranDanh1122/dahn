@@ -62,6 +62,7 @@ router.post('', async (req, res) => {
         if (data.role && data.role.length > 0) {
 
             const rolesData = data.role.map(role => ({
+                id: role.id,
                 name: role.name,
                 project: role.project,
                 milestone: role.milestone,
@@ -76,27 +77,32 @@ router.post('', async (req, res) => {
             if (roleError) {
                 throw new Error(`Error creating roles: ${roleError.message}`);
             }
+            if (!roles || roles.length === 0) {
+                throw new Error("No roles returned from insert");
+            }
             if (data.members && data.members.length > 0) {
-                roles.forEach(async (savedRole) => {
-                    const membersData = data.members
-                        .filter(el => el.role == savedRole.name)
-                        .map(member => ({
-                            userid: member.userid,
-                            hourlyRate: member.hourlyRate,
-                            hours: member.hours,
-                            note: member.note,
-                            project_id: projectId,
-                            role_id: savedRole.id,
-                        }));
+                await Promise.all(
+                    roles.map(async (savedRole) => {
+                        const membersData = data.members
+                            .filter(el => el.roleId == savedRole.id)
+                            .map(member => ({
+                                userid: member.userid,
+                                hourlyRate: member.hourlyRate,
+                                hours: member.hours,
+                                note: member.note,
+                                project_id: projectId,
+                                role_id: savedRole.id,
+                            }));
 
-                    const { error: memberError } = await supabase
-                        .from('project_member')
-                        .insert(membersData);
+                        const { error: memberError } = await supabase
+                            .from('project_member')
+                            .insert(membersData);
 
-                    if (memberError) {
-                        throw new Error(`Error creating members: ${memberError.message}`);
-                    }
-                })
+                        if (memberError) {
+                            throw new Error(`Error creating members: ${memberError.message}`);
+                        }
+                    })
+                )
             }
         }
 
@@ -175,7 +181,7 @@ router.get('/:projectId', async (req, res) => {
                 *,
                 environment:project_env(*),
                 milestones:milestone(*),
-                members:project_member(*),
+                members:project_member(*, user:users!project_member_userid_fkey(*), role:project_role!project_member_role_id_fkey(*)),
                 role:project_role(*),
                 document:project_document(* , user:users!project_document_userid_fkey(*)),
                 communitation:project_communitation(*),

@@ -8,10 +8,11 @@ export default function Step1(): React.JSX.Element {
         return TypeDataSet.find(el => el.value == project?.type)?.text
     }, [project?.type])
     const techstack = React.useMemo(() => {
+        console.log(project?.techstack)
         if (!project || !project.techstack) return ""
         return project.techstack.split(",").map((el) => (
             <span key={el}
-                className="w-fit cursor-pointer 
+                className="w-fit cursor-pointer contain-content will-change-transform
                                 px-3 py-1 bg-slate-100 hover:-translate-y-1
                                 transition-transform duration-100 ease-in
                                 rounded-full text-slate-700">

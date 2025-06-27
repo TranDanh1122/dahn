@@ -9,8 +9,8 @@ export default function DetailProject(): React.JSX.Element {
         return project?.environment?.map((env) => <FooterItemComponent key={env.id} env={env} />)
     }, [project?.environment])
     return <>
-        <div className="space-y-8 p-4 h-full">
-            <div className="flex gap-20 h-[calc(100%-13rem)]">
+        <div className="p-4 h-full">
+            <div className="flex gap-15 h-[calc(100%-11rem)]">
                 <div className="w-5/7 h-full overflow-y-auto scrollbar-thin">
                     <MainDetail />
                 </div>

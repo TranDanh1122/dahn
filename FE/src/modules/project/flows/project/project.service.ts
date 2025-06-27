@@ -3,6 +3,7 @@ import { createProjectAPI, getProjectAPI } from "./project.api"
 import type { ProjectData, ProjectResDataType } from "@project/models"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
+import queryClient from "@/common/ults/QueryClient.const"
 
 export const useCreateProjectMutation = () => {
     return useMutation({
@@ -10,7 +11,8 @@ export const useCreateProjectMutation = () => {
             const res = await createProjectAPI(data)
             return await res.json()
         },
-        onSuccess: () => {
+        onSuccess: (_, req) => {
+            queryClient.invalidateQueries({ queryKey: ["projects", req.workspaceID] })
             SuccessHandle("Create Project Successfully")
         },
         onError: async (e: HTTPError) => {

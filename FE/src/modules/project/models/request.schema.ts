@@ -47,7 +47,11 @@ export const ProjectSchema = z.object({
             email: z.coerce.string(),
             avatar_url: z.coerce.string()
         }),
-        role: z.coerce.string().min(1),
+        role: z.object({
+            id: z.coerce.string().optional(),
+            name: z.coerce.string().max(50),
+        }).optional(),
+        roleId: z.coerce.string(),
         hourlyRate: z.coerce.number().nonnegative(),
         hours: z.coerce.number().nonnegative(),
         note: z.coerce.string().max(450).optional()
@@ -121,11 +125,16 @@ export const memberSchema = z.object({
         email: z.coerce.string(),
         avatar_url: z.coerce.string()
     }),
-    role: z.coerce.string().min(1),
+    role: z.object({
+        id: z.coerce.string().optional(),
+        name: z.coerce.string().max(50),
+    }).optional(),
+    roleId: z.coerce.string().min(1),
     hourlyRate: z.coerce.number().nonnegative(),
     hours: z.coerce.number().nonnegative(),
     note: z.coerce.string().max(450).optional()
 })
+export type MemberData = z.infer<typeof memberSchema>
 export const roleSchema = z.object({
     id: z.coerce.string().optional(),
     name: z.coerce.string().min(1).max(50),
@@ -168,9 +177,3 @@ export const communitationSchema = z.object({
 })
 
 export type CommunitationData = z.infer<typeof communitationSchema>
-export const roleSchemaInitData: z.infer<typeof roleSchema> = {
-    name: "",
-    project: "admin",
-    milestone: "admin",
-    folder: "admin"
-}

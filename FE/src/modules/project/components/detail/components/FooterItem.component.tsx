@@ -17,7 +17,7 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
     return (
         <div className="border border-slate-200 
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
-            rounded-2xl w-1/4 h-max p-4 space-y-2">
+            rounded-2xl w-1/4 h-full p-4 flex flex-col justify-between">
             <div className="flex items-center gap-2">
                 <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
                     {env.name}
@@ -26,7 +26,7 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
                     {status}
                 </Badge>
             </div>
-            <p className="line-clamp-3 text-slate-500 text-sm">
+            <p className="line-clamp-4 text-slate-500 text-sm">
                 {env.note}
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
                 optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
