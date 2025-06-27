@@ -12,7 +12,17 @@ export default React.memo(function Overview(): React.JSX.Element {
         setStep?.(newStep)
     }, [])
     const navigate = useNavigate()
-
+    const stepTabs = React.useMemo(() => {
+        return STEP_DETAILS.map(el => (
+            <DetailStep
+                key={el.id}
+                onClick={() => handleChangeStep(Number(el.id))}
+                active={Number(el.id) == step}>
+                <span className="text-slate-500 font-light">{el.id}</span>
+                {el.name}
+            </DetailStep>
+        ))
+    }, [step, handleChangeStep])
     return <>
         <h1 className="font-semibold uppercase text-4xl tracking-wide text-slate-600">
             {project?.name}
@@ -50,17 +60,7 @@ export default React.memo(function Overview(): React.JSX.Element {
             <SquarePen className="size-5 text-slate-500 cursor-pointer" />
         </p>
         <div className="space-y-6 text-left text-slate-700">
-            {
-                STEP_DETAILS.map(el => (
-                    <DetailStep
-                        key={el.id}
-                        onClick={() => handleChangeStep(Number(el.id))}
-                        active={Number(el.id) == step}>
-                        <span className="text-slate-500 font-light">{el.id}</span>
-                        {el.name}
-                    </DetailStep>
-                ))
-            }
+            {stepTabs}
         </div >
 
     </>

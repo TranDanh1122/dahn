@@ -10,7 +10,7 @@ const DashboardRouter = [
                 lazy: async () => ({
                     Component: (await import("@dashboard/view/Dashboard.view")).default,
                 }),
-                handle: { title: "Dashboard", rightHeadContent: <HRightContent /> }
+                handle: { rightHeadContent: <HRightContent /> }
             }
         ]
     }

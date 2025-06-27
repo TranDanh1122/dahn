@@ -2,8 +2,18 @@ import React from "react";
 import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 import DBWorkspaceListComponent from "@dashboard/components/DBWorkspaceList.component";
+import { BreadscrumContext } from "@/context/Breadscrum.context";
 export default function Dashboard(): React.JSX.Element {
     const user = useSelector((state: AppState) => state.persist.auth.user);
+    const { setBreadscrum } = React.useContext(BreadscrumContext)
+    React.useEffect(() => {
+        setBreadscrum([
+            {
+                link: "/",
+                text: "Dashboard"
+            },
+        ])
+    }, [])
     return (
         <div className="">
             <div className="space-y-2">

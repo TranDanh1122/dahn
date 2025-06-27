@@ -25,6 +25,7 @@ export default React.memo(function DBWorkspaceList(): React.JSX.Element {
                     data.slice(0, Math.max(data.length - 1, 3)).map((el) => {
                         return (
                             <SquareItem
+                                onClick={() => navigate(`workspace/${el.id}`)}
                                 key={el.id}
                                 img={el.thumbnail}
                                 title={el.name}

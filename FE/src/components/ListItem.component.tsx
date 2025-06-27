@@ -7,13 +7,13 @@ interface SquareItemProps extends React.ComponentProps<"div"> {
     lastUpdate?: string,
     skeletonMode?: boolean
 }
-export default React.memo(function ListItem({ img, title, lastUpdate, onClick, className, skeletonMode }: SquareItemProps): React.JSX.Element {
+export default React.memo(function ListItem({ img, title, lastUpdate, className, skeletonMode, ...props }: SquareItemProps): React.JSX.Element {
     const dateString = React.useMemo(() => {
         const date = new Date(lastUpdate ?? "")
         return `${date.toLocaleDateString()}`
     }, [lastUpdate])
     if (skeletonMode) return <SkeletonMode />
-    return <div onClick={(e) => onClick?.(e)}
+    return <div {...props}
         className={`w-full cursor-pointer hover:shadow-lg aspect-auto overflow-hidden border border-slate-200 shadow rounded-2xl ${className}`}>
         <picture>
             <source srcSet={img} />

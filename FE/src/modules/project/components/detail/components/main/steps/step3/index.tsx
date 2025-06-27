@@ -1,5 +1,5 @@
 import React from "react";
-import { DropdownInfo, Infor, ProjectContext } from "@project/components/detail";
+import { DropdownInfo, ProjectContext } from "@project/components/detail";
 import RoleItem from "./Role/RoleItem.component";
 import RoleDropContent from "./Role/RoleDropContent.component";
 import MemberItem from "./Member/MemberItem.component";

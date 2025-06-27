@@ -17,8 +17,12 @@ export default React.memo(function DropdownInfor({ itemContent, dropContent, ...
             onToggle={handleToggle}
             {...props}
             className={`list-none!  ${isExpand && "shadow border-l border-r rounded-lg border-slate-200 hover:shadow-lg hover:shadow-slate-300"}`}>
-            <summary className={`cursor-pointer list-none! relative 
-                    ${isExpand ? "border-r-0 border-l-0 border-slate-200 shadow-slate-200  rounded-b-none" : "hover:shadow hover:shadow-slate-300"} 
+            <summary
+                className={`cursor-pointer list-none! relative 
+                    ${isExpand
+                        ? "border-r-0 border-l-0 border-slate-200 shadow-slate-200  rounded-b-none"
+                        : "hover:shadow hover:shadow-slate-300"
+                    } 
                     border border-slate-200 p-2 rounded-lg`}>
                 {itemContent}
                 <ChevronRight className={`size-5 text-slate-800 right-2 top-1/2 -translate-y-1/2 absolute  ${isExpand && "rotate-90"}`} />
