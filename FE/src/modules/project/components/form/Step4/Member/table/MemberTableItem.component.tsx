@@ -17,8 +17,8 @@ export default function MemberTableItem({ data }: MemberItemProps): React.JSX.El
         </span>
         <span
             className="text-center line-clamp-1"
-            title={data.role}>
-            {data.role}
+            title={data.role?.name}>
+            {data.role?.name}
         </span>
         <span
             className="text-center line-clamp-1"
