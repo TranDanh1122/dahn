@@ -29,7 +29,7 @@ export default function Step1(): React.JSX.Element {
             <p >{project?.client}</p>
         </Infor>
         <Infor className=" flex-col items-start! gap-6" label="Description: ">
-            <Text lineChamp="line-clamp-5" className="leading-8 tracking-wide text-slate-700 text-justify">
+            <Text lineClamp="line-clamp-5" className="leading-8 tracking-wide text-slate-700 text-justify">
                 {project?.description}
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Est excepturi officiis a consectetur ut consequuntur ullam qui molestiae architecto iste. Excepturi culpa similique laborum, delectus sapiente nisi reprehenderit consectetur omnis?
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Non facere nam sapiente ea ut harum tempora fugiat animi voluptatum, blanditiis quam explicabo eligendi quia mollitia nostrum, enim quae modi maiores.

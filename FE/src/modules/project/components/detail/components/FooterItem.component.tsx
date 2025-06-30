@@ -6,7 +6,8 @@ import {
 } from "@project/const";
 import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-up-right";
 import type { EnvData } from "@project/models";
-import Badge from "@/components/Badge.component";
+import Badge from "@components/Badge.component";
+import Text from "@components/Text.component"
 export default React.memo(function FooterItem({ env }: { env: EnvData }): React.JSX.Element {
     const [color, bgColor, status] = React.useMemo(() => {
         const status = EnvironmentStatus.find((el) => el.value == env.status)?.text || ""
@@ -15,9 +16,9 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
         return [color, bgColor, status]
     }, [env.status])
     return (
-        <div className="border border-slate-200 
+        <div className="border border-slate-200 overflow-auto
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
-            rounded-2xl w-1/4 h-full p-4 flex flex-col justify-between">
+            rounded-2xl w-1/4 h-full p-4 space-y-4">
             <div className="flex items-center gap-2">
                 <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
                     {env.name}
@@ -26,12 +27,15 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
                     {status}
                 </Badge>
             </div>
-            <p className="line-clamp-4 text-slate-500 text-sm">
+            <Text lineClamp="line-clamp-4" className="text-slate-500 text-xs tracking-wider">
                 {env.note}
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
                 optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
                 dicta et nemo voluptates earum excepturi ut impedit cupiditate eum ex.
-            </p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
+                optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
+                dicta et nemo voluptates earum excepturi ut impedit cupiditate eum ex.
+            </Text>
             <div className="flex justify-between">
                 <a
                     href={env.readme}

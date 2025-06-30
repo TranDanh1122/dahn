@@ -28,7 +28,7 @@ export default React.memo(function Overview(): React.JSX.Element {
         <h1 className="font-semibold uppercase text-4xl tracking-wide text-slate-600">
             {project?.name}
         </h1>
-        <Text lineChamp="line-clamp-4 " className="leading-6 text-slate-700 text-sm">
+        <Text lineClamp="line-clamp-4 " className="leading-6 text-slate-700 text-sm">
             {project?.overview}
 
             Lorem ipsum dolor sit amet consectetur adipisicing elit.

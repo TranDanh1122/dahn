@@ -12,7 +12,7 @@ export default React.memo(function CircleLogoWText({ children, img, text, imgAlt
             <img
                 src="/images/logo.png"
                 alt={imgAlt || text}
-                className={`object-cover rounded-full size-8 border border-slate-300 shrink-0`} />
+                className="object-cover rounded-full size-8 border border-slate-300 shrink-0" />
         </picture>
         <div className="w-full max-w-[150px] group shrink relative">
             <p className="line-clamp-1 font-medium cursor-pointer text-sm"> {text} </p>
