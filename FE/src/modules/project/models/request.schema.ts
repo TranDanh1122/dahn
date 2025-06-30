@@ -80,6 +80,17 @@ export const ProjectSchema = z.object({
     })).optional(),
     isCompleted: z.boolean()
 })
+
+export const step1Schema = z.object({
+    id: z.coerce.string().optional(),
+    workspaceID: z.coerce.string().min(1),
+    name: z.coerce.string().min(3).max(50),
+    overview: z.coerce.string().min(1).max(450),
+    description: z.coerce.string().max(1000).optional(),
+    type: z.coerce.string(),
+    client: z.coerce.string().max(100).optional(),
+    techstack: z.coerce.string(),
+})
 export type ProjectData = z.infer<typeof ProjectSchema>
 export const initData: ProjectData = {
     workspaceID: "",

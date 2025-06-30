@@ -1,6 +1,6 @@
 import type { FieldValues, UseFormReturn } from "react-hook-form"
 
-export { default as ArrayForm } from "./views/ArrayForm.view"
+export { default as ArrayForm } from "./ArrayForm.component"
 
 export interface ModalProps<T extends FieldValues> {
     modalForm?: UseFormReturn<T>

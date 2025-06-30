@@ -48,7 +48,7 @@ export default React.memo(
                 <div
                     title={props.title}
                     className="relative">
-                    <img
+                    <img alt=""
                         onClick={() => { document.getElementById(id)?.click() }}
                         className={`size-20 object-cover ${previewImgClass}`}
                         src={reactValue} />
