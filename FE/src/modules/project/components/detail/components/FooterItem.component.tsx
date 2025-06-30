@@ -16,9 +16,9 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
         return [color, bgColor, status]
     }, [env.status])
     return (
-        <div className="border border-slate-200 overflow-auto
+        <div className="border border-slate-200 overflow-auto scrollbar-thin
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
-            rounded-2xl w-1/4 h-full p-4 space-y-4">
+            rounded-2xl w-1/4 h-full p-4 flex flex-col justify-between gap-2">
             <div className="flex items-center gap-2">
                 <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
                     {env.name}
@@ -29,12 +29,6 @@ export default React.memo(function FooterItem({ env }: { env: EnvData }): React.
             </div>
             <Text lineClamp="line-clamp-4" className="text-slate-500 text-xs tracking-wider">
                 {env.note}
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
-                optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
-                dicta et nemo voluptates earum excepturi ut impedit cupiditate eum ex.
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
-                optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
-                dicta et nemo voluptates earum excepturi ut impedit cupiditate eum ex.
             </Text>
             <div className="flex justify-between">
                 <a

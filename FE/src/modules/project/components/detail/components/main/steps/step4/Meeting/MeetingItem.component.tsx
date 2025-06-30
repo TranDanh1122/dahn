@@ -3,6 +3,7 @@ import React from "react";
 import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-up-right";
 import { Infor } from "@project/components/detail";
 import { CommunitationMeeting } from "@project/const"
+import Text from "@components/Text.component"
 export default React.memo(function MeetingItem({ meeting }: { meeting: CommunitationData }): React.JSX.Element {
     const meetingFreq = React.useMemo(() => {
         return CommunitationMeeting.find(el => el.value == meeting.meeting)?.text
@@ -22,12 +23,9 @@ export default React.memo(function MeetingItem({ meeting }: { meeting: Communita
                 <SquareArrowOutUpRight className="size-4 text-slate-800 ml-auto hover-show" />
             </a>
 
-            <p className="line-clamp-2 text-slate-500 text-sm">
+            <Text lineClamp="line-clamp-2" className="line-clamp-2 text-slate-500 text-sm">
                 {meeting.note}
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto, nobis
-                optio, odit tempora animi ratione explicabo sint obcaecati ducimus,
-                dicta et nemo voluptates earum excepturi ut impedit cupiditate eum ex.
-            </p>
+            </Text>
             <div className="space-y-2">
 
                 {meeting.meeting != "no" && (

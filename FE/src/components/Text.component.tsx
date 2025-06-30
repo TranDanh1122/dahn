@@ -11,14 +11,24 @@ export default React.memo(function Text({ lineClamp, children, ...props }: TextP
     React.useEffect(() => {
         const resizeListener = new ResizeObserver(() => {
             if (textRef.current) {
-                const isOverflow = (textRef.current.scrollHeight || 0) > textRef.current.clientHeight
+                const lineClampClass = lineClamp.trim()
+                const classList = textRef.current.classList
+
+                if (!classList.contains(lineClampClass)) textRef.current.classList.add(lineClampClass)
+
+                const heightWhenLineClamp = textRef.current.clientHeight
+
+                textRef.current.classList.remove(lineClampClass)
+
+                const isOverflow = heightWhenLineClamp < textRef.current.clientHeight
                 setLineclamp(prev => prev != isOverflow ? isOverflow : prev)
+
+                if (!isExpand && isOverflow) classList.add(lineClamp)
             }
         })
         if (textRef.current) resizeListener.observe(textRef.current)
         return () => resizeListener.disconnect()
-    }, [])
-
+    }, [lineClamp, isExpand])
 
     if (!isLineclamp) return <p ref={textRef} {...props}>{children}</p>
 
@@ -26,10 +36,10 @@ export default React.memo(function Text({ lineClamp, children, ...props }: TextP
         {...props}
         ref={textRef}
         className={
-            clsx("relative",
+            clsx(`relative ${!isExpand && isLineclamp ? lineClamp : ""}`,
                 props.className,
                 isExpand && "pb-3",
-                !isExpand && lineClamp
+                !isExpand && isLineclamp && lineClamp
             )}>
         {children}
         <span onClick={() => setExpand(prev => !prev)}

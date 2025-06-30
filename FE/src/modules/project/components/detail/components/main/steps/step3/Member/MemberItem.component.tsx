@@ -1,9 +1,10 @@
 import { Infor } from "@project/components/detail";
 import type { MemberData } from "@project/models";
 import React from "react";
+import Text from "@components/Text.component"
 export default React.memo(function MemberItem({ member }: { member: MemberData }): React.JSX.Element {
     return (
-        <div className="border border-slate-200 rounded-xl tracking-wider space-y-2 p-4 contain-content hover:shadow-lg shadow-slate-200 ">
+        <div className="border border-slate-200 rounded-xl tracking-wide space-y-2 p-4 contain-content hover:shadow-lg shadow-slate-200 ">
             <img
                 className="size-15 object-cover rounded-full border border-slate-300 mx-auto"
                 src={member.user?.avatar_url || ''}
@@ -14,12 +15,9 @@ export default React.memo(function MemberItem({ member }: { member: MemberData }
                 <span className="text-xs">{member.role?.name}</span>
             </Infor>
             <Infor label="Note:" className="[&__h2]:w-max [&__h2]:text-xs flex-col gap-1! items-start ">
-                <h4 className="line-clamp-3 text-slate-600 text-xs">
+                <Text lineClamp="line-clamp-3" className="text-slate-600 text-xs">
                     {member.note}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus quidem consectetur
-                    amet nostrum harum odit commodi laboriosam totam deleniti quis, saepe,
-                    similique maiores? Est laudantium, dolores assumenda laborum quia facilis.
-                </h4>
+                </Text>
             </Infor>
             <div className="flex items-center">
                 <Infor label="Rate:" className="[&__h2]:w-max [&__h2]:text-xs">
