@@ -1,6 +1,6 @@
 import React from "react";
 import { useFieldArray, useFormContext, type FieldValues } from "react-hook-form";
-import type { FormModalRef } from "@components/FormModal.component";
+import type { FormModalRef } from "@/components/Formodal/type";
 const useArrayForm = (name: string) => {
     const form = useFormContext()
     const { fields, remove, update, append } = useFieldArray({
