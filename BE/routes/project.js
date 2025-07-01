@@ -230,4 +230,27 @@ router.delete("/:projectId", async (req, res) => {
         })
     }
 })
+router.put("/:projectId/general", async (req, res) => {
+    if (req.method != "PUT") return res.status(405).json({ success: false, message: "Method not allowed" })
+    if (!req.params.projectId) return res.status(400).json({ success: false, message: "Project ID is required" })
+    try {
+        const projectId = req.params.projectId
+        const supabase = req.supabase
+        const user = req.user
+        const data = req.body
+        const { data: project, error } = await supabase.from("project")
+            .update(data)
+            .eq("id", projectId)
+            .eq("owner", user.id) // Đảm bảo user là owner
+            .select("*, workspace_members(*)")
+            .single();
+        if (error) throw new Error(error.message)
+        return res.status(200).json({ success: true, message: "Project Edited", data: project })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: e.message || "Internal server error"
+        })
+    }
+})
 module.exports = router
