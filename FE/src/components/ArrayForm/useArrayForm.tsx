@@ -21,11 +21,11 @@ const useArrayForm = (name: string) => {
 
     const handleItemClick = (index: number) => {
         setCurrentIndex(index)
-        modalRef.current?.toogleOpen(true, form.watch(`${name}.${currentIndex}`))
+        modalRef.current?.toogleOpen(true, form.watch(`${name}.${index}`))
     }
     const handleOpen = () => {
         setCurrentIndex(-1)
-        modalRef.current?.toogleOpen(true, {})
+        modalRef.current?.toogleOpen(true)
     }
     const modalRef = React.useRef<FormModalRef>(null)
     return {

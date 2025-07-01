@@ -4,7 +4,6 @@ import X from "lucide-react/dist/esm/icons/x";
 import Button from "./Button.component";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodEffects, ZodObject } from "zod";
-import { flushSync } from "react-dom";
 interface FormModal {
     schema: ZodObject<FieldValues> | ZodEffects<ZodObject<FieldValues>>,
     closeSideEffect?: () => void,
@@ -20,38 +19,56 @@ const FormModal = ({
     closeSideEffect,
     submitSideEffect,
 }: FormModal, ref: React.ForwardedRef<FormModalRef>): React.JSX.Element => {
-    const [isOpen, setOpen] = React.useState<boolean>(false)
+    const [isOpen, setOpen] = React.useState<{ state: boolean, data?: FieldValues }>({ state: false })
 
 
     const modalForm = useForm<FieldValues>({
         resolver: zodResolver(schema)
     })
+
     const closeModal = () => {
         closeSideEffect?.()
-        setOpen(false)
+        setOpen(prev => ({ ...prev, state: false }))
     }
     const submitForm = modalForm.handleSubmit(async (data: FieldValues) => {
         const valid = await modalForm.trigger()
         if (valid) {
             submitSideEffect?.(data)
-            setOpen(false)
+            setOpen({ state: false })
         }
     })
+    /**
+     * open modal, and you can put default data to you form
+     * @param open 
+     * @param data 
+     */
     const toogleOpen = (open?: boolean, data?: FieldValues) => {
-        flushSync(() => {
-            setOpen(prev => open !== undefined ? open : !prev);
+        setOpen(prev => {
+            const state = open !== undefined ? open : !prev
+            return {
+                state,
+                data
+            }
         });
-        if (data !== undefined) {
-            modalForm.reset(data);
-        }
     };
+    React.useEffect(() => {
+        if (isOpen.data) {
+            modalForm.reset(isOpen.data)
+        } else {
+            const emptyForm = Object.fromEntries(
+                Object.keys(modalForm.getValues()).map(key => [key, ''])
+            )
+            modalForm.reset(emptyForm)
+        }
+    }, [isOpen.data])
+
     React.useImperativeHandle(ref, () => {
         return {
             toogleOpen,
             modalForm
         }
     })
-    if (!isOpen) return <></>
+    if (!isOpen.state) return <></>
     return (
         <>
             <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>
