@@ -1,18 +1,26 @@
 import React from "react";
 import Step1 from "@project/components/form/Step1";
 import { step1Schema } from "@project/models/request.schema";
-import type { FormModalRef } from "@/components/Formodal/type";
+import type { FormModalRef } from "@components/Formodal/type";
 import SquarePen from "lucide-react/dist/esm/icons/square-pen";
-import SkeletonComponent from "@/components/Skeleton.component";
+import SkeletonComponent from "@components/Skeleton.component";
+import { useGetTechstacksSvc } from "@project/flows/techstack";
+import Picker from "@components/Picker.component";
+import { ProjectContext } from "@project/components/detail";
 
 const FormModalComponent = React.lazy(() => import("@/components/Formodal/FormModal.component"))
 export default function Step1Modal(): React.JSX.Element {
     const modalRef = React.useRef<FormModalRef | null>(null)
+    const project = React.useContext(ProjectContext)
+    const initData = React.useMemo(() => {
+        return Object.fromEntries(Object.keys(step1Schema.shape).map(el => [el, project?.[el as keyof typeof project]]))
+    }, [project])
     const [state, setState] = React.useState<{ open: boolean, mounted: boolean }>({ open: false, mounted: false })
     React.useEffect(() => {
         if (!state.open || !state.mounted) return;
-        modalRef.current?.toogleOpen(true);
-    }, [state])
+        modalRef.current?.toogleOpen(true, initData);
+    }, [state, initData])
+    const { data: techstacks, isLoading, isError } = useGetTechstacksSvc()
     return (
         <>
 
@@ -26,7 +34,14 @@ export default function Step1Modal(): React.JSX.Element {
                     <FormModalComponent
                         ref={modalRef}
                         schema={step1Schema}
-                        modalFormContent={<Step1 />}
+                        modalFormContent={<div>
+                            <Step1 />
+                            <Picker
+                                dataSet={(isLoading || isError) ? [] : techstacks || []}
+                                data={project?.techstack.split(",")}
+                                onItemClick={(val) => modalRef.current?.modalForm.setValue("techstack", val)}
+                            />
+                        </div>}
                         closeSideEffect={() => { setState((prev) => ({ ...prev, open: false })) }}
                         submitSideEffect={() => { }}
                         onMouted={() => setState((prev) => ({ ...prev, mounted: true }))}
