@@ -6,6 +6,7 @@ import { ProjectContext, StepContext } from "@project/components/detail";
 import { useNavigate } from "react-router-dom";
 import MoreInfo from "./components/MoreInfo.component";
 import Text from "@components/Text.component";
+const Step1Modal = React.lazy(() => import("@project/components/detail/modals/Step1.modal"))
 export default React.memo(function Overview(): React.JSX.Element {
     const project = React.useContext(ProjectContext)
     const { step, setStep } = React.useContext(StepContext)
@@ -24,6 +25,7 @@ export default React.memo(function Overview(): React.JSX.Element {
             </DetailStep>
         ))
     }, [step, handleChangeStep])
+    const [isOpen, setOpen] = React.useState<boolean>(false)
     return <>
         <h1 className="font-semibold uppercase text-4xl tracking-wide text-slate-600">
             {project?.name}
@@ -47,13 +49,19 @@ export default React.memo(function Overview(): React.JSX.Element {
         />
 
 
-        <p className="flex items-center gap-2">
+        <p onClick={() => { setOpen(true) }} className="flex items-center gap-2">
             <span className="text-slate-600 text-sm">General Infomation Edit:</span>
             <SquarePen className="size-5 text-slate-500 cursor-pointer" />
         </p>
         <div className="space-y-6 text-left text-slate-700">
             {stepTabs}
         </div >
+        {
+            isOpen &&
+            <React.Suspense fallback={<></>}>
+                <Step1Modal />
+            </React.Suspense>
+        }
 
     </>
 }) 

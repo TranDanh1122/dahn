@@ -2,13 +2,14 @@ import React from "react";
 import Overview from "./components/side"
 import MainDetail from "./components/main";
 import { ProjectContext } from "./context/Detail.context";
-import FooterItemComponent from "./components/FooterItem.component";
 import { BreadscrumContext } from "@/context/Breadscrum.context";
+import SkeletonComponent from "@/components/Skeleton.component";
+const Footer = React.lazy(() => import("./components/footer"))
 export default function DetailProject(): React.JSX.Element {
     const project = React.useContext(ProjectContext);
-    const footer = React.useMemo(() => {
-        return project?.environment?.map((env) => <FooterItemComponent key={env.id} env={env} />)
-    }, [project?.environment])
+    const skeletonFooter = React.useMemo(() => {
+        return Array.from({ length: 4 }).map((_, idx) => <SkeletonComponent key={idx} className="bg-slate-100 w-1/4 h-full rounded-2xl" />)
+    }, [])
     const { setBreadscrum } = React.useContext(BreadscrumContext)
     React.useEffect(() => {
         if (project)
@@ -37,8 +38,10 @@ export default function DetailProject(): React.JSX.Element {
                     <Overview />
                 </div>
             </div>
-            <div className="flex items-center justify-evenly h-44">
-                {footer}
+            <div className="flex items-center justify-evenly gap-2 h-44">
+                <React.Suspense fallback={skeletonFooter}>
+                    <Footer />
+                </React.Suspense>
             </div>
         </div>
     )

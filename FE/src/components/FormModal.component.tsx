@@ -9,7 +9,7 @@ interface FormModal {
     closeSideEffect?: () => void,
     submitSideEffect: (data: FieldValues) => void,
     modalFormContent?: React.ReactElement,
-    parentForm: UseFormReturn<FieldValues>
+    parentForm?: UseFormReturn<FieldValues>
 }
 
 const FormModal = ({
