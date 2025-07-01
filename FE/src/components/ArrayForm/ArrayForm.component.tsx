@@ -1,7 +1,7 @@
 import React from "react";
 import X from "lucide-react/dist/esm/icons/x";
 import CirclePlus from "lucide-react/dist/esm/icons/circle-plus";
-import FormModal from "@components/FormModal.component";
+import FormModal from "@/components/Formodal/FormModal.component";
 import type { ZodEffects, ZodObject } from "zod";
 import { type FieldValues } from "react-hook-form";
 import useArrayForm from "./useArrayForm";

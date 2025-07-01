@@ -1,27 +1,41 @@
 import React from "react";
 import { FormProvider, useForm, type FieldValues, type UseFormReturn } from "react-hook-form";
 import X from "lucide-react/dist/esm/icons/x";
-import Button from "./Button.component";
+import Button from "../Button.component";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodEffects, ZodObject } from "zod";
+import type { FormModalRef } from "./type";
 interface FormModal {
     schema: ZodObject<FieldValues> | ZodEffects<ZodObject<FieldValues>>,
     closeSideEffect?: () => void,
     submitSideEffect: (data: FieldValues) => void,
     modalFormContent?: React.ReactElement,
-    parentForm?: UseFormReturn<FieldValues>
+    parentForm?: UseFormReturn<FieldValues>,
+    onMouted?: () => void
 }
-
+/**
+ * 
+ * @param parentForm - parent form of this form 
+ * @param modalFormContent - list of input in form
+ * @param schema - schema validate form
+ * @param closeSideEffect - do something when close
+ * @param submitSideEffect - do something when form submit
+ * @param onMouted - do something when modal ready (loaded) - ussually use with lazyload
+ * @returns 
+ */
 const FormModal = ({
     parentForm,
     modalFormContent,
     schema,
     closeSideEffect,
     submitSideEffect,
+    onMouted,
 }: FormModal, ref: React.ForwardedRef<FormModalRef>): React.JSX.Element => {
     const [isOpen, setOpen] = React.useState<{ state: boolean, data?: FieldValues }>({ state: false })
 
-
+    React.useEffect(() => {
+        onMouted?.()
+    }, [])
     const modalForm = useForm<FieldValues>({
         resolver: zodResolver(schema)
     })
@@ -65,7 +79,8 @@ const FormModal = ({
     React.useImperativeHandle(ref, () => {
         return {
             toogleOpen,
-            modalForm
+            modalForm,
+            isOpen: isOpen.state
         }
     })
     if (!isOpen.state) return <></>
@@ -93,8 +108,5 @@ const FormModal = ({
         </>
     )
 }
-export type FormModalRef = {
-    toogleOpen: (open?: boolean, data?: FieldValues) => void,
-    modalForm: UseFormReturn<FieldValues>
-}
+
 export default React.forwardRef<FormModalRef, FormModal>(FormModal)
