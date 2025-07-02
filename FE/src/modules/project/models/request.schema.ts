@@ -91,6 +91,7 @@ export const step1Schema = z.object({
     client: z.coerce.string().max(100).optional(),
     techstack: z.coerce.string(),
 })
+
 export type ProjectData = z.infer<typeof ProjectSchema>
 export const initData: ProjectData = {
     workspaceID: "",

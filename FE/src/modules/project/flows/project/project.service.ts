@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { createProjectAPI, deleteProjectAPI, getProjectAPI } from "./project.api"
-import type { ProjectData, ProjectResDataType } from "@project/models"
+import { createProjectAPI, deleteProjectAPI, getProjectAPI, updateGeneralInfoAPI } from "./project.api"
+import { type ProjectData, type ProjectResDataType, step1Schema } from "@project/models"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
 import queryClient from "@/common/ults/QueryClient.const"
+import type { z } from "zod"
 
 export const useCreateProjectMutation = () => {
     return useMutation({
@@ -53,5 +54,23 @@ export const useDeleteProjectMutation = () => {
             ErrorHandler(body.message || e.message)
         },
         retry: 0
+    })
+}
+
+export const useUpdateGeneralInfoMutation = () => {
+    return useMutation({
+        mutationFn: async ({ projectId, data }: { projectId: string, data: z.infer<typeof step1Schema> }) => {
+            const res = await updateGeneralInfoAPI(projectId, data)
+            const json = await res.json<ProjectResDataType>()
+            return json.data
+        },
+        onSuccess: (data) => {
+            SuccessHandle(`Project ${data.name} updated`)
+            queryClient.invalidateQueries({ queryKey: ["project", data.id] })
+        },
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>()
+            ErrorHandler(body.message || e.message)
+        }
     })
 }

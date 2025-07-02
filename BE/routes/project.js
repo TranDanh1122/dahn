@@ -230,26 +230,63 @@ router.delete("/:projectId", async (req, res) => {
         })
     }
 })
+const checkRole = async (req, asset, role) => {
+    const projectId = req.params.projectId
+    const supabase = req.supabase
+    const user = req.user
+
+    const { data: project, error: projectError } = await supabase
+        .from("project")
+        .select(`
+                id,
+                workspace:workspaceID ( owner )
+            `)
+        .eq("id", projectId)
+        .single();
+
+
+    if (projectError) throw new Error(projectError.message);
+
+    const { data: member, error: memberError } = await supabase
+        .from("project_member")
+        .select(`
+                userid,
+                role:role_id ( project )
+            `)
+        .eq("project_id", projectId)
+        .eq("userid", user.id)
+        .maybeSingle();
+
+    if (memberError) throw new Error(memberError.message);
+
+    const isOwner = project?.owner === user.id;
+
+    const matchRole = member?.role?.[asset] === role;
+
+    if (!isOwner && !matchRole) throw new Error("You dont have permission to edit this Project");
+}
 router.put("/:projectId/general", async (req, res) => {
     if (req.method != "PUT") return res.status(405).json({ success: false, message: "Method not allowed" })
     if (!req.params.projectId) return res.status(400).json({ success: false, message: "Project ID is required" })
     try {
         const projectId = req.params.projectId
         const supabase = req.supabase
-        const user = req.user
         const data = req.body
-        const { data: project, error } = await supabase.from("project")
+
+        await checkRole(req, "project", "admin");
+
+        const { data: updatedProject, error } = await supabase.from("project")
             .update(data)
+            .select()
             .eq("id", projectId)
-            .eq("owner", user.id) // Đảm bảo user là owner
-            .select("*, workspace_members(*)")
             .single();
         if (error) throw new Error(error.message)
-        return res.status(200).json({ success: true, message: "Project Edited", data: project })
+
+        return res.status(200).json({ success: true, message: "Project Edited", data: updatedProject })
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: e.message || "Internal server error"
+            message: error.message || "Internal server error"
         })
     }
 })

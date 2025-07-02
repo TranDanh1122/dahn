@@ -5,13 +5,15 @@ import Button from "../Button.component";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodEffects, ZodObject } from "zod";
 import type { FormModalRef } from "./type";
+import LoadingComponent from "@components/Loading.component";
 interface FormModal {
     schema: ZodObject<FieldValues> | ZodEffects<ZodObject<FieldValues>>,
     closeSideEffect?: () => void,
-    submitSideEffect: (data: FieldValues) => void,
+    submitSideEffect: ((data: FieldValues) => void) | ((data: FieldValues) => Promise<unknown>),
     modalFormContent?: React.ReactElement,
     parentForm?: UseFormReturn<FieldValues>,
-    onMouted?: () => void
+    onMouted?: () => void,
+    onLoading?: boolean,
 }
 /**
  * 
@@ -21,6 +23,7 @@ interface FormModal {
  * @param closeSideEffect - do something when close
  * @param submitSideEffect - do something when form submit
  * @param onMouted - do something when modal ready (loaded) - ussually use with lazyload
+ * @param isLoading - loading state
  * @returns 
  */
 const FormModal = ({
@@ -30,6 +33,7 @@ const FormModal = ({
     closeSideEffect,
     submitSideEffect,
     onMouted,
+    onLoading,
 }: FormModal, ref: React.ForwardedRef<FormModalRef>): React.JSX.Element => {
     const [isOpen, setOpen] = React.useState<{ state: boolean, data?: FieldValues }>({ state: false })
 
@@ -46,11 +50,10 @@ const FormModal = ({
     }
     const submitForm = modalForm.handleSubmit(async (data: FieldValues) => {
         const valid = await modalForm.trigger()
-        if (valid) {
+        if (valid)
             submitSideEffect?.(data)
-            setOpen({ state: false })
-        }
-    })
+
+    });
     /**
      * open modal, and you can put default data to you form
      * @param open 
@@ -100,7 +103,12 @@ const FormModal = ({
                         </Button>
                         <Button onClick={submitForm}
                             className="bg-blue-500 text-white font-light!">
-                            Add
+                            {
+                                !onLoading && "Add"
+                            }
+                            {
+                                onLoading && <LoadingComponent className="border-s-white" />
+                            }
                         </Button>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ export default function DetailProject(): React.JSX.Element {
                     text: `${project.name}`
                 }
             ])
-    }, [])
+    }, [project])
     return (
         <div className="p-4 h-full">
             <div className="flex gap-15 h-[calc(100%-11rem)]">
