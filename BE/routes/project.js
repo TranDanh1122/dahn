@@ -259,7 +259,7 @@ const checkRole = async (req, asset, role) => {
 
     if (memberError) throw new Error(memberError.message);
 
-    const isOwner = project?.owner === user.id;
+    const isOwner = project?.workspace?.owner === user.id;
 
     const matchRole = member?.role?.[asset] === role;
 
