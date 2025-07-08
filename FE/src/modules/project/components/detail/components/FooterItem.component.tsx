@@ -8,15 +8,22 @@ import SquareArrowOutUpRight from "lucide-react/dist/esm/icons/square-arrow-out-
 import type { EnvData } from "@project/models";
 import Badge from "@components/Badge.component";
 import Text from "@components/Text.component"
-export default React.memo(function FooterItem({ env }: { env: EnvData }): React.JSX.Element {
+interface FooterItemProps extends React.ComponentProps<"div"> {
+    env?: EnvData
+}
+export default React.memo(function FooterItem({ env, ...props }: FooterItemProps): React.JSX.Element {
+
     const [color, bgColor, status] = React.useMemo(() => {
+        if (!env) return ["", "", ""]
         const status = EnvironmentStatus.find((el) => el.value == env.status)?.text || ""
         const color = EnvironmentColor[env.status] || ""
         const bgColor = EnvironmentBgColor[env.status] || ""
         return [color, bgColor, status]
-    }, [env.status])
+    }, [env])
+
+    if (!env) return <></>
     return (
-        <div className="border border-slate-200 overflow-auto scrollbar-thin
+        <div {...props} className="border border-slate-200 overflow-auto scrollbar-thin
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
             rounded-2xl w-1/4 h-full p-4 flex flex-col justify-between gap-2">
             <div className="flex items-center gap-2">

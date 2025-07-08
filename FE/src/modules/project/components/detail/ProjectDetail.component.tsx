@@ -38,7 +38,7 @@ export default function DetailProject(): React.JSX.Element {
                     <Overview />
                 </div>
             </div>
-            <div className="flex items-center justify-evenly gap-2 h-44">
+            <div className="flex items-center justify-evenly gap-2 h-44 relative">
                 <React.Suspense fallback={skeletonFooter}>
                     <Footer />
                 </React.Suspense>

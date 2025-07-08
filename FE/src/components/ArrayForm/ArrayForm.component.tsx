@@ -1,10 +1,10 @@
 import React from "react";
 import X from "lucide-react/dist/esm/icons/x";
 import CirclePlus from "lucide-react/dist/esm/icons/circle-plus";
-import FormModal from "@/components/Formodal/FormModal.component";
 import type { ZodEffects, ZodObject } from "zod";
 import { type FieldValues } from "react-hook-form";
 import useArrayForm from "./useArrayForm";
+const FormModal = React.lazy(() => import("@/components/Formodal/FormModal.component"))
 
 /**
  * @param {string} name - Name of array fields
@@ -36,26 +36,26 @@ export default
         }: ArrayFormProps): React.JSX.Element {
 
     const {
-        modalRef,
         fields,
         remove,
         form,
-        handleItemClick,
+        setState,
         upsert,
-        handleOpen,
+        state
     } = useArrayForm(name)
+
     return (
         <>
             <fieldset className="space-y-2" >
+
                 <div className="flex items-center gap-2 te">
                     <legend className="text-slate-600 font-light text-sm">{label}</legend>
                     <CirclePlus
-                        onClick={handleOpen}
+                        onClick={() => setState(-1)}
                         className="font-light! text-slate-600 size-5 
                                     flex items-center justify-center"
                     />
                 </div>
-
                 {
                     fields && headerEl && <>{headerEl}</>
                 }
@@ -63,7 +63,7 @@ export default
                     fields &&
                     fields.map(
                         (el, index) => (
-                            <div onClick={() => handleItemClick(index)} key={el.id}
+                            <div onClick={() => setState(index)} key={el.id}
                                 className="py-4 border-b text-sm border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
                                 {
                                     React.cloneElement(itemEl || <></>, {
@@ -83,15 +83,14 @@ export default
                     )}
             </fieldset >
             {
-                modalFormSchema && (
-                    <FormModal
-                        parentForm={form}
-                        modalFormContent={modalFormContent}
-                        ref={modalRef}
-                        submitSideEffect={(values) => upsert?.(values)}
-                        schema={modalFormSchema} />
-
-                )
+                <FormModal
+                    initData={form.getValues(`${name}.${state}`)}
+                    parentForm={form}
+                    modalFormContent={modalFormContent}
+                    submitAction={upsert}
+                    schema={modalFormSchema}
+                    closeAction={() => setState(-2)}
+                />
             }
         </>
     )

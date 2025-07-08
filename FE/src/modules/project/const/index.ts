@@ -60,9 +60,9 @@ export const CommunitationMeeting: EnumSelectType = [
 ]
 
 export const RoleDataSets: EnumSelectType = [
-    { value: "admin", text: "Admin" },
-    { value: "read", text: "Read" },
-    { value: "write", text: "Write" },
+    { value: "4", text: "Admin" },
+    { value: "1", text: "Read" },
+    { value: "2", text: "Write" },
 ];
 
 export const STEPS = [

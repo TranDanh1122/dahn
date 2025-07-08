@@ -261,7 +261,7 @@ const checkRole = async (req, asset, role) => {
 
     const isOwner = project?.workspace?.owner === user.id;
 
-    const matchRole = member?.role?.[asset] === role;
+    const matchRole = member?.role?.[asset] >= role;
 
     if (!isOwner && !matchRole) throw new Error("You dont have permission to edit this Project");
 }
@@ -273,7 +273,7 @@ router.put("/:projectId/general", async (req, res) => {
         const supabase = req.supabase
         const data = req.body
 
-        await checkRole(req, "project", "admin");
+        await checkRole(req, "project", "4");
 
         const { data: updatedProject, error } = await supabase.from("project")
             .update(data)
@@ -283,6 +283,44 @@ router.put("/:projectId/general", async (req, res) => {
         if (error) throw new Error(error.message)
 
         return res.status(200).json({ success: true, message: "Project Edited", data: updatedProject })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error"
+        })
+    }
+})
+router.put("/:projectId/environment/:envId", async (req, res) => {
+    if (req.method != "PUT") return res.status(405).json({ success: false, message: "Method not allowed" })
+    if (!req.params.projectId) return res.status(400).json({ success: false, message: "Project ID is required" })
+    try {
+        const projectId = req.params.projectId
+        const envId = req.params.envId
+        const supabase = req.supabase
+        const data = req.body
+
+        await checkRole(req, "project", "2");
+        if (envId) {
+            const { data: updateEnv, error } = await supabase.from("project_env")
+                .update(data)
+                .select()
+                .eq("project_id", projectId)
+                .eq("id", envId)
+                .single();
+
+            if (error) throw new Error(error.message)
+            return res.status(200).json({ success: true, message: "Project Environment Updated", data: updateEnv })
+
+        } else {
+            const { data: updateEnv, error } = await supabase.from("project_env")
+                .insert(data)
+                .select()
+                .single();
+
+            if (error) throw new Error(error.message)
+            return res.status(200).json({ success: true, message: "Project Environment Added", data: updateEnv })
+        }
+
     } catch (error) {
         return res.status(500).json({
             success: false,

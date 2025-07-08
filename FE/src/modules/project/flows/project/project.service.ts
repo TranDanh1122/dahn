@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { createProjectAPI, deleteProjectAPI, getProjectAPI, updateGeneralInfoAPI } from "./project.api"
-import { type ProjectData, type ProjectResDataType, step1Schema } from "@project/models"
+import { createProjectAPI, deleteProjectAPI, getProjectAPI, updateEnvAPI, updateGeneralInfoAPI } from "./project.api"
+import { type EnvData, type ProjectData, type ProjectResDataType, step1Schema } from "@project/models"
 import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
 import queryClient from "@/common/ults/QueryClient.const"
@@ -67,6 +67,24 @@ export const useUpdateGeneralInfoMutation = () => {
         onSuccess: (data) => {
             SuccessHandle(`Project ${data.name} updated`)
             queryClient.invalidateQueries({ queryKey: ["project", data.id] })
+        },
+        onError: async (e: HTTPError) => {
+            const body = await e.response.json<{ message: string }>()
+            ErrorHandler(body.message || e.message)
+        }
+    })
+}
+
+export const useUpdateEnvMutation = () => {
+    return useMutation({
+        mutationFn: async ({ projectId, data, envId }: { projectId: string, data: EnvData, envId?: string }) => {
+            const res = await updateEnvAPI(projectId, data, envId)
+            const json = await res.json<ProjectResDataType>()
+            return json.data
+        },
+        onSuccess: (data, { projectId }) => {
+            SuccessHandle(`Project ${data.name} updated`)
+            queryClient.invalidateQueries({ queryKey: ["project", projectId] })
         },
         onError: async (e: HTTPError) => {
             const body = await e.response.json<{ message: string }>()

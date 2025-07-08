@@ -4,16 +4,15 @@ import X from "lucide-react/dist/esm/icons/x";
 import Button from "../Button.component";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodEffects, ZodObject } from "zod";
-import type { FormModalRef } from "./type";
 import LoadingComponent from "@components/Loading.component";
 interface FormModal {
-    schema: ZodObject<FieldValues> | ZodEffects<ZodObject<FieldValues>>,
-    closeSideEffect?: () => void,
-    submitSideEffect: ((data: FieldValues) => void) | ((data: FieldValues) => Promise<unknown>),
+    schema?: ZodObject<FieldValues> | ZodEffects<ZodObject<FieldValues>>,
+    closeAction?: () => void,
+    submitAction: ((data: FieldValues) => void) | ((data: FieldValues) => Promise<unknown>),
     modalFormContent?: React.ReactElement,
     parentForm?: UseFormReturn<FieldValues>,
-    onMouted?: () => void,
     onLoading?: boolean,
+    initData?: FieldValues
 }
 /**
  * 
@@ -22,86 +21,58 @@ interface FormModal {
  * @param schema - schema validate form
  * @param closeSideEffect - do something when close
  * @param submitSideEffect - do something when form submit
- * @param onMouted - do something when modal ready (loaded) - ussually use with lazyload
- * @param isLoading - loading state
+ * @param onLoading - loading state
  * @returns 
  */
 const FormModal = ({
     parentForm,
     modalFormContent,
     schema,
-    closeSideEffect,
-    submitSideEffect,
-    onMouted,
-    onLoading,
-}: FormModal, ref: React.ForwardedRef<FormModalRef>): React.JSX.Element => {
-    const [isOpen, setOpen] = React.useState<{ state: boolean, data?: FieldValues }>({ state: false })
+    closeAction,
+    submitAction,
+    // onMouted,
+    initData,
+    onLoading
+}: FormModal): React.JSX.Element => {
 
-    React.useEffect(() => {
-        onMouted?.()
-    }, [])
     const modalForm = useForm<FieldValues>({
         resolver: zodResolver(schema)
     })
 
-    const closeModal = () => {
-        closeSideEffect?.()
-        setOpen(prev => ({ ...prev, state: false }))
-    }
     const submitForm = modalForm.handleSubmit(async (data: FieldValues) => {
         const valid = await modalForm.trigger()
+        alert(1)
         if (valid)
-            submitSideEffect?.(data)
+            submitAction?.(data)
 
     });
-    /**
-     * open modal, and you can put default data to you form
-     * @param open 
-     * @param data 
-     */
-    const toogleOpen = (open?: boolean, data?: FieldValues) => {
-        setOpen(prev => {
-            const state = open !== undefined ? open : !prev
-            return {
-                state,
-                data
-            }
-        });
-    };
+
     React.useEffect(() => {
-        if (isOpen.data) {
-            modalForm.reset(isOpen.data)
+        if (initData) {
+            modalForm.reset(initData)
         } else {
             const emptyForm = Object.fromEntries(
                 Object.keys(modalForm.getValues()).map(key => [key, ''])
             )
             modalForm.reset(emptyForm)
         }
-    }, [isOpen.data])
+    }, [initData])
 
-    React.useImperativeHandle(ref, () => {
-        return {
-            toogleOpen,
-            modalForm,
-            isOpen: isOpen.state
-        }
-    })
-    if (!isOpen.state) return <></>
     return (
         <>
             <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>
             <FormProvider {...modalForm}>
                 <div className="space-y-4 rounded-2xl fixed top-1/2 left-1/2 w-1/3 -translate-1/2 bg-white z-10 p-10">
-                    <X onClick={closeModal}
+                    <X onClick={closeAction}
                         className="absolute top-4 right-4 cursor-pointer text-slate-600"
                     />
                     {React.cloneElement(modalFormContent || <></>, { modalForm, form: parentForm })}
                     <div className="flex items-center justify-between">
-                        <Button onClick={closeModal}
+                        <Button onClick={closeAction} type="button"
                             className="bg-transparent border border-slate-400 text-slate-600 font-light!">
                             Cancel
                         </Button>
-                        <Button onClick={submitForm}
+                        <Button onClick={submitForm} type="button"
                             className="bg-blue-500 text-white font-light!">
                             {
                                 !onLoading && "Add"
@@ -113,8 +84,10 @@ const FormModal = ({
                     </div>
                 </div>
             </FormProvider>
+
         </>
+
     )
 }
 
-export default React.forwardRef<FormModalRef, FormModal>(FormModal)
+export default FormModal
