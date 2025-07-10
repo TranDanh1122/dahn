@@ -36,16 +36,13 @@ const FormModal = ({
 }: FormModal): React.JSX.Element => {
 
     const modalForm = useForm<FieldValues>({
-        resolver: zodResolver(schema)
+        resolver: zodResolver(schema),
+        defaultValues: initData
     })
 
-    const submitForm = modalForm.handleSubmit(async (data: FieldValues) => {
-        const valid = await modalForm.trigger()
-        alert(1)
-        if (valid)
-            submitAction?.(data)
-
-    });
+    const submitForm = (data: FieldValues) => {
+        submitAction?.(data)
+    };
 
     React.useEffect(() => {
         if (initData) {
@@ -72,7 +69,7 @@ const FormModal = ({
                             className="bg-transparent border border-slate-400 text-slate-600 font-light!">
                             Cancel
                         </Button>
-                        <Button onClick={submitForm} type="button"
+                        <Button onClick={modalForm.handleSubmit((e) => submitForm(e), (e) => console.log(e))} type="button"
                             className="bg-blue-500 text-white font-light!">
                             {
                                 !onLoading && "Add"

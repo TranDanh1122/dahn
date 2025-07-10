@@ -9,7 +9,7 @@ import TextArea from "@components/TextArea.component";
 export default function Environment({ modalForm }: ModalProps<z.infer<typeof envSchema>>): React.JSX.Element {
     React.useEffect(() => {
         if (modalForm && !modalForm.getValues("status")) modalForm.setValue(`status`, "active")
-    }, [])
+    }, [modalForm?.watch("status")])
     if (!modalForm) return <></>
     return <>
         <div className="flex items-center gap-3 space-y-2">

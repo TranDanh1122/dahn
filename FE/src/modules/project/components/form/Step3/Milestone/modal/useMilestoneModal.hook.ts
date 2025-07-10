@@ -7,7 +7,7 @@ import { z } from "zod";
 export const useMilestoneModal = ({ modalForm }: ModalProps<z.infer<typeof milestoneSchema>>) => {
     React.useEffect(() => {
         if (!modalForm?.getValues("status")) modalForm?.setValue("status", "not_started")
-    }, [])
+    }, [modalForm?.watch("status")])
     if (!modalForm) return
     const iniDate = {
         from: modalForm.getValues("startDate") ? new Date(modalForm.getValues("startDate")) : undefined,

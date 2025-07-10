@@ -19,7 +19,7 @@ const useArrayForm = (name: string) => {
         } else {
             append(data);
         }
-        alert(1)
+        setState(-2)
     }, [state])
 
 

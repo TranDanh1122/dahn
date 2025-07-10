@@ -4,7 +4,7 @@ import CirclePlus from "lucide-react/dist/esm/icons/circle-plus";
 import type { ZodEffects, ZodObject } from "zod";
 import { type FieldValues } from "react-hook-form";
 import useArrayForm from "./useArrayForm";
-const FormModal = React.lazy(() => import("@/components/Formodal/FormModal.component"))
+import FormModal from "../Formodal/FormModal.component";
 
 /**
  * @param {string} name - Name of array fields
@@ -83,6 +83,7 @@ export default
                     )}
             </fieldset >
             {
+                state > -2 &&
                 <FormModal
                     initData={form.getValues(`${name}.${state}`)}
                     parentForm={form}
