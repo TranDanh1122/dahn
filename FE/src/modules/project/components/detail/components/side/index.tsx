@@ -58,7 +58,7 @@ export default React.memo(function Overview(): React.JSX.Element {
         }
         {
             <React.Suspense fallback={<Skeleton className="bg-slate-200 h-8 w-52" />}>
-                <Step1Modal />
+                <Step1Modal project={project} />
             </React.Suspense>
         }
 

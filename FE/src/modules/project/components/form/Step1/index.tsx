@@ -8,6 +8,7 @@ import type { ProjectData } from "@project/models";
 import { TypeDataSet, type EnumSelectType } from "@project/const"
 export default function Step1(): React.JSX.Element {
     const form = useFormContext<ProjectData>()
+    if (!form) return <></>
     return <div className="space-y-4">
         <Input label="Project Name (*)"
             placeholder="eg: Fookbace App"
