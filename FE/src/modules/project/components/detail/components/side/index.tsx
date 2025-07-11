@@ -11,7 +11,9 @@ import { changeStep } from "@/modules/project/store";
 const Step1Modal = React.lazy(() => import("@project/components/detail/modals/Step1.modal"))
 const MoreInfo = React.lazy(() => import("./components/MoreInfo.component"))
 export default React.memo(function Overview(): React.JSX.Element {
-    const { project, step } = useSelector((state: AppState) => state.project);
+    const project = useSelector((state: AppState) => state.project.project);
+    const step = useSelector((state: AppState) => state.project.step);
+
     const dispatch = useDispatch()
     const handleChangeStep = React.useCallback((newStep: number) => {
         dispatch(changeStep(newStep))
@@ -29,7 +31,9 @@ export default React.memo(function Overview(): React.JSX.Element {
         ))
     }, [step, handleChangeStep])
 
-
+    const viewWorkspace = React.useCallback(() => {
+        navigate(`/workspace/${project?.workspace?.id}`)
+    }, [project?.workspace?.id])
     return <>
         <h1 className="font-semibold uppercase text-4xl tracking-wide text-slate-600">
             {project?.name}
@@ -43,7 +47,7 @@ export default React.memo(function Overview(): React.JSX.Element {
                     label="Workspace: "
                     text={project?.workspace?.name || ""}
                     image={project?.workspace?.tiny || ""}
-                    onClick={() => navigate(`/workspace/${project?.workspace?.id}`)}
+                    onClick={viewWorkspace}
                     hasRedirect
                     className="cursor-pointer"
                 />

@@ -5,7 +5,7 @@ import Text from "@components/Text.component";
 import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 export default function Step1(): React.JSX.Element {
-    const { project } = useSelector((state: AppState) => state.project);
+    const project = useSelector((state: AppState) => state.project.project);
     const type = React.useMemo(() => {
         return TypeDataSet.find(el => el.value == project?.type)?.text
     }, [project?.type])

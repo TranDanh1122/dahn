@@ -13,7 +13,6 @@ interface FooterItemProps extends TableItemProps {
     data?: EnvData
 }
 export default React.memo(function FooterItem({ data }: FooterItemProps): React.JSX.Element {
-
     const [color, bgColor, status] = React.useMemo(() => {
         if (!data) return ["", "", ""]
         const status = EnvironmentStatus.find((el) => el.value == data.status)?.text || ""

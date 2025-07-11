@@ -2,7 +2,9 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Project } from "@project/models";
 interface ProjectStore {
     step: number,
-    project?: Project
+    project?: Project,
+    loading?: boolean,
+    error?: boolean
 
 }
 const initialState: ProjectStore = {

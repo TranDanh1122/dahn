@@ -6,7 +6,7 @@ import MemberItem from "./Member/MemberItem.component";
 import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 export default function Step3(): React.JSX.Element {
-    const { project } = useSelector((state: AppState) => state.project);
+    const project = useSelector((state: AppState) => state.project.project);
     const roleList = React.useMemo(() =>
         project?.role?.map(el =>
             <DropdownInfo

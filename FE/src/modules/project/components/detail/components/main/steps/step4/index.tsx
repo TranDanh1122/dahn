@@ -8,7 +8,7 @@ import MeetingItemComponent from "./Meeting/MeetingItem.component";
 import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 export default function Step4(): React.JSX.Element {
-    const { project } = useSelector((state: AppState) => state.project);
+    const project = useSelector((state: AppState) => state.project.project);
     return <div className="space-y-10">
         <div className="space-y-3">
             <h2 className="font-medium text-lg">Meetings</h2>

@@ -10,9 +10,8 @@ import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 
 
-export default function Footer(): React.JSX.Element {
-    const { project } = useSelector((state: AppState) => state.project);
-
+export default React.memo(function Footer(): React.JSX.Element {
+    const project = useSelector((state: AppState) => state.project.project);
     const form = useForm({
         defaultValues: {
             "environment": project?.environment
@@ -21,6 +20,9 @@ export default function Footer(): React.JSX.Element {
             "environment": envSchema
         })
     })
+    React.useEffect(() => {
+        form.reset({ "environment": project?.environment })
+    }, [project?.environment])
     return (<FormProvider {...form}>
         <ArrayForm
             triggerEl={<CirclePlus className="size-5 text-slate-600 absolute -top-10 right-0" />}
@@ -32,4 +34,4 @@ export default function Footer(): React.JSX.Element {
         />
 
     </FormProvider>)
-}
+})

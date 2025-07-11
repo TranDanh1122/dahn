@@ -7,7 +7,7 @@ const Step2 = React.lazy(() => import("./steps/step2"))
 const Step4 = React.lazy(() => import("./steps/step4"))
 const Step3 = React.lazy(() => import("./steps/step3"))
 export default function MainDetail(): React.JSX.Element {
-    const { step } = useSelector((state: AppState) => state.project);
+    const step = useSelector((state: AppState) => state.project.step);
     return <React.Suspense key={step} fallback={<LoadingComponent />}>
         {
             step == 1 && <Step1 />
