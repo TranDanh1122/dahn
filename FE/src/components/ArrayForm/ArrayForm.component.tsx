@@ -1,11 +1,11 @@
 import React from "react";
-import X from "lucide-react/dist/esm/icons/x";
 import CirclePlus from "lucide-react/dist/esm/icons/circle-plus";
 import type { ZodEffects, ZodObject } from "zod";
 import { type FieldValues } from "react-hook-form";
 import useArrayForm from "./useArrayForm";
 import FormModal from "../Formodal/FormModal.component";
 
+const X = React.lazy(() => import("lucide-react/dist/esm/icons/x"))
 /**
  * @param {string} name - Name of array fields
  * @param {string} label - Description of what this field is
@@ -22,7 +22,9 @@ export interface ArrayFormProps {
     headerEl?: React.ReactElement,
     itemEl?: React.ReactElement,
     modalFormContent?: React.ReactElement,
-    modalFormSchema?: ZodEffects<ZodObject<FieldValues>> | ZodObject<FieldValues>
+    modalFormSchema?: ZodEffects<ZodObject<FieldValues>> | ZodObject<FieldValues>,
+    triggerEl?: React.ReactElement,
+    type?: "table" | "item"
 }
 export default
     function ArrayForm(
@@ -32,7 +34,9 @@ export default
             headerEl,
             itemEl,
             modalFormContent,
-            modalFormSchema
+            modalFormSchema,
+            triggerEl,
+            type
         }: ArrayFormProps): React.JSX.Element {
 
     const {
@@ -46,9 +50,10 @@ export default
 
     return (
         <>
-            <fieldset className="space-y-2" >
+            <fieldset className="space-y-2 w-full h-full" >
 
-                <div className="flex items-center gap-2 te">
+
+                {!triggerEl && <div className="flex items-center gap-2 te">
                     <legend className="text-slate-600 font-light text-sm">{label}</legend>
                     <CirclePlus
                         onClick={() => setState(-1)}
@@ -56,11 +61,13 @@ export default
                                     flex items-center justify-center"
                     />
                 </div>
+                }
+                {React.cloneElement(triggerEl || <></>, { onClick: () => setState(-1) })}
                 {
                     fields && headerEl && <>{headerEl}</>
                 }
                 {
-                    fields &&
+                    fields && type == "table" &&
                     fields.map(
                         (el, index) => (
                             <div onClick={() => setState(index)} key={el.id}
@@ -70,17 +77,40 @@ export default
                                         data: form?.getValues(`${name}.${index}`)
                                     })
                                 }
-                                <X onClick={
-                                    (e: React.MouseEvent) => {
-                                        e.stopPropagation()
-                                        remove?.(index);
-                                    }}
-                                    className="text-slate-600 font-light hover:text-red-500 cursor-pointer mx-auto"
-                                />
+                                <React.Suspense fallback="">
+                                    <X onClick={
+                                        (e: React.MouseEvent) => {
+                                            e.stopPropagation()
+                                            remove?.(index);
+                                        }}
+                                        className="text-slate-600 font-light hover:text-red-500 cursor-pointer mx-auto"
+                                    />
+                                </React.Suspense>
                             </div>
 
                         )
                     )}
+                {
+                    fields &&
+                    <div className="flex items-center justify-evenly gap-2 h-full">
+                        {
+                            fields.map(
+                                (el, index) => (
+                                    <div className="w-1/4 h-full" onClick={() => setState(index)} key={el.id}>
+                                        {
+                                            React.cloneElement(itemEl || <></>, {
+                                                data: form?.getValues(`${name}.${index}`),
+
+                                            })
+                                        }
+                                    </div>
+
+
+                                ))
+                        }
+                    </div>
+
+                }
             </fieldset >
             {
                 state > -2 &&

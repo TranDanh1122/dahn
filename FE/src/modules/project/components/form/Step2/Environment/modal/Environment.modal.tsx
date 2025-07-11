@@ -10,6 +10,10 @@ export default function Environment({ modalForm }: ModalProps<z.infer<typeof env
     React.useEffect(() => {
         if (modalForm && !modalForm.getValues("status")) modalForm.setValue(`status`, "active")
     }, [modalForm?.watch("status")])
+    const defaultValue = React.useMemo(() => {
+        if (!modalForm || !modalForm.getValues("status")) return EnvironmentStatus[0]
+        return EnvironmentStatus.find(el => el.value == modalForm?.getValues("status")) || EnvironmentStatus[0]
+    }, [])
     if (!modalForm) return <></>
     return <>
         <div className="flex items-center gap-3 space-y-2">
@@ -40,7 +44,7 @@ export default function Environment({ modalForm }: ModalProps<z.infer<typeof env
                     valueKey="value"
                     textKey="text"
                     dataSets={EnvironmentStatus}
-                    defaultValue={EnvironmentStatus[0]}
+                    defaultValue={defaultValue}
                     onChange={(e) => modalForm.setValue(`status`, String(e))}
                 />
             </fieldset>
