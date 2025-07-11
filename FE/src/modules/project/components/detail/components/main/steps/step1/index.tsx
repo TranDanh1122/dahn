@@ -1,10 +1,11 @@
 import React from "react";
-import { ProjectContext } from "@project/components/detail";
 import { Infor } from "@project/components/detail"
 import { TypeDataSet } from "@project/const";
 import Text from "@components/Text.component";
+import { useSelector } from "react-redux";
+import type { AppState } from "@/stores";
 export default function Step1(): React.JSX.Element {
-    const project = React.useContext(ProjectContext)
+    const { project } = useSelector((state: AppState) => state.project);
     const type = React.useMemo(() => {
         return TypeDataSet.find(el => el.value == project?.type)?.text
     }, [project?.type])

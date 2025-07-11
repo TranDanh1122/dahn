@@ -5,6 +5,8 @@ import { ErrorHandler, SuccessHandle } from "@/common/ults/NotifyHandler"
 import type { HTTPError } from "ky"
 import queryClient from "@/common/ults/QueryClient.const"
 import type { z } from "zod"
+import { useDispatch } from "react-redux"
+import { setProject } from "@project/store"
 
 export const useCreateProjectMutation = () => {
     return useMutation({
@@ -23,15 +25,29 @@ export const useCreateProjectMutation = () => {
     })
 }
 export const getProjectAPIQuery = async (projectId: string) => {
-    const res = await getProjectAPI(projectId)
-    const json = await res.json<ProjectResDataType>()
-    return json.data
+    try {
+        const res = await getProjectAPI(projectId)
+        const json = await res.json<ProjectResDataType>()
+
+        return json.data
+    } catch (error) {
+        const e = error as unknown as HTTPError
+        const body = await e.response.json<{ message: string }>()
+        ErrorHandler(body.message || e.message)
+        return null
+    }
+
 }
 
 export const useGetProjectQuery = (projectId: string) => {
+    const dispatch = useDispatch()
     return useQuery({
         queryKey: ["project", projectId],
-        queryFn: async () => await getProjectAPIQuery(projectId),
+        queryFn: async () => {
+            const res = await getProjectAPIQuery(projectId)
+            if (res) dispatch(setProject(res))
+            return res
+        },
         staleTime: 5 * 60 * 1000,
         retry: false
     })

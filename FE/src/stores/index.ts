@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import AuthStore from "@auth/stores"
 import WorkspaceStore from "@workspace/store"
+import ProjectStore from "@project/store"
 import { persistStore, persistReducer } from 'redux-persist'
 // defaults to localStorage for web, that suck, fk suck in security, beware what you save in redux store
 import storage from 'redux-persist/lib/storage'
@@ -20,7 +21,8 @@ const persistedReducer = persistReducer(persistConfig, combine)
 
 export const store = configureStore({
     reducer: {
-        persist: persistedReducer
+        persist: persistedReducer,
+        project: ProjectStore
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 })

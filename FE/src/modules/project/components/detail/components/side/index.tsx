@@ -1,18 +1,20 @@
 import React from "react";
 import DetailStep from "./components/Step.component"
 import { STEP_DETAILS } from "@project/const";
-import { ProjectContext, StepContext } from "@project/components/detail";
 import { useNavigate } from "react-router-dom";
 import Text from "@components/Text.component";
 import Skeleton from "@/components/Skeleton.component";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppState } from "@/stores";
+import { changeStep } from "@/modules/project/store";
 
 const Step1Modal = React.lazy(() => import("@project/components/detail/modals/Step1.modal"))
 const MoreInfo = React.lazy(() => import("./components/MoreInfo.component"))
 export default React.memo(function Overview(): React.JSX.Element {
-    const project = React.useContext(ProjectContext)
-    const { step, setStep } = React.useContext(StepContext)
+    const { project, step } = useSelector((state: AppState) => state.project);
+    const dispatch = useDispatch()
     const handleChangeStep = React.useCallback((newStep: number) => {
-        setStep?.(newStep)
+        dispatch(changeStep(newStep))
     }, [])
     const navigate = useNavigate()
     const stepTabs = React.useMemo(() => {

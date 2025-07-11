@@ -1,10 +1,12 @@
 import React from "react";
-import { DropdownInfo, ProjectContext } from "@project/components/detail";
+import { DropdownInfo } from "@project/components/detail";
 import RoleItem from "./Role/RoleItem.component";
 import RoleDropContent from "./Role/RoleDropContent.component";
 import MemberItem from "./Member/MemberItem.component";
+import { useSelector } from "react-redux";
+import type { AppState } from "@/stores";
 export default function Step3(): React.JSX.Element {
-    const project = React.useContext(ProjectContext)
+    const { project } = useSelector((state: AppState) => state.project);
     const roleList = React.useMemo(() =>
         project?.role?.map(el =>
             <DropdownInfo

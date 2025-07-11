@@ -1,12 +1,13 @@
 import React from "react";
 import {
     DropdownInfo,
-    ProjectContext,
 } from "@project/components/detail";
 import MilestoneItem from "./Milestone/MilestoneItem.component";
+import { useSelector } from "react-redux";
+import type { AppState } from "@/stores";
 const MilestoneDropContent = React.lazy(() => import("./Milestone/MileStoneItemDrop.component"))
 export default function Step2(): React.JSX.Element {
-    const project = React.useContext(ProjectContext);
+    const { project } = useSelector((state: AppState) => state.project);
     return (
         <div className="space-y-4">
             <h2 className="font-medium text-lg">Milestones</h2>

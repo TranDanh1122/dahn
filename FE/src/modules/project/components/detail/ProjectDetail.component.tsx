@@ -1,12 +1,13 @@
 import React from "react";
 import Overview from "./components/side"
 import MainDetail from "./components/main";
-import { ProjectContext } from "./context/Detail.context";
 import { BreadscrumContext } from "@/context/Breadscrum.context";
 import SkeletonComponent from "@/components/Skeleton.component";
+import { useSelector } from "react-redux";
+import type { AppState } from "@/stores";
 const Footer = React.lazy(() => import("./components/footer"))
 export default function DetailProject(): React.JSX.Element {
-    const project = React.useContext(ProjectContext);
+    const { project } = useSelector((state: AppState) => state.project);
     const skeletonFooter = React.useMemo(() => {
         return Array.from({ length: 4 }).map((_, idx) => <SkeletonComponent key={idx} className="bg-slate-100 w-1/4 h-full rounded-2xl" />)
     }, [])
