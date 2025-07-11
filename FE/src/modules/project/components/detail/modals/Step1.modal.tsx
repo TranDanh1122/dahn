@@ -8,7 +8,9 @@ import type { z } from "zod";
 import DetailEditModal from "./DetailEditModal";
 import SquarePen from "lucide-react/dist/esm/icons/square-pen";
 import type { FieldValues } from "react-hook-form";
-import { useUpdateGeneralInfoMutation } from "@/modules/project/flows/project/project.service";
+import { updateProjectThunk } from "@/modules/project/store";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/stores";
 
 
 
@@ -29,16 +31,15 @@ const FormContent: React.FC<ModalProps<z.infer<typeof step1Schema>>> = ({ modalF
 }
 
 const Step1Modal = ({ project }: { project?: Project }) => {
-    const updateGeralInfo = useUpdateGeneralInfoMutation()
+    const dispatch: AppDispatch = useDispatch()
     const submitHandler = async (values: FieldValues) => {
         if (project && project.id)
-            await updateGeralInfo.mutateAsync({ projectId: project.id, data: values as z.infer<typeof step1Schema> })
+            dispatch(updateProjectThunk({ projectId: project.id, data: values as z.infer<typeof step1Schema> }))
     }
     return <DetailEditModal
         contentEl={<FormContent />}
         initData={project}
         schema={step1Schema}
-        onLoading={updateGeralInfo.isPending}
         submitHandler={submitHandler}
         triggerEl={<p className="flex items-center gap-2">
             <span className="text-slate-600 text-sm">General Infomation Edit:</span>

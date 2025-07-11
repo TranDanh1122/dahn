@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Text from "@components/Text.component";
 import Skeleton from "@/components/Skeleton.component";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppState } from "@/stores";
+import type { AppDispatch, AppState } from "@/stores";
 import { changeStep } from "@/modules/project/store";
 
 const Step1Modal = React.lazy(() => import("@project/components/detail/modals/Step1.modal"))
@@ -14,7 +14,7 @@ export default React.memo(function Overview(): React.JSX.Element {
     const project = useSelector((state: AppState) => state.project.project);
     const step = useSelector((state: AppState) => state.project.step);
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const handleChangeStep = React.useCallback((newStep: number) => {
         dispatch(changeStep(newStep))
     }, [])

@@ -9,7 +9,13 @@ const Footer = React.lazy(() => import("./components/footer"))
 export default function DetailProject(): React.JSX.Element {
     const project = useSelector((state: AppState) => state.project.project);
     const skeletonFooter = React.useMemo(() => {
-        return Array.from({ length: 4 }).map((_, idx) => <SkeletonComponent key={idx} className="bg-slate-100 w-1/4 h-full rounded-2xl" />)
+        return (
+            <div className="flex gap-2 h-full">
+                {
+                    Array.from({ length: 4 }).map((_, idx) => <SkeletonComponent key={idx} className="bg-slate-100 w-1/4 h-full rounded-2xl" />)
+                }
+            </div>
+        )
     }, [])
     const { setBreadscrum } = React.useContext(BreadscrumContext)
     React.useEffect(() => {

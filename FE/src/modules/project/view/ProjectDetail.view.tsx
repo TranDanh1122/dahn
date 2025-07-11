@@ -5,10 +5,11 @@ import LoadingComponent from "@/components/Loading.component";
 import { ProjectDetail } from "@project/components/detail"
 import { useDispatch } from "react-redux";
 import { setProject } from "@project/store";
+import type { AppDispatch } from "@/stores";
 export default function ProjectDetailView(): React.JSX.Element {
     const { projectId } = useLoaderData();
     const { data: project, isLoading, isError } = useGetProjectQuery(projectId);
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     React.useLayoutEffect(() => {
         if (project) dispatch(setProject(project))
     }, [project])

@@ -7,6 +7,7 @@ import queryClient from "@/common/ults/QueryClient.const"
 import type { z } from "zod"
 import { useDispatch } from "react-redux"
 import { setProject } from "@project/store"
+import type { AppDispatch } from "@/stores"
 
 export const useCreateProjectMutation = () => {
     return useMutation({
@@ -40,7 +41,7 @@ export const getProjectAPIQuery = async (projectId: string) => {
 }
 
 export const useGetProjectQuery = (projectId: string) => {
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     return useQuery({
         queryKey: ["project", projectId],
         queryFn: async () => {

@@ -9,9 +9,9 @@ export function ErrorHandler(e: any) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
     });
-}  
+}
 
 export function SuccessHandle(e: any) {
     toast.success(e as string, {
@@ -22,6 +22,19 @@ export function SuccessHandle(e: any) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "light",
+    });
+}
+
+export function Noti(e: any) {
+    toast.info(e as string, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
     });
 } 
