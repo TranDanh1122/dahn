@@ -8,6 +8,11 @@ import type { ProjectData } from "@project/models";
 import { TypeDataSet, type EnumSelectType } from "@project/const"
 export default function Step1(): React.JSX.Element {
     const form = useFormContext<ProjectData>()
+    const defaultType = React.useMemo(() => {
+        const type = form.getValues("type")
+        if (!type) return TypeDataSet[0]
+        return TypeDataSet.find(el => el.value == type) || TypeDataSet[0]
+    }, [])
     if (!form) return <></>
     return <div className="space-y-4">
         <Input label="Project Name (*)"
@@ -43,7 +48,7 @@ export default function Step1(): React.JSX.Element {
                 valueKey="value"
                 textKey="text"
                 onChange={(e) => form.setValue("type", String(e))}
-                defaultValue={TypeDataSet[0]}
+                defaultValue={defaultType}
                 dataSets={TypeDataSet}
             />
             {form.formState.errors.type &&
