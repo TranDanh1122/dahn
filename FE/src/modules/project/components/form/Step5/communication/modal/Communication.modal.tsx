@@ -10,9 +10,7 @@ export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typ
     React.useEffect(() => {
         if (!modalForm?.getValues("meeting")) modalForm?.setValue("meeting", "no")
     }, [])
-    React.useEffect(() => {
-        console.log(modalForm?.formState.errors)
-    }, [modalForm?.formState.errors])
+
     if (!modalForm) return <></>
     return <>
         <div className="flex items-end gap-4">

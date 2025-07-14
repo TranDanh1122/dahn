@@ -21,7 +21,6 @@ export default React.memo(function WorkspaceList(): React.JSX.Element {
         }
         {
             !isLoading && data && data.length > 0 && data.map((el) => {
-                console.log(el)
                 return <MenuItem key={el.id} onClick={() => dispatch(setWorkspace(el))}
                     className={`p-0! hover:bg-slate-100! ${currentWorkspace?.id == el.id && "bg-slate-100"} `}
                     icon={<CircleLogoWText text={el.name} img={el.tiny || ""} className="w-full hover:bg-slate-100!" />}

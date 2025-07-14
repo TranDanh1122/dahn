@@ -59,7 +59,6 @@ export const useDeleteProjectMutation = () => {
         mutationFn: async (projectId: string) => {
             const res = await deleteProjectAPI(projectId)
             const json = await res.json<ProjectResDataType>()
-            console.log(json)
             return json.data
         },
         onSuccess: (data) => {

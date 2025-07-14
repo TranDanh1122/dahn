@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/tool
 import type { Project, ProjectResDataType, step1Schema } from "@project/models";
 import { updateGeneralInfoAPI } from "@project/flows/project/project.api";
 import { z } from "zod";
-import type { HTTPError } from "ky";
+import { HTTPError } from "ky";
 import coreOptimicQueue from "@/common/ults/OptimicQueue";
 interface ProjectStore {
     step: number,
@@ -14,22 +14,49 @@ interface ProjectStore {
 const initialState: ProjectStore = {
     step: 1,
 }
-
-export const updateProjectThunk = createAsyncThunk<Project | undefined, { projectId: string; data: z.infer<typeof step1Schema> }>(
+const timeout = async <T>(fn: () => Promise<T>, delay: number) => {
+    return new Promise<T>((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error("Timeout"))
+        }, delay)
+        fn().then((res) => {
+            clearTimeout(timer)
+            resolve(res)
+        }).catch((e) => {
+            clearTimeout(timer)
+            reject(e)
+        })
+    })
+}
+export const updateProjectThunk = createAsyncThunk<Project | undefined, { projectId: string; data: z.infer<typeof step1Schema>, fallbackData: z.infer<typeof step1Schema> }>(
     "dahn/project/update",
     async ({ projectId, data }, thunkAPI) => {
+        if (thunkAPI.signal.aborted) {
+            return thunkAPI.rejectWithValue("Request aborted");
+        }
         return new Promise((resolve, reject) => {
             coreOptimicQueue.addQuery(
-
                 async () => {
                     try {
-                        const res = await updateGeneralInfoAPI(projectId, data);
-                        const json = await res.json<ProjectResDataType>();
-                        if (!json.success) throw new Error(json.message)
-                        resolve(json.data)
+                        const dataRes = await timeout<ProjectResDataType>(async () => {
+                            const res = await updateGeneralInfoAPI(projectId, data);
+                            const json = await res.json<ProjectResDataType>();
+                            if (!json.success) throw new Error(json.message)
+                            return json
+                        }, 100)
+                        resolve(dataRes.data)
                     } catch (error) {
-                        const body = await (error as HTTPError).response.json<{ message: string }>()
-                        reject(thunkAPI.rejectWithValue(body.message))
+                        let message = "Unknown error";
+
+                        if (error instanceof HTTPError) {
+                            const body = await error.response?.json<{ message: string }>();
+                            message = body?.message || "Unknown HTTP error";
+                        } else if (error instanceof Error) {
+                            message = error.message;
+                        }
+
+                        reject(thunkAPI.rejectWithValue("Error"))
+                        throw new Error(message);
                     }
                 }
             )
@@ -47,14 +74,14 @@ const projectSlicer = createSlice({
         },
         changeStep: (state: ProjectStore, action: PayloadAction<number>) => {
             state.step = action.payload
+        },
+        setError: (state: ProjectStore, action: PayloadAction<boolean>) => {
+            state.error = action.payload
         }
     },
     extraReducers: (builder) => {
         builder.addCase(updateProjectThunk.pending, (state, action) => {
-            console.log(action.meta.arg, 111)
             state.loading = true
-            state.error = false
-
             const { data } = action.meta.arg
             if (state.project)
                 Object.assign(state.project, data);
@@ -63,10 +90,12 @@ const projectSlicer = createSlice({
             if (state.project)
                 Object.assign(state.project, project);
             state.loading = false
-        }).addCase(updateProjectThunk.rejected, (state) => {
-            alert(1)
-            state.error = true
+        }).addCase(updateProjectThunk.rejected, (state, action) => {
             state.loading = false
+            const { fallbackData } = action.meta.arg
+            if (state.project)
+                Object.assign(state.project, fallbackData);
+
         })
     }
 })

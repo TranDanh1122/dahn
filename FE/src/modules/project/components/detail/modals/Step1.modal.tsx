@@ -34,7 +34,7 @@ const Step1Modal = ({ project }: { project?: Project }) => {
     const dispatch: AppDispatch = useDispatch()
     const submitHandler = async (values: FieldValues) => {
         if (project && project.id)
-            dispatch(updateProjectThunk({ projectId: project.id, data: values as z.infer<typeof step1Schema> }))
+            dispatch(updateProjectThunk({ projectId: project.id, data: values as z.infer<typeof step1Schema>, fallbackData: project }))
     }
     return <DetailEditModal
         contentEl={<FormContent />}

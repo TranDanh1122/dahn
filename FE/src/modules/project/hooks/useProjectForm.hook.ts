@@ -26,7 +26,6 @@ export default function useProjectForm() {
     const createProject = useCreateProjectMutation()
     const navigate = useNavigate()
     const handleSubmit = (values: ProjectData) => {
-        console.log(values)
         createProject.mutate(values, {
             onSuccess: () => {
                 navigate("/")

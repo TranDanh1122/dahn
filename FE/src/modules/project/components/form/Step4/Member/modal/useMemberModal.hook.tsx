@@ -8,7 +8,6 @@ import type { EnumSelectType } from "@project/const";
 export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof memberSchema>>) => {
     const filter = React.useCallback(
         (data: User) => {
-            console.log(form?.getValues("members"), data)
             if (form)
                 return !form
                     .getValues("members")

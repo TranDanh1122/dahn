@@ -14,7 +14,6 @@ export default function useDropdownSearch<T, K>({ searchServiceFn, filter }: Pic
             searchService.mutate({ search: value } as K)
         }, 500)
     }
-    console.log("re-render 2")
     const result = React.useMemo(() => {
         if (searchService.data && searchService.data.length > 0)
             return searchService.data.filter(item => filter?.(item))

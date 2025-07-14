@@ -10,7 +10,6 @@ export default function Step1(): React.JSX.Element {
         return TypeDataSet.find(el => el.value == project?.type)?.text
     }, [project?.type])
     const techstack = React.useMemo(() => {
-        console.log(project?.techstack)
         if (!project || !project.techstack) return ""
         return project.techstack.split(",").map((el) => (
             <span key={el}
