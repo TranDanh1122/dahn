@@ -4,6 +4,7 @@ import { updateGeneralInfoAPI } from "@project/flows/project/project.api";
 import { z } from "zod";
 import { HTTPError } from "ky";
 import coreOptimicQueue from "@/common/ults/OptimicQueue";
+import { isObjectEqual } from "@/common/ults/Tool";
 interface ProjectStore {
     step: number,
     project?: Project,
@@ -71,7 +72,10 @@ const projectSlicer = createSlice({
     initialState: initialState,
     reducers: {
         setProject: (state: ProjectStore, action: PayloadAction<Project>) => {
-            state.project = action.payload
+            console.log(action.payload)
+            if (!isObjectEqual(state.project, action.payload))
+                state.project = action.payload
+            state.error = coreOptimicQueue.isError()
         },
         changeStep: (state: ProjectStore, action: PayloadAction<number>) => {
             state.step = action.payload

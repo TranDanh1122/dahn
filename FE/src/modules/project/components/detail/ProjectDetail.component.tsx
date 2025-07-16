@@ -3,11 +3,15 @@ import Overview from "./components/side"
 import MainDetail from "./components/main";
 import { BreadscrumContext } from "@/context/Breadscrum.context";
 import SkeletonComponent from "@/components/Skeleton.component";
-import { useSelector } from "react-redux";
-import type { AppState } from "@/stores";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, AppState } from "@/stores";
+import { API_ENDPOINT } from "@/common/ults/ApiEndpoint.const";
+import { setProject } from "@project/store";
+import { ErrorHandler } from "@/common/ults/NotifyHandler";
 const Footer = React.lazy(() => import("./components/footer"))
 export default function DetailProject(): React.JSX.Element {
     const project = useSelector((state: AppState) => state.project.project);
+    const dispatch: AppDispatch = useDispatch()
     const skeletonFooter = React.useMemo(() => {
         return (
             <div className="flex gap-2 h-full">
@@ -35,6 +39,22 @@ export default function DetailProject(): React.JSX.Element {
                 }
             ])
     }, [project])
+
+    React.useEffect(() => {
+
+        const updatedSSE = new EventSource(`${API_ENDPOINT.project}/sse`, { withCredentials: true })
+
+        updatedSSE.onmessage = function (e) {
+            const data = JSON.parse(e.data)
+            dispatch(setProject(data))
+        }
+
+        updatedSSE.onerror = () => {
+            ErrorHandler("Maybe you are offline, some data will missing....")
+        }
+
+        return () => updatedSSE.close()
+    }, [])
     return (
         <div className="p-4 h-full">
             <div className="flex gap-15 h-[calc(100%-11rem)]">
