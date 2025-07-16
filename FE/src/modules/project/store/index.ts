@@ -34,30 +34,29 @@ export const updateProjectThunk = createAsyncThunk<Project | undefined, { projec
         if (thunkAPI.signal.aborted) {
             return thunkAPI.rejectWithValue("Request aborted");
         }
+
         return new Promise((resolve, reject) => {
             coreOptimicQueue.addQuery(
                 async () => {
-                    try {
-                        const dataRes = await timeout<ProjectResDataType>(async () => {
-                            const res = await updateGeneralInfoAPI(projectId, data);
-                            const json = await res.json<ProjectResDataType>();
-                            if (!json.success) throw new Error(json.message)
-                            return json
-                        }, 100)
-                        resolve(dataRes.data)
-                    } catch (error) {
-                        let message = "Unknown error";
+                    const dataRes = await timeout<ProjectResDataType>(async () => {
+                        const res = await updateGeneralInfoAPI(projectId, data, thunkAPI.signal);
+                        const json = await res.json<ProjectResDataType>();
+                        if (!json.success) throw new Error(json.message)
+                        return json
+                    }, import.meta.env.VITE_API_TIMEOUT)
+                    resolve(dataRes.data)
+                },
+                async (error) => {
+                    let message = "Unknown error";
 
-                        if (error instanceof HTTPError) {
-                            const body = await error.response?.json<{ message: string }>();
-                            message = body?.message || "Unknown HTTP error";
-                        } else if (error instanceof Error) {
-                            message = error.message;
-                        }
-
-                        reject(thunkAPI.rejectWithValue("Error"))
-                        throw new Error(message);
+                    if (error instanceof HTTPError) {
+                        const body = await error.response?.json<{ message: string }>();
+                        message = body?.message || "Unknown HTTP error";
+                    } else if (error instanceof Error) {
+                        message = error.message;
                     }
+                    thunkAPI.abort()
+                    reject(thunkAPI.rejectWithValue(message))
                 }
             )
         })
@@ -92,6 +91,8 @@ const projectSlicer = createSlice({
             state.loading = false
         }).addCase(updateProjectThunk.rejected, (state, action) => {
             state.loading = false
+            console.log(11111)
+            state.error = coreOptimicQueue.isError()
             const { fallbackData } = action.meta.arg
             if (state.project)
                 Object.assign(state.project, fallbackData);

@@ -1,22 +1,22 @@
-import { ErrorHandler, Noti } from "./NotifyHandler";
+import { Noti } from "./NotifyHandler";
 const coreOptimicQueue = {
-    fails: [] as (() => Promise<void>)[],
-    queues: [] as (() => Promise<void>)[],
+    fails: [] as ({ queue: () => Promise<void>, onError: (error: unknown) => Promise<void> })[],
+    queues: [] as ({ queue: () => Promise<void>, onError: (error: unknown) => Promise<void> })[],
     running: false,
     isOnl: navigator.onLine,
     init: function () {
-        window.removeEventListener("online", this.handleOnl);
-        window.removeEventListener("offline", this.handleOff);
-        window.addEventListener("online", this.handleOnl);
-        window.addEventListener("offline", this.handleOff);
+        window.removeEventListener("online", this.handleOnl.bind(this));
+        window.removeEventListener("offline", this.handleOff.bind(this));
+        window.addEventListener("online", this.handleOnl.bind(this));
+        window.addEventListener("offline", this.handleOff.bind(this));
         this.isOnl = navigator.onLine;
     },
 
-    addQuery: function (func: () => Promise<void>) {
+    addQuery: function (func: () => Promise<void>, error: (error: unknown) => Promise<void>) {
         if (!this.isOnl) {
-            this.fails.push(func);
+            this.fails.push({ queue: func, onError: error });
         } else {
-            this.queues.push(func);
+            this.queues.push({ queue: func, onError: error });
             if (!this.running) this.process();
         }
     },
@@ -41,16 +41,18 @@ const coreOptimicQueue = {
                     this.fails.push(queue);
                 } else {
                     try {
-                        await queue();
-                    } catch (e) {
-                        console.log(e);
-                        this.fails.push(queue);
+                        await queue.queue();
+                    } catch (error) {
+                        console.log(error)
+                        this.fails.push(queue)
+                        await queue.onError(error)
                     }
                 }
         }
         this.running = false;
     },
     retry: async function (): Promise<void> {
+        if (this.running) return;
         this.running = true;
         if (this.running) {
 
@@ -58,10 +60,10 @@ const coreOptimicQueue = {
                 const queue = this.fails.shift();
                 if (queue) {
                     try {
-                        await queue();
-                    } catch (e) {
-                        console.log(e)
-                        // ErrorHandler("Cannot sync data");
+                        await queue.queue();
+                    } catch (error) {
+                        console.log(error)
+                        await queue.onError(error)
                     }
                 }
             }
@@ -69,12 +71,7 @@ const coreOptimicQueue = {
         this.running = false;
     },
     isError: function () {
-        console.log(
-            this.fails.length > 0,
-            !this.running,
-            this.fails.length > 0 && !this.running
-        );
-        return this.fails.length > 0 && !this.running;
+        return this.fails.length > 0 && !this.running && this.queues.length > 0;
     },
 };
 coreOptimicQueue.init();
