@@ -76,3 +76,17 @@ export async function copy(text: string) {
         ErrorHandler("Error when copy to clipboard")
     }
 }
+export const APITimeout = async <T>(fn: () => Promise<T>, delay: number) => {
+    return new Promise<T>((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error("Timeout"))
+        }, delay)
+        fn().then((res) => {
+            clearTimeout(timer)
+            resolve(res)
+        }).catch((e) => {
+            clearTimeout(timer)
+            reject(e)
+        })
+    })
+}

@@ -23,6 +23,7 @@ export interface ArrayFormProps {
     itemEl?: React.ReactElement,
     modalFormContent?: React.ReactElement,
     modalFormSchema?: ZodEffects<ZodObject<FieldValues>> | ZodObject<FieldValues>,
+    customSubmit?: (data: FieldValues, index?: string) => void,
     triggerEl?: React.ReactElement,
     type?: "table" | "item"
 }
@@ -36,7 +37,8 @@ export default
             modalFormContent,
             modalFormSchema,
             triggerEl,
-            type
+            type,
+            customSubmit
         }: ArrayFormProps): React.JSX.Element {
 
     const {
@@ -44,9 +46,9 @@ export default
         remove,
         form,
         setState,
-        upsert,
-        state
-    } = useArrayForm(name)
+        state,
+        submit
+    } = useArrayForm(name, customSubmit)
 
     return (
         <>
@@ -104,12 +106,9 @@ export default
                                             })
                                         }
                                     </div>
-
-
                                 ))
                         }
                     </div>
-
                 }
             </fieldset >
             {
@@ -118,7 +117,7 @@ export default
                     initData={form.getValues(`${name}.${state}`)}
                     parentForm={form}
                     modalFormContent={modalFormContent}
-                    submitAction={upsert}
+                    submitAction={submit}
                     schema={modalFormSchema}
                     closeAction={() => setState(-2)}
                 />

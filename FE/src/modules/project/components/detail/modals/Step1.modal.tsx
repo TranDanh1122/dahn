@@ -8,7 +8,7 @@ import type { z } from "zod";
 import DetailEditModal from "./DetailEditModal";
 import SquarePen from "lucide-react/dist/esm/icons/square-pen";
 import type { FieldValues } from "react-hook-form";
-import { updateProjectThunk } from "@/modules/project/store";
+import { updateProjectThunk } from "@project/store/action/updateGeneralInfo.action";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/stores";
 
