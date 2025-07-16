@@ -1,7 +1,19 @@
 import { Noti } from "./NotifyHandler";
+interface Queue {
+    queue: (signal?: AbortSignal) => Promise<void>,
+    onError: (error: unknown) => Promise<void>,
+}
+/**
+ * Just a simple object to handle optimic sync
+ * Queue have queue (func to run/call API) and onError (what it do when error)
+ * We need to split it into 2 function, 
+ * it make more easer to handle optimic error and thunk error 
+ * (if you throw, we will lost thunk context, and only handle one of 2 side (optimic or thunk))
+ * Another thing no need to explain, i think it clear enough to read
+ */
 const coreOptimicQueue = {
-    fails: [] as ({ queue: () => Promise<void>, onError: (error: unknown) => Promise<void> })[],
-    queues: [] as ({ queue: () => Promise<void>, onError: (error: unknown) => Promise<void> })[],
+    fails: [] as Queue[],
+    queues: [] as Queue[],
     running: false,
     isOnl: navigator.onLine,
     init: function () {
@@ -12,11 +24,11 @@ const coreOptimicQueue = {
         this.isOnl = navigator.onLine;
     },
 
-    addQuery: function (func: () => Promise<void>, error: (error: unknown) => Promise<void>) {
+    addQuery: function (data: Queue) {
         if (!this.isOnl) {
-            this.fails.push({ queue: func, onError: error });
+            this.fails.push(data);
         } else {
-            this.queues.push({ queue: func, onError: error });
+            this.queues.push(data);
             if (!this.running) this.process();
         }
     },
@@ -32,6 +44,7 @@ const coreOptimicQueue = {
         this.retry();
     },
     process: async function (): Promise<void> {
+        if (this.running) return
         this.running = true;
 
         while (this.queues.length > 0) {
@@ -43,7 +56,6 @@ const coreOptimicQueue = {
                     try {
                         await queue.queue();
                     } catch (error) {
-                        console.log(error)
                         this.fails.push(queue)
                         await queue.onError(error)
                     }
@@ -60,18 +72,21 @@ const coreOptimicQueue = {
                 const queue = this.fails.shift();
                 if (queue) {
                     try {
-                        await queue.queue();
+                        const { signal } = new AbortController()
+                        await queue.queue(signal);
                     } catch (error) {
-                        console.log(error)
                         await queue.onError(error)
                     }
                 }
             }
         }
         this.running = false;
+        if (this.queues.length > 0) {
+            this.process()
+        }
     },
     isError: function () {
-        return this.fails.length > 0 && !this.running && this.queues.length > 0;
+        return this.fails.length > 0 && !this.running && this.queues.length == 0;
     },
 };
 coreOptimicQueue.init();

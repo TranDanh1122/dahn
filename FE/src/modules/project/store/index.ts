@@ -36,17 +36,17 @@ export const updateProjectThunk = createAsyncThunk<Project | undefined, { projec
         }
 
         return new Promise((resolve, reject) => {
-            coreOptimicQueue.addQuery(
-                async () => {
+            coreOptimicQueue.addQuery({
+                queue: async (signal?: AbortSignal) => {
                     const dataRes = await timeout<ProjectResDataType>(async () => {
-                        const res = await updateGeneralInfoAPI(projectId, data, thunkAPI.signal);
+                        const res = await updateGeneralInfoAPI(projectId, data, signal || thunkAPI.signal);
                         const json = await res.json<ProjectResDataType>();
                         if (!json.success) throw new Error(json.message)
                         return json
                     }, import.meta.env.VITE_API_TIMEOUT)
                     resolve(dataRes.data)
                 },
-                async (error) => {
+                onError: async (error) => {
                     let message = "Unknown error";
 
                     if (error instanceof HTTPError) {
@@ -58,6 +58,8 @@ export const updateProjectThunk = createAsyncThunk<Project | undefined, { projec
                     thunkAPI.abort()
                     reject(thunkAPI.rejectWithValue(message))
                 }
+            }
+
             )
         })
 
@@ -91,8 +93,8 @@ const projectSlicer = createSlice({
             state.loading = false
         }).addCase(updateProjectThunk.rejected, (state, action) => {
             state.loading = false
-            console.log(11111)
             state.error = coreOptimicQueue.isError()
+            console.log(coreOptimicQueue.isError(), 1)
             const { fallbackData } = action.meta.arg
             if (state.project)
                 Object.assign(state.project, fallbackData);

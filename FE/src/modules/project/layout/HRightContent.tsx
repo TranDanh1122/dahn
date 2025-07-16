@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import type { AppState } from "@/stores";
 import LoadingComponent from "@components/Loading.component";
 import RefreshCw from "lucide-react/dist/esm/icons/refresh-cw";
-import coreOptimicQueue from "@/common/ults/OptimicQueue";
 
 export default React.memo(function HRightContent(): React.JSX.Element {
     const { projectId } = useParams();
@@ -24,9 +23,7 @@ export default React.memo(function HRightContent(): React.JSX.Element {
                 }
             })
     }, [projectId])
-    const retry = React.useCallback(() => {
-        coreOptimicQueue.retry()
-    }, [])
+
     if (!projectId) return <></>
     return (
         <div className="flex items-center gap-2 text-xs ">
@@ -37,9 +34,9 @@ export default React.memo(function HRightContent(): React.JSX.Element {
                 </>
             }
             {
-                error && <div onClick={retry} className="flex items-center gap-2 cursor-pointer">
+                error && <div className="flex items-center gap-2 cursor-pointer">
                     <RefreshCw className="size-3 text-red-400 " />
-                    <p className="text-red-400">Error...Pls retry</p>
+                    <p className="text-red-400">Error...retrying</p>
                 </div>
             }
             <Button
