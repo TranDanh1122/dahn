@@ -32,6 +32,6 @@ export const updateEnvAPI = async (
     envId?: string
 ) =>
     await AxiosClient.put(
-        `${API_ENDPOINT.project}/${projectId}/environment/${envId}`,
+        `${API_ENDPOINT.project}/${projectId}/environment/${envId || ""}`,
         { json: data, credentials: "include" }
     );

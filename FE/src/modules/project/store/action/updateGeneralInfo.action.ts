@@ -48,6 +48,7 @@ export const updateProjectThunk = createAsyncThunk<Project | undefined, { projec
 export const updateProjectThunkExtraReducer = {
     pending: (state: ProjectStore, action: any) => {
         state.loading = true
+        state.error = coreOptimicQueue.isError()
         const { data } = action.meta.arg
         if (state.project)
             Object.assign(state.project, data);
@@ -57,11 +58,11 @@ export const updateProjectThunkExtraReducer = {
         if (state.project)
             Object.assign(state.project, project);
         state.loading = false
+        state.error = coreOptimicQueue.isError()
     },
     rejected: (state: ProjectStore, action: any) => {
         state.loading = false
         state.error = coreOptimicQueue.isError()
-        console.log(coreOptimicQueue.isError(), 1)
         const { fallbackData } = action.meta.arg
         if (state.project)
             Object.assign(state.project, fallbackData);

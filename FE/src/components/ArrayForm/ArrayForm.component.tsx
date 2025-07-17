@@ -94,7 +94,7 @@ export default
                     )}
                 {
                     fields &&
-                    <div className="flex items-center justify-evenly gap-2 h-full">
+                    <div className="flex items-center justify-evenly gap-6 h-full">
                         {
                             fields.map(
                                 (el, index) => (

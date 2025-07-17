@@ -23,8 +23,10 @@ const projectSlicer = createSlice({
     reducers: {
         setProject: (state: ProjectStore, action: PayloadAction<Project>) => {
             console.log(action.payload)
-            if (!isObjectEqual(state.project, action.payload))
+            if (!isObjectEqual(state.project, action.payload)) {
                 state.project = action.payload
+
+            }
             state.error = coreOptimicQueue.isError()
         },
         changeStep: (state: ProjectStore, action: PayloadAction<number>) => {

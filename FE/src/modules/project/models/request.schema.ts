@@ -19,7 +19,8 @@ export const ProjectSchema = z.object({
         demoUrl: z.coerce.string().min(1),
         status: z.coerce.string().min(1),
         readme: z.coerce.string().min(1),
-        note: z.coerce.string().max(450)
+        note: z.coerce.string().max(450),
+        created_at: z.coerce.string().optional()
     })).optional(),
     milestones: z.array(z.object({
         id: z.coerce.string().optional(),

@@ -1,4 +1,5 @@
 import { ErrorHandler, SuccessHandle } from "./NotifyHandler"
+import _ from "lodash";
 
 export function isObjectEqual(obj1: unknown, obj2: unknown): boolean {
     if (obj1 === obj2) return true;
@@ -89,4 +90,22 @@ export const APITimeout = async <T>(fn: () => Promise<T>, delay: number) => {
             reject(e)
         })
     })
+}
+
+
+export function upsertArrayByKey<T>(
+    baseArr: T[],
+    updateArr: Partial<T>[],
+    key: keyof T
+): T[] {
+    const updated = baseArr.map(item => {
+        const patch = updateArr.find(u => u[key] === item[key]);
+        return patch ? _.merge({}, item, patch) : item;
+    });
+
+    const newItems = updateArr.filter(
+        u => !baseArr.some(b => b[key] === u[key])
+    ) as T[]; // assert T, vì item mới có thể là đủ kiểu T rồi
+
+    return [...updated, ...newItems];
 }

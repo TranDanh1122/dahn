@@ -9,6 +9,9 @@ import type { EnvData } from "@project/models";
 import Badge from "@components/Badge.component";
 import Text from "@components/Text.component"
 import type { TableItemProps } from "@/components/ArrayForm";
+import X from "lucide-react/dist/esm/icons/x"
+
+
 interface FooterItemProps extends TableItemProps {
     data?: EnvData
 }
@@ -20,20 +23,26 @@ export default React.memo(function FooterItem({ data }: FooterItemProps): React.
         const bgColor = EnvironmentBgColor[data.status] || ""
         return [color, bgColor, status]
     }, [data])
-
+    const handleDelete = React.useCallback((e: React.MouseEvent) => {
+        e.stopPropagation()
+    }, [])
     if (!data) return <></>
     return (
         <div className="border border-slate-200 overflow-auto scrollbar-thin w-full
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
             rounded-2xl h-full p-4 flex flex-col justify-between gap-2">
-            <div className="flex items-center gap-2">
-                <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
-                    {data.name}
-                </h2>
-                <Badge color={color} bgColor={bgColor} >
-                    {status}
-                </Badge>
+            <div className="flex justify-between">
+                <div className="flex items-center gap-2">
+                    <h2 className="text-slate-600 text-sm font-semibold uppercase line-clamp-1">
+                        {data.name}
+                    </h2>
+                    <Badge color={color} bgColor={bgColor} >
+                        {status}
+                    </Badge>
+                </div>
+                <X onClick={handleDelete} className="size-5 text-slate-700 hover-show cursor-pointer" />
             </div>
+
             <Text lineClamp="line-clamp-4" className="text-slate-500 text-xs tracking-wider">
                 {data.note}
             </Text>

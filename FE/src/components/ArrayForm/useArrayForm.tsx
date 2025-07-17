@@ -25,11 +25,13 @@ const useArrayForm = (name: string, customSubmit?: (data: FieldValues, index?: s
 
     const submit = React.useCallback((data: FieldValues) => {
         if (customSubmit) {
-            customSubmit(data, String(state))
+            customSubmit(data)
         } else {
             upsert(data)
         }
-    }, [])
+        setState(prev => prev != -2 ? -2 : prev)
+    }, [state])
+
     return {
         fields,
         remove,
