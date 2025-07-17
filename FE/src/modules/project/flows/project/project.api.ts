@@ -35,3 +35,7 @@ export const updateEnvAPI = async (
         `${API_ENDPOINT.project}/${projectId}/environment/${envId || ""}`,
         { json: data, credentials: "include" }
     );
+export const deleteEnvAPI = async (projectId: string, envId: string) =>
+    await AxiosClient.delete(
+        `${API_ENDPOINT.project}/${projectId}/environment/${envId}`, { credentials: "include" }
+    )

@@ -176,7 +176,29 @@ router.post("", async (req, res) => {
     });
   }
 });
-
+async function getFreshProject(req) {
+  const projectId = req.params.projectId;
+  const supabase = req.supabase;
+  const { data: project, error: projectError } = await supabase
+    .from("project")
+    .select(
+      `
+                *,
+                environment:project_env(*),
+                milestones:milestone(*),
+                members:project_member(*, user:users!project_member_userid_fkey(*), role:project_role!project_member_role_id_fkey(*)),
+                role:project_role(*),
+                document:project_document(* , user:users!project_document_userid_fkey(*)),
+                communitation:project_communitation(*),
+                workspace(* , owner:users!workspace_owner_fkey(*))
+            `
+    )
+    .eq("id", projectId)
+    .single();
+  if (projectError)
+    throw new Error(`Error fetching project: ${projectError.message}`);
+  return project;
+}
 router.get("/:projectId", async (req, res) => {
   if (req.method !== "GET") {
     return res.status(405).json({
@@ -191,36 +213,18 @@ router.get("/:projectId", async (req, res) => {
     });
   }
   try {
-    const projectId = req.params.projectId;
-    const supabase = req.supabase;
-    const { data: project, error: projectError } = await supabase
-      .from("project")
-      .select(
-        `
-                *,
-                environment:project_env(*),
-                milestones:milestone(*),
-                members:project_member(*, user:users!project_member_userid_fkey(*), role:project_role!project_member_role_id_fkey(*)),
-                role:project_role(*),
-                document:project_document(* , user:users!project_document_userid_fkey(*)),
-                communitation:project_communitation(*),
-                workspace(* , owner:users!workspace_owner_fkey(*))
-            `
-      )
-      .eq("id", projectId)
-      .single();
-    if (projectError)
-      throw new Error(`Error fetching project: ${projectError.message}`);
-    if (!project) {
+    const freshProject = await getFreshProject(req);
+    if (!freshProject) {
       return res.status(404).json({
         success: false,
         message: "Project not found",
       });
     }
+
     return res.status(200).json({
       success: true,
       message: "Project fetched successfully",
-      data: project,
+      data: freshProject,
     });
   } catch (error) {
     return res.status(500).json({
@@ -332,6 +336,7 @@ router.put("/:projectId/general", async (req, res) => {
       .eq("id", projectId)
       .single();
     if (error) throw new Error(error.message);
+
     pushSSE(updatedProject);
     return res
       .status(200)
@@ -343,7 +348,7 @@ router.put("/:projectId/general", async (req, res) => {
     });
   }
 });
-router.put("/:projectId/environment/:envId", async (req, res) => {
+router.put("/:projectId/environment/:envId?", async (req, res) => {
   if (req.method != "PUT")
     return res
       .status(405)
@@ -352,42 +357,94 @@ router.put("/:projectId/environment/:envId", async (req, res) => {
     return res
       .status(400)
       .json({ success: false, message: "Project ID is required" });
-  try {
-    const projectId = req.params.projectId;
-    const envId = req.params.envId;
-    const supabase = req.supabase;
-    const data = req.body;
 
+  const projectId = req.params.projectId;
+  const envId = req.params.envId;
+  const supabase = req.supabase;
+  const data = req.body;
+  try {
     await checkRole(req, "project", "2");
     if (envId) {
-      const { data: updateEnv, error } = await supabase
+      const { error } = await supabase
         .from("project_env")
         .update(data)
-        .select()
         .eq("project_id", projectId)
-        .eq("id", envId)
-        .single();
+        .eq("id", envId);
 
       if (error) throw new Error(error.message);
-      return res.status(200).json({
-        success: true,
-        message: "Project Environment Updated",
-        data: updateEnv,
-      });
     } else {
-      const { data: updateEnv, error } = await supabase
+      const { error } = await supabase
         .from("project_env")
-        .insert(data)
-        .select()
-        .single();
+        .insert({ ...data, project_id: projectId });
 
       if (error) throw new Error(error.message);
-      return res.status(200).json({
-        success: true,
-        message: "Project Environment Added",
-        data: updateEnv,
-      });
     }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+
+  try {
+    const freshProject = await getFreshProject(req);
+    pushSSE(freshProject);
+
+    return res.status(200).json({
+      success: true,
+      message: "Project Environment Updated",
+      data: freshProject,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+});
+router.delete("/:projectId/environment/:envId", async (req, res) => {
+  if (req.method != "DELETE")
+    return res
+      .status(405)
+      .json({ success: false, message: "Method not allowed" });
+  if (!req.params.projectId)
+    return res
+      .status(400)
+      .json({ success: false, message: "Project ID is required" });
+
+  const projectId = req.params.projectId;
+  const envId = req.params.envId;
+  const supabase = req.supabase;
+  try {
+    await checkRole(req, "project", "2");
+    if (!envId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Project ID is required" });
+    }
+    const { error } = await supabase
+      .from("project_env")
+      .delete()
+      .eq("project_id", projectId)
+      .eq("id", envId);
+
+    if (error) throw new Error(error.message);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+
+  try {
+    const freshProject = await getFreshProject(req);
+    pushSSE(freshProject);
+
+    return res.status(200).json({
+      success: true,
+      message: "Project Environment Updated",
+      data: freshProject,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,

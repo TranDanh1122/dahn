@@ -4,6 +4,7 @@ import coreOptimicQueue from "@/common/ults/OptimicQueue";
 import { isObjectEqual } from "@/common/ults/Tool";
 import { updateProjectThunk, updateProjectThunkExtraReducer } from "./action/updateGeneralInfo.action";
 import { updateEnvThunk, updateEnvThunkExtraReducer } from "./action/updateEnv.action";
+import { deleteEnvThunk, deleteEnvThunkExtraReducer } from "./action/deleteEnv.action";
 export interface ProjectStore {
     step: number,
     project?: Project,
@@ -44,6 +45,9 @@ const projectSlicer = createSlice({
             .addCase(updateEnvThunk.pending, updateEnvThunkExtraReducer.pending)
             .addCase(updateEnvThunk.fulfilled, updateEnvThunkExtraReducer.fullfilled)
             .addCase(updateEnvThunk.rejected, updateEnvThunkExtraReducer.rejected)
+            .addCase(deleteEnvThunk.pending, deleteEnvThunkExtraReducer.pending)
+            .addCase(deleteEnvThunk.fulfilled, deleteEnvThunkExtraReducer.fullfilled)
+            .addCase(deleteEnvThunk.rejected, deleteEnvThunkExtraReducer.rejected)
     }
 })
 export const { setProject, changeStep } = projectSlicer.actions

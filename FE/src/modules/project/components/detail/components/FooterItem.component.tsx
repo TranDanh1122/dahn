@@ -10,6 +10,9 @@ import Badge from "@components/Badge.component";
 import Text from "@components/Text.component"
 import type { TableItemProps } from "@/components/ArrayForm";
 import X from "lucide-react/dist/esm/icons/x"
+import type { AppDispatch, AppState } from "@/stores";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEnvThunk } from "@project/store/action/deleteEnv.action";
 
 
 interface FooterItemProps extends TableItemProps {
@@ -23,9 +26,12 @@ export default React.memo(function FooterItem({ data }: FooterItemProps): React.
         const bgColor = EnvironmentBgColor[data.status] || ""
         return [color, bgColor, status]
     }, [data])
+    const dispatch: AppDispatch = useDispatch()
+    const project = useSelector((state: AppState) => state.project.project)
     const handleDelete = React.useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
-    }, [])
+        dispatch(deleteEnvThunk({ projectId: project?.id || "", envId: data?.id || "", fallbackData: project }))
+    }, [project])
     if (!data) return <></>
     return (
         <div className="border border-slate-200 overflow-auto scrollbar-thin w-full

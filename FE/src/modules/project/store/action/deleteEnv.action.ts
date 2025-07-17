@@ -1,18 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { EnvData, Project, ProjectResDataType } from "@project/models";
+import type { Project, ProjectResDataType } from "@project/models";
 import coreOptimicQueue from "@/common/ults/OptimicQueue";
-import { APITimeout, upsertArrayByKey } from "@/common/ults/Tool";
-import { updateEnvAPI } from "@project/flows/project/project.api";
+import { APITimeout } from "@/common/ults/Tool";
+import { deleteEnvAPI } from "@project/flows/project/project.api";
 import { HTTPError } from "ky";
 import type { ProjectStore } from "@project/store";
 
-export const updateEnvThunk = createAsyncThunk<Project | undefined, { projectId: string, data: EnvData, fallbackData: Project }>("dahn/project/updateEnv",
-    async ({ projectId, data }, thunkAPI) => {
+export const deleteEnvThunk = createAsyncThunk<Project | undefined, { projectId: string, envId: string, fallbackData?: Project }>("dahn/project/deleteEnv",
+    async ({ projectId, envId }, thunkAPI) => {
         return new Promise((resolve, reject) => {
             coreOptimicQueue.addQuery({
                 queue: async () => {
                     const dataRes = await APITimeout(async () => {
-                        const res = await updateEnvAPI(projectId, data, data.id)
+                        const res = await deleteEnvAPI(projectId, envId)
                         const json = await res.json<ProjectResDataType>()
                         return json
                     }, import.meta.env.VITE_API_TIMEOUT || 10000)
@@ -35,19 +35,14 @@ export const updateEnvThunk = createAsyncThunk<Project | undefined, { projectId:
     }
 )
 
-export const updateEnvThunkExtraReducer = {
+export const deleteEnvThunkExtraReducer = {
     pending: (state: ProjectStore, action: any) => {
         state.loading = true
         state.error = coreOptimicQueue.isError()
-        const { data } = action.meta.arg
+        const { envId } = action.meta.arg
         if (!state.project) return
         if (state.project.environment)
-            state.project.environment = upsertArrayByKey<EnvData>(
-                state.project.environment,
-                [data],
-                "id"
-            )
-
+            state.project.environment = state.project.environment.filter(el => el.id != envId)
     },
     fullfilled: (state: ProjectStore, action: any) => {
         const project = action.payload
