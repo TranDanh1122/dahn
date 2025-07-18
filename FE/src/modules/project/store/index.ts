@@ -5,6 +5,8 @@ import { isObjectEqual } from "@/common/ults/Tool";
 import { updateProjectThunk, updateProjectThunkExtraReducer } from "./action/updateGeneralInfo.action";
 import { updateEnvThunk, updateEnvThunkExtraReducer } from "./action/updateEnv.action";
 import { deleteEnvThunk, deleteEnvThunkExtraReducer } from "./action/deleteEnv.action";
+import { updateMilestoneThunk, updateMilestoneThunkExtraReducer } from "./action/updateMilestone.action";
+import { deleteMilestoneThunk, deleteMilestoneThunkExtraReducer } from "./action/deleteMilestone.action";
 export interface ProjectStore {
     step: number,
     project?: Project,
@@ -48,6 +50,12 @@ const projectSlicer = createSlice({
             .addCase(deleteEnvThunk.pending, deleteEnvThunkExtraReducer.pending)
             .addCase(deleteEnvThunk.fulfilled, deleteEnvThunkExtraReducer.fullfilled)
             .addCase(deleteEnvThunk.rejected, deleteEnvThunkExtraReducer.rejected)
+            .addCase(updateMilestoneThunk.pending, updateMilestoneThunkExtraReducer.pending)
+            .addCase(updateMilestoneThunk.fulfilled, updateMilestoneThunkExtraReducer.fullfilled)
+            .addCase(updateMilestoneThunk.rejected, updateMilestoneThunkExtraReducer.rejected)
+            .addCase(deleteMilestoneThunk.pending, deleteMilestoneThunkExtraReducer.pending)
+            .addCase(deleteMilestoneThunk.fulfilled, deleteMilestoneThunkExtraReducer.fullfilled)
+            .addCase(deleteMilestoneThunk.rejected, deleteMilestoneThunkExtraReducer.rejected)
     }
 })
 export const { setProject, changeStep } = projectSlicer.actions

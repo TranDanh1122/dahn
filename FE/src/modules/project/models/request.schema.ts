@@ -26,8 +26,8 @@ export const ProjectSchema = z.object({
         id: z.coerce.string().optional(),
         name: z.coerce.string().min(3).max(50),
         description: z.coerce.string().max(450),
-        startDate: z.coerce.date(),
-        endDate: z.coerce.date(),
+        startDate: z.union([z.coerce.date(), z.coerce.string()]),
+        endDate: z.union([z.coerce.date(), z.coerce.string()]),
         duration: z.coerce.number(),
         process: z.coerce.number().min(0).max(100),
         status: z.coerce.string()

@@ -17,7 +17,7 @@ import { deleteEnvThunk } from "@project/store/action/deleteEnv.action";
 
 interface FooterItemProps extends TableItemProps {
     data?: EnvData,
-    clicked: () => void
+    clicked?: () => void
 }
 export default React.memo(function FooterItem({ data, clicked }: FooterItemProps): React.JSX.Element {
     const [color, bgColor, status] = React.useMemo(() => {
@@ -35,7 +35,7 @@ export default React.memo(function FooterItem({ data, clicked }: FooterItemProps
     }, [project])
     if (!data) return <></>
     return (
-        <div onClick={() => clicked()} className="border border-slate-200 overflow-auto scrollbar-thin w-1/4
+        <div onClick={() => clicked?.()} className="border border-slate-200 overflow-auto scrollbar-thin w-1/4
             shadow-slate-100 shadow group hover:shadow-lg hover:shadow-slate-300
             rounded-2xl h-full p-4 flex flex-col justify-between gap-2">
             <div className="flex justify-between">
