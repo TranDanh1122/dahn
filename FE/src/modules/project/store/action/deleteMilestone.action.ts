@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { MilestoneData, Project, ProjectResDataType } from "@project/models";
+import type { Project, ProjectResDataType } from "@project/models";
 import coreOptimicQueue from "@/common/ults/OptimicQueue";
-import { APITimeout, upsertArrayByKey } from "@/common/ults/Tool";
+import { APITimeout } from "@/common/ults/Tool";
 import { deleteMilestoneAPI } from "@project/flows/project/project.api";
 import { HTTPError } from "ky";
 import type { ProjectStore } from "..";
