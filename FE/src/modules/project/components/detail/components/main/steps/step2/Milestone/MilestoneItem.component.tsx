@@ -9,7 +9,7 @@ import type { MilestoneData } from "@project/models/request.schema";
 import React from "react";
 import Badge from "@/components/Badge.component";
 
-export default React.memo(function MileStoneItem({ milestone }: { milestone: MilestoneData }): React.JSX.Element {
+export default React.memo(function MileStoneItem({ milestone, openModal }: { milestone: MilestoneData, openModal: (e: React.MouseEvent) => void }): React.JSX.Element {
     const [color, bgColor, status, hex] = React.useMemo(() => {
         const color = MilestoneStatusColor[milestone.status] || "";
         const bgColor = MilestoneStatusBgColor[milestone.status] || "";
@@ -17,6 +17,7 @@ export default React.memo(function MileStoneItem({ milestone }: { milestone: Mil
         const hex = MilestoneStatusHex[milestone.status] || "";
         return [color, bgColor, status, hex]
     }, [milestone.status])
+
     return (
         <div className="grid grid-cols-4">
             <Infor>{milestone.name}</Infor>
@@ -33,7 +34,7 @@ export default React.memo(function MileStoneItem({ milestone }: { milestone: Mil
                     </div>
                 </div>
             </Infor>
-            <Infor>
+            <Infor onClick={(e) => openModal(e)}>
                 <Badge color={color} bgColor={bgColor} title={status}>
                     {status}
                 </Badge>

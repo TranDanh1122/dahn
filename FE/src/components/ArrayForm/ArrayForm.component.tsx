@@ -25,7 +25,8 @@ export interface ArrayFormProps {
     modalFormSchema?: ZodEffects<ZodObject<FieldValues>> | ZodObject<FieldValues>,
     customSubmit?: (data: FieldValues, index?: string) => void,
     triggerEl?: React.ReactElement,
-    type?: "table" | "item"
+    type?: "table" | "item",
+    itemWrapper?: React.ReactElement
 }
 export default
     function ArrayForm(
@@ -38,7 +39,8 @@ export default
             modalFormSchema,
             triggerEl,
             type,
-            customSubmit
+            customSubmit,
+            itemWrapper
         }: ArrayFormProps): React.JSX.Element {
 
     const {
@@ -68,48 +70,47 @@ export default
                 {
                     fields && headerEl && <>{headerEl}</>
                 }
-                {
-                    fields && type == "table" &&
-                    fields.map(
-                        (el, index) => (
-                            <div onClick={() => setState(index)} key={el.id}
-                                className="py-4 border-b text-sm border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
-                                {
-                                    React.cloneElement(itemEl || <></>, {
-                                        data: form?.getValues(`${name}.${index}`)
-                                    })
-                                }
-                                <React.Suspense fallback="">
-                                    <X onClick={
-                                        (e: React.MouseEvent) => {
-                                            e.stopPropagation()
-                                            remove?.(index);
-                                        }}
-                                        className="text-slate-600 font-light hover:text-red-500 cursor-pointer mx-auto"
-                                    />
-                                </React.Suspense>
-                            </div>
-
-                        )
-                    )}
-                {
-                    fields &&
-                    <div className="flex items-center justify-evenly gap-6 h-full">
-                        {
+                {React.cloneElement(itemWrapper || <></>, {
+                    children:
+                        <>  {
+                            fields && type == "table" &&
                             fields.map(
                                 (el, index) => (
-                                    <div className="w-1/4 h-full" onClick={() => setState(index)} key={el.id}>
+                                    <div onClick={() => setState(index)} key={el.id}
+                                        className="py-4 border-b text-sm border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
                                         {
                                             React.cloneElement(itemEl || <></>, {
-                                                data: form?.getValues(`${name}.${index}`),
-
+                                                data: form?.getValues(`${name}.${index}`)
                                             })
                                         }
+                                        <React.Suspense fallback="">
+                                            <X onClick={
+                                                (e: React.MouseEvent) => {
+                                                    e.stopPropagation()
+                                                    remove?.(index);
+                                                }}
+                                                className="text-slate-600 font-light hover:text-red-500 cursor-pointer mx-auto"
+                                            />
+                                        </React.Suspense>
                                     </div>
-                                ))
+
+                                )
+                            )
                         }
-                    </div>
-                }
+                            {
+                                fields && fields.map(
+                                    (_, index) => (
+                                        React.cloneElement(itemEl || <></>, {
+                                            data: form?.getValues(`${name}.${index}`),
+                                            clicked: () => { setState(index) },
+                                        })
+                                    ))
+
+                            }
+                        </>
+                })}
+
+
             </fieldset >
             {
                 state > -2 &&

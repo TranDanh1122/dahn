@@ -39,16 +39,20 @@ export default React.memo(function Footer(): React.JSX.Element {
         if (project && project.id)
             dispatch(updateEnvThunk({ projectId: project.id, data: data as EnvData, fallbackData: project }))
     }
-    return (<FormProvider {...form}>
-        <ArrayForm
-            triggerEl={env.length < 4 ? <CirclePlus className="size-5 text-slate-600 absolute -top-10 right-0" /> : <></>}
-            name="environment"
-            label=""
-            customSubmit={handleSubmit}
-            itemEl={<FooterItemComponent />}
-            modalFormSchema={envSchema}
-            modalFormContent={<EnvironmentModal />}
-        />
+    return (
 
-    </FormProvider>)
+        <FormProvider {...form}>
+            <ArrayForm
+                triggerEl={env.length < 4 ? <CirclePlus className="size-5 text-slate-600 absolute -top-10 right-0" /> : <></>}
+                name="environment"
+                label=""
+                customSubmit={handleSubmit}
+                itemEl={<FooterItemComponent />}
+                modalFormSchema={envSchema}
+                modalFormContent={<EnvironmentModal />}
+                itemWrapper={<div className="flex items-center justify-evenly gap-6 h-full w-full"></div>}
+            />
+        </FormProvider>
+
+    )
 })
