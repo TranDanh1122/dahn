@@ -5,6 +5,7 @@ import Button from "../Button.component";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodEffects, ZodObject } from "zod";
 import LoadingComponent from "@components/Loading.component";
+import { createPortal } from "react-dom";
 interface FormModal {
     schema?: ZodObject<FieldValues> | ZodEffects<ZodObject<FieldValues>>,
     closeAction?: () => void,
@@ -40,8 +41,11 @@ const FormModal = ({
         defaultValues: initData
     })
 
-    const submitForm = (data: FieldValues) => {
-        submitAction?.(data)
+    const submitForm = async (data: FieldValues) => {
+        await modalForm.trigger()
+
+        if (modalForm.formState.isValid)
+            submitAction?.(data)
     };
 
     React.useEffect(() => {
@@ -57,33 +61,39 @@ const FormModal = ({
 
     return (
         <>
-            <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>
-            <FormProvider {...modalForm}>
-                <div className="space-y-4 rounded-2xl fixed top-1/2 left-1/2 w-1/3 -translate-1/2 bg-white z-10 p-10">
-                    <X onClick={closeAction}
-                        className="absolute top-4 right-4 cursor-pointer text-slate-600"
-                    />
-                    {React.cloneElement(modalFormContent || <></>, { modalForm, form: parentForm })}
-                    <div className="flex items-center justify-between">
-                        <Button onClick={closeAction} type="button"
-                            className="bg-transparent border border-slate-400 text-slate-600 font-light!">
-                            Cancel
-                        </Button>
-                        <Button onClick={modalForm.handleSubmit((e) => submitForm(e), (e) => console.log(e))} type="button"
-                            className="bg-blue-500 text-white font-light!">
-                            {
-                                !onLoading && "Add"
-                            }
-                            {
-                                onLoading && <LoadingComponent className="border-s-white" />
-                            }
-                        </Button>
-                    </div>
-                </div>
-            </FormProvider>
+            {
+                createPortal(
+                    <>
+                        <div className="fixed top-0 left-0 bg-black/20 z-1 w-screen h-screen"></div>
+                        <FormProvider {...modalForm}>
+                            <form className="space-y-4 rounded-2xl fixed top-1/2 left-1/2 w-1/3 -translate-1/2 bg-white z-10 p-10">
+                                <X onClick={closeAction}
+                                    className="absolute top-4 right-4 cursor-pointer text-slate-600"
+                                />
+                                {React.cloneElement(modalFormContent || <></>, { modalForm, form: parentForm })}
+                                <div className="flex items-center justify-between">
+                                    <Button onClick={closeAction} type="button"
+                                        className="bg-transparent border border-slate-400 text-slate-600 font-light!">
+                                        Cancel
+                                    </Button>
+                                    <Button type="button" onClick={modalForm.handleSubmit(submitForm, (e) => console.log(e))}
+                                        className="bg-blue-500 text-white font-light!">
+                                        {
+                                            !onLoading && "Add"
+                                        }
+                                        {
+                                            onLoading && <LoadingComponent className="border-s-white" />
+                                        }
+                                    </Button>
+                                </div>
+                            </form>
+                        </FormProvider>
 
+                    </>,
+                    document.body
+                )
+            }
         </>
-
     )
 }
 

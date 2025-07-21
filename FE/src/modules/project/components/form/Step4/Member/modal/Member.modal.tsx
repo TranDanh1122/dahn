@@ -9,7 +9,9 @@ import type { ModalProps } from "@components/ArrayForm";
 import { useMemberModal } from "./useMemberModal.hook";
 import Input from "@components/Input.component";
 import TextArea from "@components/TextArea.component";
-export default function Member({ modalForm, form }: ModalProps<z.infer<typeof memberSchema>>): React.JSX.Element {
+import { useFormContext } from "react-hook-form";
+export default function Member({ form }: ModalProps<z.infer<typeof memberSchema>>): React.JSX.Element {
+    const modalForm = useFormContext<z.infer<typeof memberSchema>>()
 
     const hookData = useMemberModal({ modalForm, form })
 

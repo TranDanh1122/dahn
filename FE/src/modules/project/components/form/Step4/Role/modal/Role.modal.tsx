@@ -1,19 +1,23 @@
 
 import React from "react";
 import Input from "@/components/Input.component";
-import type { ModalProps } from "@components/ArrayForm";
 import RadioGroup from "@components/RadioGroup";
 import PermissionItem from "./PermissionItem.component";
 import { z } from "zod";
 import { roleSchema } from "@project/models/request.schema";
 import { RoleDataSets } from "@project/const";
 import { v4 } from "uuid";
+import { useFormContext } from "react-hook-form";
 
-export default function Role({ modalForm }: ModalProps<z.infer<typeof roleSchema>>): React.JSX.Element {
+export default function Role(): React.JSX.Element {
+
+    const modalForm = useFormContext<z.infer<typeof roleSchema>>()
+
     React.useEffect(() => {
         if (!modalForm) return
-        if (!modalForm.getValues("id")) modalForm.setValue("id", v4())
-    }, [modalForm])
+        if (!modalForm.watch("id")) modalForm.reset({ "id": v4() })
+    }, [modalForm?.watch("id")])
+
     if (!modalForm) return <></>
 
     return (
@@ -26,10 +30,7 @@ export default function Role({ modalForm }: ModalProps<z.infer<typeof roleSchema
                 {...modalForm.register(`name`)}
                 error={modalForm.formState.errors.name?.message}
             />
-
-            <Input hidden
-                {...modalForm.register(`id`)}
-            />
+            <Input hidden   {...modalForm.register(`id`)} />
             <RadioGroup
                 itemEl={<PermissionItem />}
                 dataSets={RoleDataSets}

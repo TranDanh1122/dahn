@@ -1,12 +1,14 @@
 import React from "react";
 import Input from "@components/Input.component";
-import type { ModalProps } from "@components/ArrayForm";
 import type { z } from "zod";
 import type { envSchema } from "@project/models/request.schema";
 import { Select } from "@components/Select";
 import { EnvironmentStatus, type EnumSelectType } from "@project/const";
 import TextArea from "@components/TextArea.component";
-export default function Environment({ modalForm }: ModalProps<z.infer<typeof envSchema>>): React.JSX.Element {
+import { useFormContext } from "react-hook-form";
+export default function Environment(): React.JSX.Element {
+    const modalForm = useFormContext<z.infer<typeof envSchema>>()
+
     React.useEffect(() => {
         if (modalForm && !modalForm.getValues("status")) modalForm.setValue(`status`, "active")
     }, [modalForm?.watch("status")])

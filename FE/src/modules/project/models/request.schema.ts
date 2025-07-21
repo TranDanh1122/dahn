@@ -33,8 +33,8 @@ export const ProjectSchema = z.object({
         status: z.coerce.string()
     })).optional(),
     role: z.array(z.object({
-        id: z.coerce.string().optional(),
-        name: z.coerce.string().max(50),
+        id: z.coerce.string(),
+        name: z.coerce.string().min(1).max(50),
         project: z.coerce.string(),
         milestone: z.coerce.string(),
         folder: z.coerce.string()
@@ -149,11 +149,11 @@ export const memberSchema = z.object({
 })
 export type MemberData = z.infer<typeof memberSchema>
 export const roleSchema = z.object({
-    id: z.coerce.string().optional(),
+    id: z.coerce.string(),
     name: z.coerce.string().min(1).max(50),
-    project: z.coerce.string(),
-    milestone: z.coerce.string(),
-    folder: z.coerce.string()
+    project: z.coerce.string().min(1),
+    milestone: z.coerce.string().min(1),
+    folder: z.coerce.string().min(1)
 })
 export type RoleData = z.infer<typeof roleSchema>
 export const documentSchema = z.object({

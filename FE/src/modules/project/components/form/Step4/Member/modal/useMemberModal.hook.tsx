@@ -26,7 +26,8 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
     }
 
     const roles = React.useMemo(() => {
-        return form?.getValues("role").map((el: z.infer<typeof roleSchema>) => {
+        console.log(form?.watch("role"))
+        return form?.watch("role").map((el: z.infer<typeof roleSchema>) => {
             return { value: el.id, text: el.name }
         })
     }, [form?.watch("role")])
@@ -36,10 +37,10 @@ export const useMemberModal = ({ modalForm, form }: ModalProps<z.infer<typeof me
     }, [roles, modalForm])
 
     React.useEffect(() => {
-        if (!modalForm?.getValues("roleId")) {
+        if (!modalForm?.watch("roleId")) {
             modalForm?.setValue("roleId", roles[0]?.value)
         }
-    }, [modalForm?.watch("roleId")])
+    }, [modalForm?.watch("roleId"), roles])
     const pikedUser = React.useMemo(() => {
         const user = modalForm?.getValues("user")
         if (user)

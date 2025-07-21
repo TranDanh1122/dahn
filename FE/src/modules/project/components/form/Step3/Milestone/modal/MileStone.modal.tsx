@@ -5,18 +5,19 @@ import { DatePicker } from "@components/DatePicker";
 import { Select } from "@components/Select";
 import { MilestoneStatus, type EnumSelectType } from "@project/const";
 import { useMilestoneModal } from "./useMilestoneModal.hook";
-import type { ModalProps } from "@components/ArrayForm";
 import type { z } from "zod";
 import { milestoneSchema } from "@project/models/request.schema";
+import { useFormContext } from "react-hook-form";
 
 export default React.memo(
-    function MileStoneModal({ modalForm }: ModalProps<z.infer<typeof milestoneSchema>>) {
-
+    function MileStoneModal() {
+        const modalForm = useFormContext<z.infer<typeof milestoneSchema>>()
         const hookReturn = useMilestoneModal({ modalForm })
 
         if (!modalForm || !hookReturn) return <></>
 
         const { defaultStatusValue, iniDate, handlePickerDate } = hookReturn
+
 
         return <>
             <div className="flex items-end gap-4">

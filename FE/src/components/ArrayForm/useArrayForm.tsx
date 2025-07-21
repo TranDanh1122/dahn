@@ -13,7 +13,7 @@ const useArrayForm = (name: string, customSubmit?: (data: FieldValues, index?: s
     // >-1 modal with data (index is state)
     const [state, setState] = React.useState<number>(-2)
 
-    const upsert = React.useCallback((data: FieldValues,) => {
+    const upsert = React.useCallback((data: FieldValues) => {
         if (state >= 0) {
             update(state, data);
         } else {
