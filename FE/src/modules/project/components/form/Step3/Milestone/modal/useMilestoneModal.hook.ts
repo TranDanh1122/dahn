@@ -8,6 +8,12 @@ export const useMilestoneModal = ({ modalForm }: ModalProps<z.infer<typeof miles
     React.useEffect(() => {
         if (!modalForm?.getValues("status")) modalForm?.setValue("status", "not_started")
     }, [modalForm?.watch("status")])
+    React.useEffect(() => {
+        if (!modalForm?.getValues("startDate")) modalForm?.setValue("startDate", new Date().toDateString())
+    }, [modalForm?.watch("startDate")])
+    React.useEffect(() => {
+        if (!modalForm?.getValues("endDate")) modalForm?.setValue("endDate", new Date().toDateString())
+    }, [modalForm?.watch("endDate")])
     if (!modalForm) return
     const iniDate = {
         from: modalForm.getValues("startDate") ? new Date(modalForm.getValues("startDate")) : undefined,
