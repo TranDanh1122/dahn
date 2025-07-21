@@ -18,6 +18,7 @@ export default function Step2(): React.JSX.Element {
             onItemClick={(val) => form.setValue("techstack", val)}
         />
         <ArrayForm
+            type="table"
             label="Environments"
             name="environment"
             headerEl={<EnvTableHeader />}

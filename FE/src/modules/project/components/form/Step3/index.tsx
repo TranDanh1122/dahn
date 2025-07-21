@@ -8,6 +8,7 @@ import {
 import { milestoneSchema } from "@/modules/project/models/request.schema";
 export default function Step3(): React.JSX.Element {
     return <ArrayForm
+        type="table"
         name="milestones"
         label="Milestones"
         headerEl={<MilestoneTableHead />}

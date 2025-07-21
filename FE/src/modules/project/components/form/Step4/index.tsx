@@ -7,6 +7,7 @@ export default function Step4(): React.JSX.Element {
 
     return <>
         <ArrayForm
+            type="table"
             name="role"
             label="Roles"
             headerEl={<RoleTableHeader />}
@@ -15,6 +16,7 @@ export default function Step4(): React.JSX.Element {
             modalFormSchema={roleSchema}
         />
         <ArrayForm
+            type="table"
             name="members"
             label="Members"
             headerEl={<MemberHeaderItem />}

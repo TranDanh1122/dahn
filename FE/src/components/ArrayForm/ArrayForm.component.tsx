@@ -98,7 +98,7 @@ export default
                             )
                         }
                             {
-                                fields && fields.map(
+                                fields && type != "table" && fields.map(
                                     (_, index) => (
                                         React.cloneElement(itemEl || <></>, {
                                             data: form?.getValues(`${name}.${index}`),

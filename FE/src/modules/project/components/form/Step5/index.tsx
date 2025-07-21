@@ -10,6 +10,7 @@ import { CommunicationModal, CommunicationTableHeader, CommunicationTableItem } 
 export default function Step5(): React.JSX.Element {
     return <>
         <ArrayForm
+            type="table"
             name="document"
             label="Documents"
             headerEl={<DocumentTableHeader />}
@@ -18,6 +19,7 @@ export default function Step5(): React.JSX.Element {
             modalFormSchema={documentSchema}
         />
         <ArrayForm
+            type="table"
             name="communitation"
             label="Communitation chanel"
             headerEl={<CommunicationTableHeader />}
