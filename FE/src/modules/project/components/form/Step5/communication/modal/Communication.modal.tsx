@@ -1,15 +1,17 @@
 import React from "react";
 import Input from "@/components/Input.component";
-import type { ModalProps } from "@/components/ArrayForm";
 import { z } from "zod";
 import { communitationSchema } from "@project/models/request.schema";
 import { Select } from "@components/Select";
 import { CommunitationMeeting, type EnumSelectType } from "@project/const";
 import TextArea from "@components/TextArea.component";
-export default function CommunicationModal({ modalForm }: ModalProps<z.infer<typeof communitationSchema>>): React.JSX.Element {
+import { useFormContext } from "react-hook-form";
+export default function CommunicationModal(): React.JSX.Element {
+    const modalForm = useFormContext<z.infer<typeof communitationSchema>>()
+
     React.useEffect(() => {
         if (!modalForm?.getValues("meeting")) modalForm?.setValue("meeting", "no")
-    }, [])
+    }, [modalForm.watch("meeting")])
 
     if (!modalForm) return <></>
     return <>

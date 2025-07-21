@@ -1,5 +1,4 @@
 import React from "react"
-import type { ModalProps } from "@components/ArrayForm"
 import { z } from "zod"
 import type { documentSchema } from "@project/models/request.schema"
 import Input from "@components/Input.component"
@@ -8,14 +7,18 @@ import { Select } from "@components/Select"
 import { type EnumSelectType, DocumentStatus } from "@project/const"
 import { useSelector } from "react-redux"
 import type { AppState } from "@/stores"
-export default function DocumentModal({ modalForm }: ModalProps<z.infer<typeof documentSchema>>): React.JSX.Element {
+import { useFormContext } from "react-hook-form"
+export default function DocumentModal(): React.JSX.Element {
     const user = useSelector((state: AppState) => state.persist.auth.user)
+    const modalForm = useFormContext<z.infer<typeof documentSchema>>()
+
     React.useEffect(() => {
         if (!modalForm) return
+        console.log(user)
         if (!modalForm.getValues("status")) modalForm.setValue("status", "uptodate")
         if (!modalForm.getValues("user.id") && user) modalForm.setValue("user", user)
         if (!modalForm.getValues("userid") && user) modalForm.setValue("userid", Number(user.id))
-    }, [])
+    }, [user, modalForm.watch("status"), modalForm.watch("user.id"), modalForm.watch("userid")])
 
     if (!modalForm) return <></>
 

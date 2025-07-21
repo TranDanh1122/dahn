@@ -42,10 +42,7 @@ const FormModal = ({
     })
 
     const submitForm = async (data: FieldValues) => {
-        await modalForm.trigger()
-
-        if (modalForm.formState.isValid)
-            submitAction?.(data)
+        submitAction?.(data)
     };
 
     React.useEffect(() => {
@@ -76,7 +73,10 @@ const FormModal = ({
                                         className="bg-transparent border border-slate-400 text-slate-600 font-light!">
                                         Cancel
                                     </Button>
-                                    <Button type="button" onClick={modalForm.handleSubmit(submitForm, (e) => console.log(e))}
+                                    <Button type="button" onClick={modalForm.handleSubmit(submitForm, (e) => {
+                                        console.log(modalForm.getValues())
+                                        console.log(e)
+                                    })}
                                         className="bg-blue-500 text-white font-light!">
                                         {
                                             !onLoading && "Add"
