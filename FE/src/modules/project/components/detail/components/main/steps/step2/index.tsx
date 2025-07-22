@@ -40,7 +40,7 @@ export default function Step2(): React.JSX.Element {
 
             <div className="space-y-4">
                 <h2 className="font-medium text-lg">Milestones</h2>
-                <div className="flex flex-col gap-6 justify-center text-sm h-full min-h-max py-4">
+                <div className="flex flex-col gap-6 justify-center text-sm h-full min-h-max py-4 relative">
                     <div className="grid grid-cols-5 text-sm font-medium">
                         <span>Name</span>
                         <span>Duration</span>

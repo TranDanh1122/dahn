@@ -66,11 +66,11 @@ export default
                     />
                 </div>
                 }
-                {React.cloneElement(triggerEl || <></>, { onClick: () => setState(-1) })}
+                {React.cloneElement(triggerEl || <div></div>, { onClick: () => setState(-1) })}
                 {
-                    fields && headerEl && <>{headerEl}</>
+                    fields && headerEl && <div>{headerEl}</div>
                 }
-                {React.cloneElement(itemWrapper || <></>, {
+                {React.cloneElement(itemWrapper || <div></div>, {
                     children:
                         <>  {
                             fields && type == "table" &&
@@ -79,7 +79,7 @@ export default
                                     <div onClick={() => setState(index)} key={el.id}
                                         className="py-4 border-b text-sm border-slate-200 grid grid-cols-5 items-center cursor-pointer hover:bg-slate-100 hover:rounded-lg hover:px-2 hover:shadow">
                                         {
-                                            React.cloneElement(itemEl || <></>, {
+                                            React.cloneElement(itemEl || <div></div>, {
                                                 data: form?.getValues(`${name}.${index}`)
                                             })
                                         }
@@ -100,7 +100,7 @@ export default
                             {
                                 fields && type != "table" && fields.map(
                                     (_, index) => (
-                                        React.cloneElement(itemEl || <></>, {
+                                        React.cloneElement(itemEl || <div></div>, {
                                             data: form?.getValues(`${name}.${index}`),
                                             clicked: () => { setState(index) },
                                         })
