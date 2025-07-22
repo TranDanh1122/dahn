@@ -1,7 +1,7 @@
 import React from "react";
 import { useFieldArray, useFormContext, type FieldValues } from "react-hook-form";
 
-const useArrayForm = (name: string, customSubmit?: (data: FieldValues, index?: string) => void) => {
+const useArrayForm = (name: string, customSubmit?: (data: FieldValues, index?: number) => void) => {
     const form = useFormContext()
     const { fields, remove, update, append } = useFieldArray({
         name: name,
@@ -25,7 +25,7 @@ const useArrayForm = (name: string, customSubmit?: (data: FieldValues, index?: s
 
     const submit = React.useCallback((data: FieldValues) => {
         if (customSubmit) {
-            customSubmit(data)
+            customSubmit(data, state)
         } else {
             upsert(data)
         }

@@ -23,7 +23,7 @@ export interface ArrayFormProps {
     itemEl?: React.ReactElement,
     modalFormContent?: React.ReactElement,
     modalFormSchema?: ZodEffects<ZodObject<FieldValues>> | ZodObject<FieldValues>,
-    customSubmit?: (data: FieldValues, index?: string) => void,
+    customSubmit?: (data: FieldValues, index?: number) => void,
     triggerEl?: React.ReactElement,
     type?: "table" | "item",
     itemWrapper?: React.ReactElement

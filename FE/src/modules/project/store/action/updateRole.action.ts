@@ -1,20 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { MilestoneData, Project, ProjectResDataType } from "@project/models";
+import type { Project, ProjectResDataType, RoleData } from "@project/models";
 import coreOptimicQueue from "@/common/ults/OptimicQueue";
 import { APITimeout, upsertArrayByKey } from "@/common/ults/Tool";
-import { updateMilestoneAPI } from "@project/flows/project/project.api";
+import { updateRoleAPI } from "../../flows/project/project.api";
 import { HTTPError } from "ky";
 import type { ProjectStore } from "..";
 
-export const updateMilestoneThunk = createAsyncThunk<Project | undefined, { projectId: string, data: MilestoneData, fallbackData?: Project }>("dahn/project/updateMilestone", async ({ projectId, data }, thunkAPI) => {
+export const updateRoleThunk = createAsyncThunk<Project | undefined, { projectId: string, data: RoleData, fallback: Project, roleId?: string }>("dahn/project/updateRole", async ({ projectId, data, roleId }, thunkAPI) => {
     return new Promise((resolve, reject) => {
         coreOptimicQueue.addQuery({
             queue: async () => {
                 const res = await APITimeout(async () => {
-                    const resData = await updateMilestoneAPI(projectId, data)
+                    const resData = await updateRoleAPI(projectId, data, roleId)
                     const json = await resData.json<ProjectResDataType>()
                     return json
-
                 }, import.meta.env.VITE_API_TIMEOUT || 10000)
                 resolve(res.data)
             },
@@ -34,14 +33,14 @@ export const updateMilestoneThunk = createAsyncThunk<Project | undefined, { proj
     })
 })
 
-export const updateMilestoneThunkExtraReducer = {
+export const updateRoleThunkExtraReducer = {
     pending: (state: ProjectStore, action: any) => {
         state.loading = true
         state.error = coreOptimicQueue.isError()
         const { data } = action.meta.arg
         if (!state.project) return
-        state.project.milestones = upsertArrayByKey<MilestoneData>(
-            state.project.milestones || [],
+        state.project.role = upsertArrayByKey<RoleData>(
+            state.project.role || [],
             [data],
             "id"
         )

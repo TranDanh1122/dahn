@@ -41,12 +41,11 @@ export const updateEnvThunkExtraReducer = {
         state.error = coreOptimicQueue.isError()
         const { data } = action.meta.arg
         if (!state.project) return
-        if (state.project.environment)
-            state.project.environment = upsertArrayByKey<EnvData>(
-                state.project.environment,
-                [data],
-                "id"
-            )
+        state.project.environment = upsertArrayByKey<EnvData>(
+            state.project.environment || [],
+            [data],
+            "id"
+        )
 
     },
     fullfilled: (state: ProjectStore, action: any) => {

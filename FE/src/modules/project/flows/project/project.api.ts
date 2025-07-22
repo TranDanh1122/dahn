@@ -1,6 +1,6 @@
 import { API_ENDPOINT } from "@/common/ults/ApiEndpoint.const";
 import { AxiosClient } from "@/common/ults/AxiosClient.const";
-import { type EnvData, type MilestoneData, type ProjectData, step1Schema } from "@project/models";
+import { type EnvData, type MilestoneData, type ProjectData, type RoleData, step1Schema } from "@project/models";
 import type { z } from "zod";
 
 export const createProjectAPI = async (data: ProjectData) =>
@@ -48,3 +48,6 @@ export const updateMilestoneAPI = async (projectId: string, data: MilestoneData)
 
 export const deleteMilestoneAPI = async (projectId: string, milestoneId: string) =>
     await AxiosClient.delete(`${API_ENDPOINT.project}/${projectId}/milestones/${milestoneId}`, { credentials: "include" })
+
+export const updateRoleAPI = async (projectId: string, data: RoleData, roleId?: string) =>
+    await AxiosClient.put(`${API_ENDPOINT.project}/${projectId}/role/${roleId || ""}`, { json: data, credentials: "include" })

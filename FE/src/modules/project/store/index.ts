@@ -7,6 +7,7 @@ import { updateEnvThunk, updateEnvThunkExtraReducer } from "./action/updateEnv.a
 import { deleteEnvThunk, deleteEnvThunkExtraReducer } from "./action/deleteEnv.action";
 import { updateMilestoneThunk, updateMilestoneThunkExtraReducer } from "./action/updateMilestone.action";
 import { deleteMilestoneThunk, deleteMilestoneThunkExtraReducer } from "./action/deleteMilestone.action";
+import { updateRoleThunk, updateRoleThunkExtraReducer } from "./action/updateRole.action";
 export interface ProjectStore {
     step: number,
     project?: Project,
@@ -56,6 +57,9 @@ const projectSlicer = createSlice({
             .addCase(deleteMilestoneThunk.pending, deleteMilestoneThunkExtraReducer.pending)
             .addCase(deleteMilestoneThunk.fulfilled, deleteMilestoneThunkExtraReducer.fullfilled)
             .addCase(deleteMilestoneThunk.rejected, deleteMilestoneThunkExtraReducer.rejected)
+            .addCase(updateRoleThunk.pending, updateRoleThunkExtraReducer.pending)
+            .addCase(updateRoleThunk.fulfilled, updateRoleThunkExtraReducer.fullfilled)
+            .addCase(updateRoleThunk.rejected, updateRoleThunkExtraReducer.rejected)
     }
 })
 export const { setProject, changeStep } = projectSlicer.actions

@@ -559,4 +559,60 @@ router.delete("/:projectId/milestones/:milestoneId", async (req, res) => {
     });
   }
 });
+
+router.put("/:projectId/role/:roleId?", async (req, res) => {
+  if (req.method != "PUT")
+    return res
+      .status(405)
+      .json({ success: false, message: "Method not allowed" });
+  if (!req.params.projectId)
+    return res
+      .status(400)
+      .json({ success: false, message: "Project ID is required" });
+
+  const projectId = req.params.projectId;
+  const roleId = req.params.roleId;
+  const supabase = req.supabase;
+  const data = req.body;
+  try {
+    await checkRole(req, "project", "2");
+    if (roleId) {
+      console.log(roleId, data);
+      const { error } = await supabase
+        .from("project_role")
+        .update(data)
+        .eq("project_id", projectId)
+        .eq("id", roleId);
+
+      if (error) throw new Error(error.message);
+    } else {
+      const { error } = await supabase
+        .from("project_role")
+        .insert({ ...data, project_id: projectId });
+
+      if (error) throw new Error(error.message);
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+
+  try {
+    const freshProject = await getFreshProject(req);
+    pushSSE(freshProject);
+
+    return res.status(200).json({
+      success: true,
+      message: "Project Milestone Updated",
+      data: freshProject,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+});
 module.exports = router;
