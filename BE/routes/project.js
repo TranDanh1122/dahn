@@ -577,7 +577,6 @@ router.put("/:projectId/role/:roleId?", async (req, res) => {
   try {
     await checkRole(req, "project", "2");
     if (roleId) {
-      console.log(roleId, data);
       const { error } = await supabase
         .from("project_role")
         .update(data)
@@ -606,6 +605,57 @@ router.put("/:projectId/role/:roleId?", async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Project Milestone Updated",
+      data: freshProject,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+});
+
+router.delete("/:projectId/roles/:roleID", async (req, res) => {
+  if (req.method != "DELETE")
+    return res
+      .status(405)
+      .json({ success: false, message: "Method not allowed" });
+  if (!req.params.projectId)
+    return res
+      .status(400)
+      .json({ success: false, message: "Project ID is required" });
+
+  const projectId = req.params.projectId;
+  const milestoneId = req.params.milestoneId;
+  const supabase = req.supabase;
+  try {
+    await checkRole(req, "project", "2");
+    if (!milestoneId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Project ID is required" });
+    }
+    const { error } = await supabase
+      .from("milestone")
+      .delete()
+      .eq("project_id", projectId)
+      .eq("id", milestoneId);
+
+    if (error) throw new Error(error.message);
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
+  }
+
+  try {
+    const freshProject = await getFreshProject(req);
+    pushSSE(freshProject);
+
+    return res.status(200).json({
+      success: true,
+      message: "Project Milestone Delete",
       data: freshProject,
     });
   } catch (error) {

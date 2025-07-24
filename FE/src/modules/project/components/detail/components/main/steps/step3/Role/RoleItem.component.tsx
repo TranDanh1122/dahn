@@ -14,7 +14,9 @@ export default function RoleItem({ role, openModal }: { role: RoleData, openModa
         })
         return [project, milestone, folder]
     }, [role])
-
+    const deleteRole = React.useCallback((e: React.MouseEvent) => {
+        e.stopPropagation()
+    }, [])
     return <>
         <div className="grid grid-cols-5 group p-2">
             <Infor>{role.name}</Infor>
@@ -23,7 +25,7 @@ export default function RoleItem({ role, openModal }: { role: RoleData, openModa
             <Infor label="Folder:" className="[&__h2]:w-max">{folder}</Infor>
             <div className="flex items-center justify-start gap-3">
                 <SquarePen onClick={(e) => openModal?.(e)} className="size-5 text-slate-500 cursor-pointer items-center hover-show" />
-                {/* <X onClick={(e) => deleteMilestone(e)} className="size-5 text-slate-700 hover-show cursor-pointer" /> */}
+                <X onClick={(e) => deleteRole(e)} className="size-5 text-slate-700 hover-show cursor-pointer" />
             </div>
         </div>
     </>

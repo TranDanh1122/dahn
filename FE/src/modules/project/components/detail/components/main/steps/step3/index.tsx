@@ -43,15 +43,15 @@ export default function Step3(): React.JSX.Element {
     //     [project?.members])
     return <>
         <div className="space-y-3">
-            {/* <h2 className="font-medium text-lg">Roles</h2> */}
-            <div className="flex flex-col gap-4 justify-center text-sm h-full min-h-max py-4 relative">
+            <h2 className="font-medium text-lg">Roles</h2>
+            <div className="flex flex-col gap-4 justify-center text-sm h-full min-h-max relative">
                 {/* {roleList} */}
 
                 <FormProvider {...formRole}>
                     <ArrayForm
-                        // triggerEl={roles.length < 4 ? <CirclePlus className="size-5 text-slate-600 absolute -top-10 right-0" /> : <div></div>}
+                        triggerEl={roles.length < 4 ? <CirclePlus className="size-5 text-slate-600 absolute top-0 right-0" /> : <div></div>}
                         name="role"
-                        label="Roles"
+                        label=""
                         customSubmit={handleRoleUpsert}
                         itemEl={<Role />}
                         modalFormSchema={roleSchema}
